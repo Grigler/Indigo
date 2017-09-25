@@ -3,29 +3,34 @@
 
 #include <memory>
 
-class LinkedList;
-
-class GameObj
+namespace Indigo
 {
-  friend class Environment;
-  friend class Scene;
 
-public:
-  std::unique_ptr<LinkedList> children;
+  class LinkedList;
 
-  //Stub update functions
-  virtual void onUpdate() {}
-  virtual void onFixedUpdate() {}
+  class GameObj
+  {
+    friend class Environment;
+    friend class Scene;
 
-  //Stub draw function
-  virtual void onDraw() {}
-  virtual void onPostDraw() {}
+  public:
+    std::unique_ptr<LinkedList> children;
 
-private:
+    //Stub update functions
+    virtual void onUpdate() {}
+    virtual void onFixedUpdate() {}
 
-  // All private functions can still be accessed by declared friend classes
-  // but not game-devs thinking this is the update function if it was public
-  void tick(float _dtS);
-};
+    //Stub draw function
+    virtual void onDraw() {}
+    virtual void onPostDraw() {}
+
+  private:
+
+    // All private functions can still be accessed by declared friend classes
+    // but not game-devs thinking this is the update function if it was public
+    void tick(float _dtS);
+  };
+
+} //End of namespace
 
 #endif
