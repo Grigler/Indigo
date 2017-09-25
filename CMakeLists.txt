@@ -24,7 +24,6 @@ add_library(indigo
   src/indigo/Environment.cpp
   src/indigo/Scene.cpp
   src/indigo/GameObj.cpp
-  src/indigo/LinkedList.cpp
 
 )
 # LINKING NECESSARY DLLs

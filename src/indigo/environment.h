@@ -3,6 +3,7 @@
 
 //Include for smart pointers
 #include <memory>
+#include <string>
 
 namespace Indigo
 {
@@ -12,6 +13,11 @@ namespace Indigo
   class Environment
   {
   public:
+    //Creates generic empty scene
+    Environment();
+    //Loads "Scene/level" from file
+    Environment(std::string _sceneFile);
+
     std::shared_ptr<Scene> scene;
 
     void Update();

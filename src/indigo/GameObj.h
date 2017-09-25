@@ -2,11 +2,12 @@
 #define __IND_GAME_OBJ__
 
 #include <memory>
+#include <list>
 
 namespace Indigo
 {
 
-  class LinkedList;
+  class Component;
 
   class GameObj
   {
@@ -14,7 +15,8 @@ namespace Indigo
     friend class Scene;
 
   public:
-    std::unique_ptr<LinkedList> children;
+    //Should change to safe pntr
+    std::list<GameObj*> children;
 
     //Stub update functions
     virtual void onUpdate() {}

@@ -2,21 +2,23 @@
 #define __IND_SCENE__
 
 #include <memory>
+#include <list>
 
 namespace Indigo
 {
 
-  class LinkedList;
+  class GameObj;
 
   class Scene
   {
   public:
+    Scene();
 
     void tick(float _dtS);
 
   private:
-
-    std::unique_ptr<LinkedList> topLevel;
+    //Should change to safe pntr
+    std::list<GameObj*> topLevel;
 
   };
 
