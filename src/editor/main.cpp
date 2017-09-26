@@ -2,9 +2,7 @@
 
 int main()
 {
-  Indigo::Environment env;
-
-  env.Update();
+  Indigo::Environment::StartUp();
 
   return 0;
 }

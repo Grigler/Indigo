@@ -8,9 +8,32 @@
 
 using namespace Indigo;
 
+Environment* Environment::instance = nullptr;
+
+void Environment::StartUp()
+{
+  if (instance != nullptr)
+  {
+    throw std::exception();
+    return;
+  }
+  instance = new Environment;
+}
+
+void Environment::StartUp(std::string _sceneFile)
+{
+  if (instance != nullptr)
+  {
+    throw std::exception();
+    return;
+  }
+  instance = new Environment(_sceneFile);
+}
+
 Environment::Environment()
 {
   //Equivalent to "unsafePtr = new Scene();"
+  
   sceneGraph = std::make_shared<Scene>();
 }
 

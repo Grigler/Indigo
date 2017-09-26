@@ -14,25 +14,9 @@ namespace Indigo
   {
   public:
     
-    static void Environment::StartUp()
-    {
-      if (instance != nullptr)
-      {
-        throw std::exception();
-        return;
-      }
-      instance = new Environment;
-    }
+    static void Environment::StartUp();
 
-    static void Environment::StartUp(std::string _sceneFile)
-    {
-      if (instance != nullptr)
-      {
-        throw std::exception();
-        return;
-      }
-      instance = new Environment(_sceneFile);
-    }
+    static void Environment::StartUp(std::string _sceneFile);
 
     //Static Time value getters
     //Returns delta from last frame in Seconds
