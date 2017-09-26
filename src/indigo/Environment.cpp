@@ -12,6 +12,8 @@ Environment::Environment()
 {
   //Equivalent to "unsafePtr = new Scene();"
   sceneGraph = std::make_shared<Scene>();
+
+  //TODO - assign singleton here
 }
 
 Environment::Environment(std::string _sceneFile)

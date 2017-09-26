@@ -1,8 +1,9 @@
 #ifndef __INDIGO__
 
-#include "environment.h"
+#include "Environment.h"
 #include "Scene.h"
 #include "GameObj.h"
+#include "RenderManager.h"
 
 #ifdef IND_DEBUG_FLAG
 #include "debug.h"

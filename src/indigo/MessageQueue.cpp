@@ -10,3 +10,7 @@ void MessageQueue::SendAll()
     Send((*i));
   }
 }
+void MessageQueue::Send(Message *msg)
+{
+
+}
