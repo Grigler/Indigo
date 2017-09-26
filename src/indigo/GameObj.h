@@ -13,6 +13,7 @@ namespace Indigo
   {
     friend class Environment;
     friend class Scene;
+    friend class Component;
 
   public:
     //Should change to safe pntr
@@ -27,10 +28,12 @@ namespace Indigo
     virtual void onPostDraw() {}
 
   private:
-
     // All private functions can still be accessed by declared friend classes
     // but not game-devs thinking this is the update function if it was public
     void tick();
+
+    std::list<Component*> components;
+    void UnregisterComponent(Component *_c);
   };
 
 } //End of namespace

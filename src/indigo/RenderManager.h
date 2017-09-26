@@ -2,15 +2,17 @@
 #define __IND_RENDER_MANAGER__
 
 #include <memory>
-
-//#include <glm/glm.hpp>
+#include <list>
 
 namespace Indigo
 {
 
+  class Camera;
+
   class RenderManager
   {
     friend class Environment;
+    friend class Camera;
   public:
 
     static void StartUp(int _argc, char *_argv[]);
@@ -18,8 +20,8 @@ namespace Indigo
       unsigned int _winX, unsigned int _winY, bool _fullScreenFlag);
 
     static void ShutDown();
+    
   private:
-    //Find how to initialise to nullptr
     static RenderManager *instance;
 
     RenderManager(int _argc, char *_argv[]);
@@ -27,6 +29,10 @@ namespace Indigo
       unsigned int _winX, unsigned int _winY, bool _fullScreenFlag);
 
     void Draw();
+
+    std::list<Camera*> cameraRegister;
+    static void RegisterCamera(Camera *_c);
+    static void UnregisterCamera(Camera *_c);
   };
 
 }
