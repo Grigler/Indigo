@@ -14,24 +14,6 @@ namespace Indigo
   {
   public:
     
-
-    //Singleton to allow for simple static variable access
-    //Like Environment::GetDT(); or Environment::GetRunTime();
-    static Environment* instance;
-
-    //Static Time value getters
-    //Returns delta from last frame in Seconds
-    static float GetDT() { return instance->dtS; }
-    //Returns Total time since game launch in Seconds
-    static float GetRunTime() { return instance->runTime; }
-
-    std::shared_ptr<Scene> sceneGraph;
-    //Calls Tick() sceneGraph - will be easy to allow for multiple
-    //concurrent scenes using this method
-    void Update();
-
-  private:
-    
     static void Environment::StartUp()
     {
       if (instance != nullptr)
@@ -51,6 +33,23 @@ namespace Indigo
       }
       instance = new Environment(_sceneFile);
     }
+
+    //Static Time value getters
+    //Returns delta from last frame in Seconds
+    static float GetDT() { return instance->dtS; }
+    //Returns Total time since game launch in Seconds
+    static float GetRunTime() { return instance->runTime; }
+
+    std::shared_ptr<Scene> sceneGraph;
+    //Calls Tick() sceneGraph - will be easy to allow for multiple
+    //concurrent scenes using this method
+    void Update();
+
+  private:
+    
+    //Singleton to allow for simple static variable access
+    //Like Environment::GetDT(); or Environment::GetRunTime();
+    static Environment* instance;
 
     //Creates generic empty scene
     Environment();
