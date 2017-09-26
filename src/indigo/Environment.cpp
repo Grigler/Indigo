@@ -2,6 +2,10 @@
 
 #include "Scene.h"
 
+#include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/freeglut.h>
+
 using namespace Indigo;
 
 Environment::Environment()

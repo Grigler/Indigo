@@ -32,6 +32,7 @@ if(WIN32)
   #UNCOMMENT THINGS WHEN YOU NEED TO START ADDING LIBRARIES BACK IN
 
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
+  target_link_libraries(indigo glew32 freeglut)
 endif()
 
 
