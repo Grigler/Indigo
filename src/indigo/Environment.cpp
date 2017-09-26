@@ -46,12 +46,12 @@ Environment::Environment(std::string _sceneFile)
 
 void Environment::Update()
 {
-  //TODO - update delta time and fixedTime stuff here
+  //TODO - Poll input
 
+  //TODO - update delta time and fixedTime
+
+  //Sending tick down heirarchal scene graph
   instance->sceneGraph->tick();
-
+  //Calling render manager to draw the scene
   RenderManager::instance->Draw();
-
-  //Would simply need to iterate over multiple scenes if that route
-  //is taken in the future
 }
