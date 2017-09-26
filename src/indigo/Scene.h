@@ -15,6 +15,9 @@ namespace Indigo
     Scene();
 
     void tick(float _dtS);
+    //Expensive but traverses full scene and returns
+    //full list of GameObjs in scene
+    std::list<GameObj*> GetFullList();
 
   private:
     //Should change to safe pntr

@@ -23,8 +23,9 @@ namespace Indigo
     static float GetDT() { return instance->dtS; }
     //Returns Total time since game launch in Seconds
     static float GetRunTime() { return instance->runTime; }
-
-    std::shared_ptr<Scene> sceneGraph;
+    //Return raw pointer to scene graph
+    static Scene *GetSceneGraph() { return instance->sceneGraph.get(); }
+    
     //Calls Tick() sceneGraph - will be easy to allow for multiple
     //concurrent scenes using this method
     void Update();
@@ -45,6 +46,8 @@ namespace Indigo
     float runTime;
 
     float minFixedDtS;
+
+    std::shared_ptr<Scene> sceneGraph;
 
   };
 
