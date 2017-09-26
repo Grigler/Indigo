@@ -19,21 +19,25 @@ endif()
 
 
 # SETTING UP INDIGO ENGINE LIB
-add_executable(indigo
+add_executable(Indigo
   src/indigo/main.cpp
 
   src/indigo/Environment.cpp
   src/indigo/Scene.cpp
   src/indigo/GameObj.cpp
+  src/indigo/Component.cpp
   src/indigo/MessageQueue.cpp
   src/indigo/RenderManager.cpp
+  src/indigo/Camera.cpp
+  src/indigo/Texture.cpp
+  src/indigo/Window.cpp
 
 )
 # LINKING NECESSARY DLLs
 if(WIN32)
   #UNCOMMENT THINGS WHEN YOU NEED TO START ADDING LIBRARIES BACK IN
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
-  target_link_libraries(indigo glew32 freeglut)
+  target_link_libraries(Indigo glew32 freeglut)
 endif()
 
 

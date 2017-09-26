@@ -7,6 +7,7 @@
 #include "Environment.h"
 #include "Scene.h"
 #include "GameObj.h"
+#include "Camera.h"
 
 using namespace Indigo;
 
@@ -81,4 +82,31 @@ void RenderManager::Draw()
   }
 
   glutSwapBuffers();
+}
+
+void RenderManager::RegisterCamera(Camera *_c)
+{
+  bool alreadyExists = false;
+  for (std::list<Camera*>::iterator i = instance->cameraRegister.begin();
+    i != instance->cameraRegister.end(); i++)
+  {
+    if (_c == (*i))
+    {
+      return;
+    }
+  }
+
+  instance->cameraRegister.push_back(_c);
+}
+void RenderManager::UnregisterCamera(Camera *_c)
+{
+  for (std::list<Camera*>::iterator i = instance->cameraRegister.begin();
+    i != instance->cameraRegister.end(); i++)
+  {
+    if (_c == (*i))
+    {
+      instance->cameraRegister.erase(i);
+      return;
+    }
+  }
 }

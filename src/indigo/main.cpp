@@ -6,7 +6,9 @@
 
 int main(int argc, char *argv[])
 {
-  //Indigo::Environment env;
+  //Starting the Environment first - will be done first in every game
+  Indigo::Environment::StartUp();
+  //Initialising RenderingManager of startup
   Indigo::RenderManager::StartUp(argc, argv, 640, 480, false);
 
   //Load + parse config file
