@@ -14,15 +14,9 @@ protected:
   virtual void OnDestroy() {};
   virtual void OnFixedUpdate() {};
 
-  GameObj* GetGameObj() 
-  {
-    return parentObj;
-  }
+  GameObj* GetGameObj();
 
-  Component(GameObj* _parent)
-  {
-    parentObj = _parent;
-  }
+  Component(GameObj* _parent);
 
 };
 
