@@ -30,7 +30,7 @@ namespace Indigo
 
     // All private functions can still be accessed by declared friend classes
     // but not game-devs thinking this is the update function if it was public
-    void tick(float _dtS);
+    void tick();
   };
 
 } //End of namespace

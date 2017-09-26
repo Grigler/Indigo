@@ -28,7 +28,7 @@ namespace Indigo
     
     //Calls Tick() sceneGraph - will be easy to allow for multiple
     //concurrent scenes using this method
-    void Update();
+    static void Update();
 
   private:
     

@@ -9,13 +9,13 @@ Scene::Scene()
 
 }
 
-void Scene::tick(float _dtS)
+void Scene::tick()
 {
   //Calling tick on all GameObjs in scene list
   for (std::list<GameObj*>::const_iterator i = topLevel.begin();
     i != topLevel.end(); i++)
   {
-    (*i)->tick(_dtS);
+    (*i)->tick();
   }
 }
 

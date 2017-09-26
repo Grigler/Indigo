@@ -2,7 +2,7 @@
 
 using namespace Indigo;
 
-void GameObj::tick(float _dtS)
+void GameObj::tick()
 {
   
 }

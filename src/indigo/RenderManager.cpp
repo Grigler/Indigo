@@ -26,10 +26,19 @@ RenderManager::RenderManager(int _argc, char *_argv[],
   //without any context creation
   glutInit(&_argc, _argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+  //OpenGL context setting
+  glutInitContextVersion(4, 5);
+  glutInitContextFlags(GLUT_CORE_PROFILE); 
   //Creation of window context here
   glutInitWindowSize(_winX, _winY);
   glutCreateWindow("Initial Window");
-  
+
+  glewExperimental = GL_TRUE;
+  GLenum err = glewInit();
+  if (GLEW_OK != err)
+  {
+    throw std::exception();
+  }
 }
 
 //Static StartUp functions to init singleton and call init system
@@ -55,14 +64,21 @@ void RenderManager::StartUp(int _argc, char *_argv[],
   instance = new RenderManager(_argc, _argv, _winX, _winY, _fullScreenFlag);
 }
 
+void RenderManager::ShutDown()
+{
+  //TODO - Destroy render context
+}
+
 void RenderManager::Draw()
 {
   std::list<GameObj*> allObjs = Environment::GetSceneGraph()->GetFullList();
 
+  //TODO - batching, rather than a blanket draw-call over all game objects
   for (std::list<GameObj*>::iterator obj = allObjs.begin();
     obj != allObjs.end(); obj++)
   {
     (*obj)->onDraw();
   }
 
+  glutSwapBuffers();
 }

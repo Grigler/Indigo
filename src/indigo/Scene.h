@@ -14,7 +14,7 @@ namespace Indigo
   public:
     Scene();
 
-    void tick(float _dtS);
+    void tick();
     //Expensive but traverses full scene and returns
     //full list of GameObjs in scene
     std::list<GameObj*> GetFullList();

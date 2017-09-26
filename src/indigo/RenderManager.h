@@ -17,6 +17,7 @@ namespace Indigo
     static void StartUp(int _argc, char *_argv[], 
       unsigned int _winX, unsigned int _winY, bool _fullScreenFlag);
 
+    static void ShutDown();
   private:
     //Find how to initialise to nullptr
     static RenderManager *instance;

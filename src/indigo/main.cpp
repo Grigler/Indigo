@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
   while (true) 
   {
-
+    Indigo::Environment::Update();
   }
 
   return 0;
