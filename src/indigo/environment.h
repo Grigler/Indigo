@@ -13,14 +13,11 @@ namespace Indigo
   class Environment
   {
   public:
-    //Creates generic empty scene
-    Environment();
-    //Loads "Scene/level" from file
-    Environment(std::string _sceneFile);
+    
 
     //Singleton to allow for simple static variable access
     //Like Environment::GetDT(); or Environment::GetRunTime();
-    static std::unique_ptr<Environment> instance;
+    static Environment* instance;
 
     //Static Time value getters
     //Returns delta from last frame in Seconds
@@ -35,6 +32,31 @@ namespace Indigo
 
   private:
     
+    static void Environment::StartUp()
+    {
+      if (instance != nullptr)
+      {
+        throw std::exception();
+        return;
+      }
+      instance = new Environment;
+    }
+
+    static void Environment::StartUp(std::string _sceneFile)
+    {
+      if (instance != nullptr)
+      {
+        throw std::exception();
+        return;
+      }
+      instance = new Environment(_sceneFile);
+    }
+
+    //Creates generic empty scene
+    Environment();
+    //Loads "Scene/level" from file
+    Environment(std::string _sceneFile);
+
     //Accessability values that also allow for simple access across all other 
     float dtS;
     float runTime;
