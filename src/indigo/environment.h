@@ -9,14 +9,13 @@ namespace Indigo
 {
 
   class Scene;
+  class KeyHandler;
 
   class Environment
   {
   public:
     
     static void Environment::StartUp();
-
-    static void Environment::StartUp(std::string _sceneFile);
 
     //Static Time value getters
     //Returns delta from last frame in Seconds
@@ -33,6 +32,8 @@ namespace Indigo
     //Singleton to allow for simple static variable access
     //Like Environment::GetDT(); or Environment::GetRunTime();
     static Environment* instance;
+
+    KeyHandler *keyHandler;
 
     //Creates generic empty scene
     Environment();

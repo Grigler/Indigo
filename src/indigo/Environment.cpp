@@ -5,7 +5,9 @@
 #include <GL/freeglut.h>
 
 #include "Scene.h"
+
 #include "RenderManager.h"
+#include "KeyHandler.h"
 
 using namespace Indigo;
 
@@ -19,16 +21,8 @@ void Environment::StartUp()
     return;
   }
   instance = new Environment;
-}
 
-void Environment::StartUp(std::string _sceneFile)
-{
-  if (instance != nullptr)
-  {
-    throw std::exception();
-    return;
-  }
-  instance = new Environment(_sceneFile);
+  instance->keyHandler = new KeyHandler();
 }
 
 Environment::Environment()
@@ -57,5 +51,5 @@ void Environment::Update()
   //Sending tick down heirarchal scene graph
   instance->sceneGraph->tick();
   //Calling render manager to draw the scene
-  //RenderManager::instance->Draw();
+  glutPostRedisplay();
 }

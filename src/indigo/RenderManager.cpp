@@ -7,6 +7,7 @@
 #include "Environment.h"
 #include "Scene.h"
 #include "GameObj.h"
+#include "KeyHandler.h"
 
 //Held in register
 #include "Camera.h"
@@ -53,6 +54,8 @@ void RenderManager::SpawnWindow(std::string _name, int _w, int _h)
   //Memory handled elsewhere
   Window *win = new Window("Window Test", _w, _h);
   win->isActive = true;
+  //DEBUG assiging keyboardhandler here
+  KeyHandler::PollCurrWindow();
 
   glewExperimental = GL_TRUE;
   GLenum err = glewInit();
@@ -68,6 +71,15 @@ void RenderManager::Draw()
 {
   //Clearing buffers from previous frame
   glClearColor(0, 0, 0, 1);
+
+  //DEBUG
+  if (KeyHandler::GetKey('d'))
+    glClearColor(1, 0, 0, 1);
+  else if (KeyHandler::GetKey('a'))
+    glClearColor(0, 1, 0, 1);
+  else
+    glClearColor(0, 0, 0, 1);
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   std::list<GameObj*> allObjs = Environment::GetSceneGraph()->GetFullList();
