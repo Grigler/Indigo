@@ -14,6 +14,8 @@ namespace Indigo
   private:
     GLint handle;
 
+    int sizeX, sizeY;
+
     std::string name;
   };
 

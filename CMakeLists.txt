@@ -31,6 +31,7 @@ add_executable(Indigo
   src/indigo/Camera.cpp
   src/indigo/Texture.cpp
   src/indigo/Window.cpp
+  src/indigo/Transform.cpp
 
 )
 # LINKING NECESSARY DLLs

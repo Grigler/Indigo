@@ -4,10 +4,12 @@
 #include <memory>
 #include <list>
 
+
 namespace Indigo
 {
 
   class Camera;
+  class Window;
 
   class RenderManager
   {
@@ -33,6 +35,10 @@ namespace Indigo
     std::list<Camera*> cameraRegister;
     static void RegisterCamera(Camera *_c);
     static void UnregisterCamera(Camera *_c);
+
+    std::list<Window*> windowRegister;
+    static void RegisterWindow(Window *_w);
+    static void UnregisterWindow(Window *_w);
   };
 
 }

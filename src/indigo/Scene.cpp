@@ -18,7 +18,7 @@ void Scene::tick()
     (*i)->tick();
   }
 }
-
+//This is slow as fuck and super-unsafe
 std::list<GameObj*> Scene::GetFullList()
 {
   std::list<GameObj*> retList;

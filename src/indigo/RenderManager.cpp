@@ -7,7 +7,10 @@
 #include "Environment.h"
 #include "Scene.h"
 #include "GameObj.h"
+
+//Held in register
 #include "Camera.h"
+#include "Window.h"
 
 using namespace Indigo;
 
@@ -86,7 +89,6 @@ void RenderManager::Draw()
 
 void RenderManager::RegisterCamera(Camera *_c)
 {
-  bool alreadyExists = false;
   for (std::list<Camera*>::iterator i = instance->cameraRegister.begin();
     i != instance->cameraRegister.end(); i++)
   {
@@ -106,6 +108,32 @@ void RenderManager::UnregisterCamera(Camera *_c)
     if (_c == (*i))
     {
       instance->cameraRegister.erase(i);
+      return;
+    }
+  }
+}
+
+void RenderManager::RegisterWindow(Window *_w)
+{
+  for (std::list<Window*>::iterator i = instance->windowRegister.begin();
+    i != instance->windowRegister.end(); i++)
+  {
+    if (_w == (*i))
+    {
+      return;
+    }
+  }
+
+  instance->windowRegister.push_back(_w);
+}
+void RenderManager::UnregisterWindow(Window *_w)
+{
+  for (std::list<Window*>::iterator i = instance->windowRegister.begin();
+    i != instance->windowRegister.end(); i++)
+  {
+    if (_w == (*i))
+    {
+      instance->windowRegister.erase(i);
       return;
     }
   }
