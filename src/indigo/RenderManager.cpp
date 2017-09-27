@@ -15,16 +15,8 @@
 using namespace Indigo;
 
 RenderManager *RenderManager::instance = nullptr;
-//Constructors to create init glut and create context
+
 RenderManager::RenderManager(int _argc, char *_argv[])
-{
-  //Generic warm-up of any back-end render systems
-  //without any context creation
-  glutInit(&_argc, _argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-}
-RenderManager::RenderManager(int _argc, char *_argv[],
-  unsigned int _winX, unsigned int _winY, bool _fullScreenFlag)
 {
   //Generic warm-up of any back-end render systems
   //without any context creation
@@ -33,16 +25,6 @@ RenderManager::RenderManager(int _argc, char *_argv[],
   //OpenGL context setting
   glutInitContextVersion(4, 5);
   glutInitContextFlags(GLUT_CORE_PROFILE); 
-  //Creation of window context here
-  glutInitWindowSize(_winX, _winY);
-  glutCreateWindow("Initial Window");
-
-  glewExperimental = GL_TRUE;
-  GLenum err = glewInit();
-  if (GLEW_OK != err)
-  {
-    throw std::exception();
-  }
 }
 
 //Static StartUp functions to init singleton and call init system
@@ -56,25 +38,38 @@ void RenderManager::StartUp(int _argc, char *_argv[])
   //Constructor will contain warm-up of any back-end render systems
   instance = new RenderManager(_argc, _argv);
 }
-void RenderManager::StartUp(int _argc, char *_argv[],
-  unsigned int _winX, unsigned int _winY, bool _fullScreenFlag)
-{
-  if (instance != nullptr)
-  {
-    throw std::exception();
-    return;
-  }
-  //Constructor will contain warm-up of any back-end render systems
-  instance = new RenderManager(_argc, _argv, _winX, _winY, _fullScreenFlag);
-}
 
 void RenderManager::ShutDown()
 {
   //TODO - Destroy render context
 }
 
+void RenderManager::SpawnWindow(std::string _name, int _w, int _h)
+{
+  //Creation of window context here
+  glutInitWindowSize(_w, _h);
+  glutCreateWindow("Initial Window");
+
+  //Memory handled elsewhere
+  Window *win = new Window("Window Test", _w, _h);
+  win->isActive = true;
+
+  glewExperimental = GL_TRUE;
+  GLenum err = glewInit();
+  if (GLEW_OK != err)
+  {
+    throw std::exception();
+  }
+
+  glutDisplayFunc(instance->Draw);
+}
+
 void RenderManager::Draw()
 {
+  //Clearing buffers from previous frame
+  glClearColor(0, 0, 0, 1);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   std::list<GameObj*> allObjs = Environment::GetSceneGraph()->GetFullList();
 
   //TODO - batching, rather than a blanket draw-call over all game objects
@@ -86,6 +81,7 @@ void RenderManager::Draw()
 
   glutSwapBuffers();
 }
+
 
 void RenderManager::RegisterCamera(Camera *_c)
 {

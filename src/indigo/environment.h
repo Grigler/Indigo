@@ -25,10 +25,8 @@ namespace Indigo
     static float GetRunTime() { return instance->runTime; }
     //Return raw pointer to scene graph
     static Scene *GetSceneGraph() { return instance->sceneGraph.get(); }
-    
-    //Calls Tick() sceneGraph - will be easy to allow for multiple
-    //concurrent scenes using this method
-    static void Update();
+
+    static void Run();
 
   private:
     
@@ -48,6 +46,9 @@ namespace Indigo
     float minFixedDtS;
 
     std::shared_ptr<Scene> sceneGraph;
+
+    //Used as the idle for glutMainLoop
+    static void Update();
 
   };
 

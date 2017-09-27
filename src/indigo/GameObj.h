@@ -33,6 +33,7 @@ namespace Indigo
     void tick();
 
     std::list<Component*> components;
+    void RegisterComponent(Component *_c);
     void UnregisterComponent(Component *_c);
   };
 

@@ -44,14 +44,18 @@ Environment::Environment(std::string _sceneFile)
   sceneGraph = std::make_shared<Scene>();
 }
 
+void Environment::Run()
+{
+  glutIdleFunc(Update);
+  glutMainLoop();
+}
+
 void Environment::Update()
 {
-  //TODO - Poll input
-
   //TODO - update delta time and fixedTime
 
   //Sending tick down heirarchal scene graph
   instance->sceneGraph->tick();
   //Calling render manager to draw the scene
-  RenderManager::instance->Draw();
+  //RenderManager::instance->Draw();
 }

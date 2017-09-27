@@ -15,22 +15,20 @@ namespace Indigo
   {
     friend class Environment;
     friend class Camera;
+    friend class Window;
   public:
 
     static void StartUp(int _argc, char *_argv[]);
-    static void StartUp(int _argc, char *_argv[], 
-      unsigned int _winX, unsigned int _winY, bool _fullScreenFlag);
-
     static void ShutDown();
-    
+    //static void CreateWindow(std::string _name, int _w, int _y);
+    static void SpawnWindow(std::string _name, int _w, int _h);
+
   private:
     static RenderManager *instance;
 
     RenderManager(int _argc, char *_argv[]);
-    RenderManager(int _argc, char *_argv[],
-      unsigned int _winX, unsigned int _winY, bool _fullScreenFlag);
 
-    void Draw();
+    static void Draw();
 
     std::list<Camera*> cameraRegister;
     static void RegisterCamera(Camera *_c);

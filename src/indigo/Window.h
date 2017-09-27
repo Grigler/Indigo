@@ -10,11 +10,17 @@ namespace Indigo
   class Window
   {
   public:
+    //Registers/Unregisters self with rendermanager
+    Window(std::string _name, int _w, int _h);
+    ~Window();
+
+    void Reshape(int _w, int _h);
+    bool isActive;
 
   private:
     GLint handle;
 
-    int sizeX, sizeY;
+    int winWidth, winHeight;
 
     std::string name;
   };
