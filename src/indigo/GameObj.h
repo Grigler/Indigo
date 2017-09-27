@@ -8,6 +8,7 @@ namespace Indigo
 {
 
   class Component;
+  class Transform;
 
   class GameObj
   {
@@ -16,6 +17,8 @@ namespace Indigo
     friend class Component;
 
   public:
+    GameObj();
+
     //Should change to safe pntr
     std::list<GameObj*> children;
 
@@ -26,6 +29,8 @@ namespace Indigo
     //Stub draw function
     virtual void onDraw() {}
     virtual void onPostDraw() {}
+
+    Transform *trans;
 
   private:
     // All private functions can still be accessed by declared friend classes

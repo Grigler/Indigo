@@ -28,10 +28,12 @@ add_executable(Indigo
   src/indigo/Component.cpp
   src/indigo/MessageQueue.cpp
   src/indigo/RenderManager.cpp
+  src/indigo/Renderer.cpp
   src/indigo/Camera.cpp
   src/indigo/Texture.cpp
   src/indigo/Window.cpp
   src/indigo/Transform.cpp
+  src/indigo/KeyHandler.cpp
 
 )
 # LINKING NECESSARY DLLs

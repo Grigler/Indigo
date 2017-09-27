@@ -9,6 +9,8 @@
 #include "GameObj.h"
 #include "KeyHandler.h"
 
+#include "Renderer.h"
+
 //Held in register
 #include "Camera.h"
 #include "Window.h"
@@ -71,20 +73,24 @@ void RenderManager::Draw()
 {
   //Clearing buffers from previous frame
   glClearColor(0, 0, 0, 1);
-
-  //DEBUG
-  if (KeyHandler::GetKey('d'))
-    glClearColor(1, 0, 0, 1);
-  else if (KeyHandler::GetKey('a'))
-    glClearColor(0, 1, 0, 1);
-  else
-    glClearColor(0, 0, 0, 1);
-
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  //Pulling list of all objs from the scene graph
   std::list<GameObj*> allObjs = Environment::GetSceneGraph()->GetFullList();
 
-  //TODO - batching, rather than a blanket draw-call over all game objects
+  //TODO
+
+  //Draw call for each active camera
+  for (std::list<Camera*>::iterator ac = instance->cameraRegister.begin();
+    ac != instance->cameraRegister.end(); ac++)
+  {
+    if ((*ac)->isActive)
+    {
+      instance->renderer.Render((*ac), allObjs);
+    }
+  }
+
+  //Simply drawing all objects in order they are found
   for (std::list<GameObj*>::iterator obj = allObjs.begin();
     obj != allObjs.end(); obj++)
   {

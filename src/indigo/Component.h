@@ -8,11 +8,10 @@ namespace Indigo
 
   class Component
   {
-
-  protected:
-
+  public:
     GameObj* parentObj;
 
+  protected:
     virtual void OnUpdate() {};
     virtual void OnDestroy() {};
     virtual void OnFixedUpdate() {};

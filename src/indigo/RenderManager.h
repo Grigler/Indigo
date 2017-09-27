@@ -4,6 +4,7 @@
 #include <memory>
 #include <list>
 
+#include "Renderer.h"
 
 namespace Indigo
 {
@@ -27,6 +28,7 @@ namespace Indigo
     static RenderManager *instance;
 
     RenderManager(int _argc, char *_argv[]);
+    Renderer renderer;
 
     static void Draw();
 

@@ -1,6 +1,14 @@
 #include "GameObj.h"
 
+#include "Component.h"
+#include "Transform.h"
+
 using namespace Indigo;
+
+GameObj::GameObj()
+{
+  trans = new Transform(this);
+}
 
 void GameObj::tick()
 {
