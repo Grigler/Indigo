@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+#include <list>
+
 #include "Component.h"
 
 namespace Indigo
@@ -14,6 +16,8 @@ namespace Indigo
 
   class Camera : public Component
   {
+    friend class Render;
+
   public:
     Camera(GameObj *_parent);
     ~Camera();
@@ -27,6 +31,9 @@ namespace Indigo
     glm::mat4 proj;
     Texture *renderTexture;
 
+    //Assumes that the list passed in is optimal for drawing
+    //as is required
+    void Render(std::list<GameObj*> _toDraw);
   };
 
 } //End of namespace

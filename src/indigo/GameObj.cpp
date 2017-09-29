@@ -39,4 +39,3 @@ void GameObj::UnregisterComponent(Component *_c)
     }
   }
 }
-

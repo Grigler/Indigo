@@ -52,7 +52,7 @@ void RenderManager::SpawnWindow(std::string _name, int _w, int _h)
   //Creation of window context here
   glutInitWindowSize(_w, _h);
   glutCreateWindow("Initial Window");
-
+  
   //Memory handled elsewhere
   Window *win = new Window("Window Test", _w, _h);
   win->isActive = true;
@@ -90,12 +90,14 @@ void RenderManager::Draw()
     }
   }
 
+  /*
   //Simply drawing all objects in order they are found
   for (std::list<GameObj*>::iterator obj = allObjs.begin();
     obj != allObjs.end(); obj++)
   {
     (*obj)->onDraw();
   }
+  */
 
   glutSwapBuffers();
 }

@@ -14,6 +14,7 @@ Camera *Renderer::currentCam = nullptr;
 
 bool Renderer::closestFirst(GameObj *l, GameObj *r)
 {
+  //TODO - maybe change to account for some kind of priority
   return (glm::distance(l->trans->GetPosition(), currentCam->parentObj->trans->GetPosition())
     < glm::distance(r->trans->GetPosition(), currentCam->parentObj->trans->GetPosition()));
 }

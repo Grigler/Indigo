@@ -27,7 +27,7 @@ namespace Indigo
     virtual void onFixedUpdate() {}
 
     //Stub draw function
-    virtual void onDraw() {}
+    //virtual void onDraw() {} -> Probably shouldn't be exposed to the engine users
     virtual void onPostDraw() {}
 
     Transform *trans;

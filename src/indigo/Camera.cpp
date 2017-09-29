@@ -4,6 +4,7 @@
 
 #include "Texture.h"
 #include "Window.h"
+#include "GameObj.h"
 
 using namespace Indigo;
 
@@ -25,4 +26,9 @@ void Camera::SetRenderToWindow(Window *_window)
 {
   //Nulling the current reference, but not destroying memory
   renderTexture = nullptr;
+}
+//Assumes that the list passed in is as optimal as is required
+void Camera::Render(std::list<GameObj*> _toDraw)
+{
+
 }
