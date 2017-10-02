@@ -1,6 +1,8 @@
 #include "GameObj.h"
 
 #include "Component.h"
+#include "RendererTypeComp.h"
+
 #include "Transform.h"
 
 using namespace Indigo;
@@ -8,6 +10,23 @@ using namespace Indigo;
 GameObj::GameObj()
 {
   trans = new Transform(this);
+  rtc = nullptr;
+}
+GameObj::~GameObj()
+{
+  if (trans)
+  {
+    delete trans;
+  }
+  if (rtc)
+  {
+    delete rtc;
+  }
+  for (std::list<Component*>::iterator i = components.begin();
+    i != components.end(); i++)
+  {
+    delete (*i);
+  }
 }
 
 void GameObj::tick()

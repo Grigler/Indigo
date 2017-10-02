@@ -18,6 +18,7 @@ bool Renderer::closestFirst(GameObj *l, GameObj *r)
   return (glm::distance(l->trans->GetPosition(), currentCam->parentObj->trans->GetPosition())
     < glm::distance(r->trans->GetPosition(), currentCam->parentObj->trans->GetPosition()));
 }
+//Employs optimsiation techniques and then send Render call to Camera
 void Renderer::Render(Camera *_cam, std::list<GameObj*> _allObjs)
 {
   currentCam = _cam;
@@ -26,6 +27,6 @@ void Renderer::Render(Camera *_cam, std::list<GameObj*> _allObjs)
   //Sorting remaining objects by distance to camera (closest first)
   _allObjs.sort(closestFirst);
 
-  //Draw Calls
-  
+  //Draw Call to camera
+  _cam->Render(_allObjs);
 }

@@ -9,15 +9,19 @@ namespace Indigo
 
   class Component;
   class Transform;
+  class RendererTypeComp;
 
   class GameObj
   {
     friend class Environment;
     friend class Scene;
     friend class Component;
+    friend class Renderer;
+    friend class Camera;
 
   public:
     GameObj();
+    ~GameObj();
 
     //Should change to safe pntr
     std::list<GameObj*> children;
@@ -40,6 +44,8 @@ namespace Indigo
     std::list<Component*> components;
     void RegisterComponent(Component *_c);
     void UnregisterComponent(Component *_c);
+
+    RendererTypeComp *rtc;
   };
 
 } //End of namespace

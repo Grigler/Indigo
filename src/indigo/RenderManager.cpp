@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+#include "Mesh.h"
+
 //Held in register
 #include "Camera.h"
 #include "Window.h"
@@ -40,6 +42,7 @@ void RenderManager::StartUp(int _argc, char *_argv[])
   }
   //Constructor will contain warm-up of any back-end render systems
   instance = new RenderManager(_argc, _argv);
+  MeshPool::instance = new MeshPool;
 }
 
 void RenderManager::ShutDown()

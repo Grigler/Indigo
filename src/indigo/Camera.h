@@ -16,7 +16,7 @@ namespace Indigo
 
   class Camera : public Component
   {
-    friend class Render;
+    friend class Renderer;
 
   public:
     Camera(GameObj *_parent);

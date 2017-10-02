@@ -10,6 +10,7 @@ namespace Indigo
   {
   public:
     GameObj* parentObj;
+    ~Component();
 
   protected:
     virtual void OnUpdate() {};
@@ -19,7 +20,7 @@ namespace Indigo
     GameObj* GetGameObj();
 
     Component(GameObj* _parent);
-    ~Component();
+    
   };
 
 }
