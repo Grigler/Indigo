@@ -20,23 +20,8 @@ endif()
 
 # SETTING UP INDIGO ENGINE LIB
 add_executable(Indigo
-  src/indigo/main.cpp
 
-  src/indigo/Environment.cpp
-  src/indigo/Scene.cpp
-  src/indigo/GameObj.cpp
-  src/indigo/Component.cpp
-  src/indigo/MessageQueue.cpp
-  
-  src/indigo/RenderManager.cpp
-  src/indigo/Renderer.cpp
-  src/indigo/Camera.cpp
-  src/indigo/Texture.cpp
-  src/indigo/Window.cpp
-  src/indigo/ShaderProgram.cpp
-  
-  src/indigo/Transform.cpp
-  src/indigo/KeyHandler.cpp
+  src/Indigo/Application.cpp
 
 )
 # LINKING NECESSARY DLLs
