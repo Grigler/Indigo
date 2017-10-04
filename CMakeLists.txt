@@ -19,7 +19,7 @@ endif()
 
 
 # SETTING UP INDIGO ENGINE LIB
-add_executable(Indigo
+add_library(Indigo
 
   src/Indigo/Application.cpp
 
