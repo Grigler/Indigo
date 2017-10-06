@@ -3,13 +3,14 @@
 #include "Engine.h"
 #include "Input.h"
 
-#include "GL/freeglut.h"
 #include "GL/glew.h"
+#include "GL/freeglut.h"
 
 #include <iostream>
 
 using namespace Indigo;
 
+std::shared_ptr<Engine> Application::engineContext;
 float Application::deltaTime = 0.0f;
 
 void Application::Init(int _argc, char* _argv[])
@@ -102,11 +103,18 @@ void Application::KeyboardUp(unsigned char _k, int _x, int _y)
   //TODO - send up event to message queue
 }
 
-void Application::ErrPrint(std::exception e)
+void Application::ErrPrint(std::exception _e)
 {
   //TODO Some handling of exception printing api here
   std::cerr << std::endl
     << "Run-time Exception:" 
     << std::endl 
-    << e.what() << std::endl;
+    << _e.what() << std::endl;
+}
+void Application::ErrPrint(std::string _msg)
+{
+  std::cerr << std::endl
+    << "Run-time error:"
+    << std::endl
+    << _msg.c_str() << std::endl;
 }

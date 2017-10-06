@@ -3,9 +3,10 @@
 #include "Application.h"
 
 using namespace Indigo;
-//Both have 10 spaces allocated initially
+//Have 10 spaces allocated initially
 std::vector<unsigned char> Input::keys(10);
 std::vector<unsigned char> Input::upKeys(10);
+std::vector<unsigned char> Input::downKeys(10);
 
 bool Input::GetKey(unsigned char _k)
 {
@@ -23,6 +24,14 @@ bool Input::GetKeyUp(unsigned char _k)
   }
   return false;
 }
+bool Input::GetKeyDown(unsigned char _k)
+{
+  for (auto i = downKeys.begin(); i != downKeys.end(); i++)
+  {
+	  if ((*i) == _k) return true;
+  }
+  return false;
+}
 
 void Input::AddKey(unsigned char _k)
 {
@@ -32,6 +41,9 @@ void Input::AddKey(unsigned char _k)
     if ((*i) == _k) return;
   }
 
+  //If it didn't exist in the vector
+  //must be the keydown event
+  downKeys.push_back(_k);
   keys.push_back(_k);
 }
 void Input::RemoveKey(unsigned char _k)

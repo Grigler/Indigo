@@ -1,7 +1,9 @@
-#include <indigo.h>
+#include <indigo/indigo.h>
 
-int main()
+int main(int argc, char** argv)
 {
-  //TODO - load application and such
+  Indigo::Application::Init(argc, argv);
+  Indigo::Application::Run();
+
   return 0;
 }

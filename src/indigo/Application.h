@@ -2,6 +2,7 @@
 #define __IND_APPLICATION__
 
 #include <memory>
+#include <string>
 
 namespace Indigo
 {
@@ -10,6 +11,7 @@ namespace Indigo
 
   class Application
   {
+    friend class Engine;
   public:
 
     static void Init(int _argc, char* _argv[]);
@@ -29,7 +31,8 @@ namespace Indigo
 
     static float deltaTime;
 
-    static void ErrPrint(std::exception e);
+    static void ErrPrint(std::exception _e);
+    static void ErrPrint(std::string _msg);
   };
 
 }

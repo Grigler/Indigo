@@ -12,6 +12,7 @@ namespace Indigo
     //TODO - replace unsigned char with some enum wrapper for keys
     static bool GetKey(unsigned char _k);
     static bool GetKeyUp(unsigned char _k);
+    static bool GetKeyDown(unsigned char _k);
 
   private:
     static void AddKey(unsigned char _k);
@@ -20,6 +21,7 @@ namespace Indigo
     //Vector to avoid memory allocation needs
     static std::vector<unsigned char> keys;
     static std::vector<unsigned char> upKeys;
+    static std::vector<unsigned char> downKeys;
   };
 }
 

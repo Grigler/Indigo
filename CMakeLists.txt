@@ -19,6 +19,10 @@ add_library(Indigo
   src/Indigo/Application.cpp
   src/Indigo/Engine.cpp
   src/Indigo/Input.cpp
+  src/Indigo/MemObj.cpp
+  src/Indigo/GameObject.cpp
+  src/Indigo/Component.cpp
+  src/Indigo/Transform.cpp
 
 )
 
@@ -42,7 +46,7 @@ add_executable(example
   src/example/main.cpp
 
 )
-target_link_libraries(example indigo)
+target_link_libraries(example Indigo)
 
 
 #indigo colour code in rgb (75, 0, 130)
