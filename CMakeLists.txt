@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 project(INDIGO)
 
-# SETTING UP DIRECTORIES
-
 include_directories(
   ${PROJECT_SOURCE_DIR}/src
 )
@@ -15,18 +13,16 @@ if(WIN32)
     ${PROJECT_SOURCE_DIR}/contrib/msvc/lib
   )
 endif()
-# END DIRECTORY SETUP
 
-
-# SETTING UP INDIGO ENGINE LIB
 add_library(Indigo
 
   src/Indigo/Application.cpp
+  src/Indigo/Engine.cpp
+  src/Indigo/Input.cpp
 
 )
-# LINKING NECESSARY DLLs
+
 if(WIN32)
-  #UNCOMMENT THINGS WHEN YOU NEED TO START ADDING LIBRARIES BACK IN
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
   target_link_libraries(Indigo glew32 freeglut)
 endif()
@@ -40,6 +36,13 @@ endif()
 #)
 # LINKING TO INDIGO ENGINE LIB
 #target_link_libraries(editor indigo)
+
+add_executable(example
+
+  src/example/main.cpp
+
+)
+target_link_libraries(example indigo)
 
 
 #indigo colour code in rgb (75, 0, 130)
