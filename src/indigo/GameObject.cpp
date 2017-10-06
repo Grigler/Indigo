@@ -1,5 +1,8 @@
 #include "GameObject.h"
 
+#include "Application.h"
+#include "Engine.h"
+
 #include "Component.h"
 #include "Transform.h"
 
@@ -7,11 +10,11 @@ using namespace Indigo;
 
 GameObject::GameObject()
 {
-
+  Application::engineContext->RegisterGameObject(this);
 }
 GameObject::GameObject(Transform _trans, std::shared_ptr<GameObject> *_parent)
 {
-  transform = std::make_shared<Transform>(_trans);
+  transform = std::make_shared<Transform>(std::shared_ptr<GameObject>(this), _trans);
   if (_parent != nullptr)
   {
     parent = (*_parent);

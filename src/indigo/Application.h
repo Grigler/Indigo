@@ -12,6 +12,8 @@ namespace Indigo
   class Application
   {
     friend class Engine;
+    friend class MemObj;
+    friend class GameObject;
   public:
 
     static void Init(int _argc, char* _argv[]);

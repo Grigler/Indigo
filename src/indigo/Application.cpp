@@ -82,6 +82,7 @@ void Application::Idle()
 
   //Clearing upKeys buffer for next input polling
   Input::upKeys.clear();
+  Input::downKeys.clear();
 }
 void Application::Display()
 {

@@ -4,5 +4,7 @@
 #include "Application.h"
 #include "Engine.h"
 #include "Input.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 #endif

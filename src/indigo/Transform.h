@@ -14,8 +14,11 @@ namespace Indigo
   class Transform : public Component
   {
   public:
+    Transform(std::shared_ptr<GameObject> _parent, Transform _trans);
     Transform(std::shared_ptr<GameObject> _parent, glm::vec3 _pos, glm::vec3 _rot);
 
+    glm::vec3 GetPosition() { return pos; }
+    glm::vec3 GetRotation() { return rot; }
   private:
     glm::vec3 pos;
     glm::vec3 rot;
