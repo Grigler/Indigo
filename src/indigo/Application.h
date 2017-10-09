@@ -19,10 +19,11 @@ namespace Indigo
 
     static void Init(int _argc, char* _argv[]);
     //Called Manually after Run() is finished
+    //Should NOT be called during mainLoop
     static void Kill();
     //Call to exit glutMainLoop (or equivalent)
     static void ShutDown();
-
+    //Called to enter the mainLoop
     static void Run();
 
     static float GetDT();

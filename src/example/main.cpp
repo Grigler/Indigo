@@ -1,9 +1,9 @@
 #include <indigo/indigo.h>
 
-class ObjA : public Indigo::GameObject
+class ExampleObject : public Indigo::GameObject
 {
 public:
-  ObjA()
+  ExampleObject()
   {
     //Messages can be registered on any class derived from memObj
     //(currently only GameObject and Component)
@@ -29,8 +29,10 @@ public:
   }
 
   bool sending;
-  ObjA *to;
+  ExampleObject *to;
+
 private:
+  //This could handle any interaction with _m
   static void onLeftMsg(Indigo::MemObj *_m)
   {
     std::printf("Left Message recieved\n");
@@ -39,7 +41,6 @@ private:
   {
     std::printf("Right Message recieved\n");
   }
-
 };
 
 int main(int argc, char** argv)
@@ -50,9 +51,9 @@ int main(int argc, char** argv)
   Indigo::Application::Init(argc, argv);
 
   //Game code initalisation is executed here
-  ObjA a;
+  ExampleObject a;
   a.sending = true;
-  ObjA b;
+  ExampleObject b;
   a.to = &b;
   //Application gameLoop is executed
   Indigo::Application::Run();

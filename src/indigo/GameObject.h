@@ -24,6 +24,7 @@ namespace Indigo
     virtual void LateUpdate() {}
     virtual void Draw() {}
 
+    //All derived GameObjects must contain a transform
     std::shared_ptr<Transform> transform;
 
   private:

@@ -24,7 +24,7 @@ void Camera::Render()
 
   //Sort by distance to camera
   std::sort(allObjsCopy.begin(), allObjsCopy.end(), LeftCloser);
-  //Frustum culling
+  //Frustum culling here
 
   //Draw calls
   for (size_t i = 0; i < allObjsCopy.size(); i++)
