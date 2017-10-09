@@ -15,6 +15,7 @@ if(WIN32)
 endif()
 
 add_library(Indigo
+  src/Indigo/plank.cpp
 
   src/Indigo/Application.cpp
   src/Indigo/Engine.cpp
