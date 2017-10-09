@@ -5,6 +5,8 @@ class ObjA : public Indigo::GameObject
 public:
   ObjA()
   {
+    //Messages can be registered on any class derived from memObj
+    //(currently only GameObject and Component)
     RegisterMessage("leftMsg", onLeftMsg);
     RegisterMessage("rightMsg", onRightMsg);
     sending = false;
@@ -20,6 +22,10 @@ public:
     {
       SendMessage(to, "rightMsg");
     }
+    if (Indigo::Input::GetKey('q'))
+    {
+      Indigo::Application::ShutDown();
+    }
   }
 
   bool sending;
@@ -33,24 +39,24 @@ private:
   {
     std::printf("Right Message recieved\n");
   }
+
 };
 
 int main(int argc, char** argv)
 {
+  //Intialising Application layer - creating the engineContext
+  //Future TODO - Allow specific subsytem initialisation
+  //from #define flags
   Indigo::Application::Init(argc, argv);
 
+  //Game code initalisation is executed here
   ObjA a;
   a.sending = true;
   ObjA b;
   a.to = &b;
-
+  //Application gameLoop is executed
   Indigo::Application::Run();
-
-  std::printf("Sending msg\n");
-  b.SendMessage(&a, "testMsg");
-  std::printf("Sent msg\n");
-
-  
-
+  //Kill is then called for memory cleanup
+  Indigo::Application::Kill();
   return 0;
 }

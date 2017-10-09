@@ -2,18 +2,40 @@
 
 #include "Application.h"
 #include "GameObject.h"
+#include "Camera.h"
 #include "message.h"
 
+
 using namespace Indigo;
+
+Engine::Engine()
+{
+
+}
+Engine::~Engine()
+{
+  for (size_t i = 0; i < allMemObjs.size(); i++)
+  {
+    allMemObjs.at(i).reset();
+  }
+  allMemObjs.clear();
+
+  for (size_t i = 0; i < gameObjects.size(); i++)
+  {
+    gameObjects.at(i).reset();
+  }
+  gameObjects.clear();
+}
 
 void Engine::Update()
 {
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
     GameObject *obj = (*i).get();
-    if (obj == 0)
+    if (obj == nullptr)
     {
       //stuff
+      Application::ErrPrint(std::exception("gameObjects list holds nullptr"));
     }
     else
     {
@@ -24,9 +46,10 @@ void Engine::Update()
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
     GameObject *obj = (*i).get();
-    if (obj == 0)
+    if (obj == nullptr)
     {
-      //stuff
+      //This shouldn't happen
+      Application::ErrPrint(std::exception("gameObjects list holds nullptr"));
     }
     else
     {
@@ -43,7 +66,9 @@ void Engine::Update()
 }
 void Engine::Draw()
 {
-
+  //Call Render() on active camera
+  if(activeCamera.get() != nullptr)
+    activeCamera->Render();
 }
 
 void Engine::RegisterMemObj(MemObj *_obj)

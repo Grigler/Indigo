@@ -24,6 +24,7 @@ add_library(Indigo
   src/Indigo/GameObject.cpp
   src/Indigo/Component.cpp
   src/Indigo/Transform.cpp
+  src/Indigo/Camera.cpp
 
 )
 

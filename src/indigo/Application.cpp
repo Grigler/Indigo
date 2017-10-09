@@ -45,8 +45,12 @@ void Application::Init(int _argc, char* _argv[])
 void Application::Kill()
 {
   //Destruction here
+  engineContext.reset();
 }
-
+void Application::ShutDown()
+{
+  glutLeaveMainLoop();
+}
 void Application::Run()
 {
   try
@@ -57,8 +61,6 @@ void Application::Run()
   {
     ErrPrint(e);
   }
-
-  Kill();
 }
 
 float Application::GetDT()

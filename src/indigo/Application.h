@@ -14,10 +14,14 @@ namespace Indigo
     friend class Engine;
     friend class MemObj;
     friend class GameObject;
+    friend class Camera;
   public:
 
     static void Init(int _argc, char* _argv[]);
+    //Called Manually after Run() is finished
     static void Kill();
+    //Call to exit glutMainLoop (or equivalent)
+    static void ShutDown();
 
     static void Run();
 

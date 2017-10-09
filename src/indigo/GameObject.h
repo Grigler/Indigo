@@ -24,9 +24,10 @@ namespace Indigo
     virtual void LateUpdate() {}
     virtual void Draw() {}
 
+    std::shared_ptr<Transform> transform;
+
   private:
     std::weak_ptr<GameObject> parent;
-    std::shared_ptr<Transform> transform;
     std::vector<std::shared_ptr<Component>> components;
   };
 }

@@ -8,20 +8,24 @@
 
 namespace Indigo
 {
-  class GameObject;
-
   class Engine
   {
     friend class Application;
     friend class MemObj;
     friend class GameObject;
+    friend class Camera;
   public:
+    Engine();
+    ~Engine();
 
   private:
     void Update();
     void Draw();
 
+    std::shared_ptr<Camera> activeCamera;
+
     //MemObjs Memory register
+    //TODO - ask Karsten about handling smart pointers in a vector
     std::vector<std::shared_ptr<MemObj>> allMemObjs;
     void RegisterMemObj(MemObj *_obj);
     void SweepDestroy();
