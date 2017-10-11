@@ -16,15 +16,15 @@ Engine::~Engine()
 {
   for (size_t i = 0; i < allMemObjs.size(); i++)
   {
-    allMemObjs.at(i).reset();
+    //allMemObjs.at(i).reset();
   }
-  allMemObjs.clear();
+  //allMemObjs.clear();
 
   for (size_t i = 0; i < gameObjects.size(); i++)
   {
-    gameObjects.at(i).reset();
+    //gameObjects.at(i).reset();
   }
-  gameObjects.clear();
+  //gameObjects.clear();
 }
 
 void Engine::Update()
@@ -107,7 +107,7 @@ std::weak_ptr<MemObj> Engine::GetMemObjRef(MemObj *_obj)
   }
   return std::weak_ptr<MemObj>();
 }
-
+/*
 void Engine::RegisterGameObject(GameObject *_obj)
 {
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
@@ -119,6 +119,11 @@ void Engine::RegisterGameObject(GameObject *_obj)
     }
   }
   gameObjects.push_back(std::shared_ptr<GameObject>(_obj));
+}
+*/
+void Engine::RegisterGameObject(std::shared_ptr<GameObject> _obj)
+{
+  gameObjects.push_back(_obj);
 }
 
 void Engine::RegisterMsg(Message _msg)

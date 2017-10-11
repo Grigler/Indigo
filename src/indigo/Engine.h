@@ -33,7 +33,8 @@ namespace Indigo
 
     //Full list of gameObjects
     std::vector<std::shared_ptr<GameObject>> gameObjects;
-    void RegisterGameObject(GameObject *_obj);
+    //void RegisterGameObject(GameObject *_obj);
+    void RegisterGameObject(std::shared_ptr<GameObject> _obj);
 
     //Message queue
     std::vector<Message> messageQueue;

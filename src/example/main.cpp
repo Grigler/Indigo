@@ -42,6 +42,11 @@ private:
     std::printf("Right Message recieved\n");
   }
 };
+class NotDerived
+{
+public:
+  int a;
+};
 
 int main(int argc, char** argv)
 {
@@ -51,10 +56,21 @@ int main(int argc, char** argv)
   Indigo::Application::Init(argc, argv);
 
   //Game code initalisation is executed here
-  ExampleObject a;
-  a.sending = true;
-  ExampleObject b;
-  a.to = &b;
+  //ExampleObject a;
+  //a.sending = true;
+  //ExampleObject b;
+  //a.to = &b;
+  //return 0;
+
+  std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
+  a.lock()->sending = true;
+
+  //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
+  //b.lock()->a = 5;
+
+  //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
+  //b.lock()->a = 2;
+
   //Application gameLoop is executed
   Indigo::Application::Run();
   //Kill is then called for memory cleanup
