@@ -15,7 +15,7 @@ namespace Indigo
 
   private:
     std::string path;
-    void ReadFromFile(std::string _path) {}
+    void ReadFromFile(std::string _path) { printf("This is just a test"); }
   };
 
 }

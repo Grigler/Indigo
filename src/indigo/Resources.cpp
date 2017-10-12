@@ -5,9 +5,8 @@
 
 using namespace Indigo;
 
-/*
-std::vector<std::shared_ptr<Mesh>> Resources::meshVec;
-std::vector<std::shared_ptr<Texture>> Resources::textureVec;
+//std::vector<std::shared_ptr<Mesh>> Resources::meshVec;
+//std::vector<std::shared_ptr<Texture>> Resources::textureVec;
 
 std::weak_ptr<Mesh> Resources::LoadMesh(std::string _path)
 {
@@ -32,4 +31,3 @@ std::weak_ptr<Texture> Resources::LoadTexture(std::string _path)
   rtn->ReadFromFile(_path);
   textureVec.push_back(rtn);
 }
-*/

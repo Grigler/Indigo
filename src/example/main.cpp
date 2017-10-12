@@ -65,13 +65,14 @@ int main(int argc, char** argv)
   //Future TODO - Allow specific subsytem initialisation
   //from #define flags
   Indigo::Application::Init(argc, argv);
-
-  //std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
+  
   //a.lock()->sending = true;
 
   //a.lock()->AddComponent<SomeComp>();
   //a.lock()->AddComponent<Indigo::Transform>();
 
+  //Does not cause a compile error as ExampleObject derives from GameObject
+  //std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
   //Causes compile error - as it should
   //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
 
