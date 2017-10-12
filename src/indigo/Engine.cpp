@@ -58,12 +58,7 @@ void Engine::SweepDestroy()
 {
   for (auto i = allMemObjs.begin(); i != allMemObjs.end(); i++)
   {
-    MemObj *obj = (*i).get();
-    if (obj == nullptr)
-    {
-      allMemObjs.erase(i);
-    }
-    else if (obj->readyToDestroy)
+    if ((*i)->readyToDestroy)
     {
       allMemObjs.erase(i);
     }
