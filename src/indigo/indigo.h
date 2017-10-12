@@ -6,5 +6,9 @@
 #include "Input.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Resources.h"
+#include "resource.h"
+#include "Mesh.h"
+#include "Texture.h"
 
 #endif
