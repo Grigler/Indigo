@@ -3,7 +3,7 @@
 #include "Application.h"
 
 using namespace Indigo;
-//Have 10 spaces allocated initially
+
 std::vector<unsigned char> Input::keys;
 std::vector<unsigned char> Input::upKeys;
 std::vector<unsigned char> Input::downKeys;

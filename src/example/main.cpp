@@ -42,6 +42,7 @@ private:
     std::printf("Right Message recieved\n");
   }
 };
+
 class NotDerived
 {
 public:
@@ -64,12 +65,8 @@ int main(int argc, char** argv)
 
   std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
   a.lock()->sending = true;
-
   //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
   //b.lock()->a = 5;
-
-  //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
-  //b.lock()->a = 2;
 
   //Application gameLoop is executed
   Indigo::Application::Run();

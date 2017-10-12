@@ -97,7 +97,6 @@ void Application::Keyboard(unsigned char _k, int _x, int _y)
 void Application::KeyboardUp(unsigned char _k, int _x, int _y)
 {
   Input::RemoveKey(_k);
-  //TODO - send up event to message queue
 }
 
 void Application::ErrPrint(std::exception _e)
