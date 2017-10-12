@@ -44,7 +44,6 @@ void Application::Init(int _argc, char* _argv[])
 }
 void Application::Kill()
 {
-  //Destruction here
   engineContext.reset();
 }
 void Application::ShutDown()
@@ -89,11 +88,6 @@ void Application::Idle()
 void Application::Display()
 {
   engineContext->Draw();
-  /**
-  /*Done at this layer so it could be swapped out for
-  /*another API if needed - Engine::Draw should
-  /*only contain openGL with a given window handle
-  **/
   glutSwapBuffers();
 }
 void Application::Keyboard(unsigned char _k, int _x, int _y)

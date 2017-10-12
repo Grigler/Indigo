@@ -5,7 +5,6 @@
 #include "Camera.h"
 #include "message.h"
 
-
 using namespace Indigo;
 
 Engine::Engine()
