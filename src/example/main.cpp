@@ -7,8 +7,8 @@ public:
   {
     //Messages can be registered on any class derived from memObj
     //(currently only GameObject and Component)
-    RegisterMessage("leftMsg", onLeftMsg);
-    RegisterMessage("rightMsg", onRightMsg);
+    //RegisterMessage("leftMsg", onLeftMsg);
+    //RegisterMessage("rightMsg", onRightMsg);
     sending = false;
     to = nullptr;
   }
@@ -16,12 +16,13 @@ public:
   {
     if (sending && Indigo::Input::GetKey('a'))
     {
-      SendMessage(to, "leftMsg");
+      //SendMessage(to, "leftMsg");
     }
     else if (sending && Indigo::Input::GetKey('d'))
     {
-      SendMessage(to, "rightMsg");
+      //SendMessage(to, "rightMsg");
     }
+
     if (Indigo::Input::GetKey('q'))
     {
       Indigo::Application::ShutDown();
@@ -54,7 +55,7 @@ public:
 
   void Update()
   {
-    printf("\tSomeComp Updatez\n");
+    printf("\tSomeComp Update\n");
   }
 };
 
@@ -65,18 +66,11 @@ int main(int argc, char** argv)
   //from #define flags
   Indigo::Application::Init(argc, argv);
 
-  //Game code initalisation is executed here
-  //ExampleObject a;
-  //a.sending = true;
-  //ExampleObject b;
-  //a.to = &b;
-  //return 0;
+  //std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
+  //a.lock()->sending = true;
 
-  std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
-  a.lock()->sending = true;
-
-  a.lock()->AddComponent<SomeComp>();
-  a.lock()->AddComponent<Indigo::Transform>();
+  //a.lock()->AddComponent<SomeComp>();
+  //a.lock()->AddComponent<Indigo::Transform>();
 
   //Causes compile error - as it should
   //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
@@ -85,5 +79,6 @@ int main(int argc, char** argv)
   Indigo::Application::Run();
   //Kill is then called for memory cleanup
   Indigo::Application::Kill();
+
   return 0;
 }

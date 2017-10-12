@@ -81,6 +81,9 @@ void Application::Idle()
 
   glutPostRedisplay();
 
+  //DEBUG - QUITING ON ESCAPE KEY
+  if (Input::GetKeyDown(27)) ShutDown();
+
   //Clearing upKeys buffer for next input polling
   Input::upKeys.clear();
   Input::downKeys.clear();

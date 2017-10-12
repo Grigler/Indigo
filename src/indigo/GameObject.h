@@ -46,8 +46,10 @@ namespace Indigo
   template <class T>
   std::weak_ptr<T> GameObject::AddComponent()
   {
-    static_assert(std::is_convertible<T, Component>(), "Must be a derived class of Component");
-    static_assert(!std::is_same<T, Transform>(), "Cannot add multiple transforms to same object");
+    static_assert(std::is_base_of<Component, T>(),
+      "Added Component must be a derived class of Component, not the base Component");
+    static_assert(!std::is_same<T, Transform>(),
+      "Cannot add multiple transforms to same GameObject");
     
     std::shared_ptr<T> rtn = std::make_shared<T>();
     rtn->ParentTo(Application::engineContext->GetGameObjRef(this));
@@ -60,11 +62,14 @@ namespace Indigo
   template <class T>
   std::weak_ptr<T> GameObject::CreateGameObject()
   {
-    static_assert(std::is_convertible<T, GameObject>(), "Must be a derived class of GameObject");
+    static_assert(std::is_convertible<T, GameObject>(),
+      "Created Object must be a derived class of GameObject or base GameObject");
     
     std::shared_ptr<T> rtn = std::make_shared<T>();
     Application::engineContext->RegisterGameObject(rtn);
     
+    rtn->transform = std::make_shared<Transform>();
+
     return std::weak_ptr<T>(rtn);
   }
 }
