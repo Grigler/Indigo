@@ -72,6 +72,15 @@ std::weak_ptr<MemObj> Engine::GetMemObjRef(MemObj *_obj)
   }
   return std::weak_ptr<MemObj>();
 }
+std::weak_ptr<GameObject> Engine::GetGameObjRef(GameObject *_obj)
+{
+  for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
+  {
+    if ((*i).get() == _obj)
+      return std::weak_ptr<GameObject>((*i));
+  }
+  return std::weak_ptr<GameObject>();
+}
 void Engine::RegisterGameObject(std::shared_ptr<GameObject> _obj)
 {
   gameObjects.push_back(_obj);

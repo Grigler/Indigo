@@ -2,7 +2,9 @@
 
 using namespace Indigo;
 
-Component::Component(std::shared_ptr<GameObject> _parent)
+void Component::ParentTo(std::weak_ptr<GameObject> _go)
 {
-  parent = _parent;
+  //Changing parent weak_ptr to have access to shared_ptr
+  //that _go has access to
+  parent = _go;
 }

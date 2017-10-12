@@ -33,6 +33,7 @@ namespace Indigo
 
     //Full list of gameObjects
     std::vector<std::shared_ptr<GameObject>> gameObjects;
+    std::weak_ptr<GameObject> Engine::GetGameObjRef(GameObject *_obj);
     //void RegisterGameObject(GameObject *_obj);
     void RegisterGameObject(std::shared_ptr<GameObject> _obj);
 

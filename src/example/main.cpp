@@ -48,6 +48,15 @@ class NotDerived
 public:
   int a;
 };
+class SomeComp : public Indigo::Component
+{
+public:
+
+  void Update()
+  {
+    printf("\tSomeComp Updatez\n");
+  }
+};
 
 int main(int argc, char** argv)
 {
@@ -65,8 +74,12 @@ int main(int argc, char** argv)
 
   std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
   a.lock()->sending = true;
+
+  a.lock()->AddComponent<SomeComp>();
+  a.lock()->AddComponent<Indigo::Transform>();
+
+  //Causes compile error - as it should
   //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
-  //b.lock()->a = 5;
 
   //Application gameLoop is executed
   Indigo::Application::Run();

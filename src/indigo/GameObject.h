@@ -32,28 +32,29 @@ namespace Indigo
     std::weak_ptr<GameObject> GetParent();
 
     //Creates, adds and returns new instance of C component
-	  template <class C>
-	  std::weak_ptr<C> AddComponent(C _c);
+	  template <class T>
+	  std::weak_ptr<T> AddComponent();
 
   private:
-    //GameObject();
-
     std::weak_ptr<GameObject> parent;
-    std::vector<std::shared_ptr<Component>> components;
 
+    std::vector<std::shared_ptr<Component>> components;
+    
     static std::shared_ptr<GameObject> _MakeReg();
   };
   
-  template <class C>
-  std::weak_ptr<C> GameObject::AddComponent(C _c)
+  template <class T>
+  std::weak_ptr<T> GameObject::AddComponent()
   {
-    static_assert(std::is_convertible<C, GameObject>, "Must be a derived class of GameObject");
-    static_assert(!std::is_class<C, Transform>, "Cannot add multiple transforms to same object");
+    static_assert(std::is_convertible<T, Component>(), "Must be a derived class of Component");
+    static_assert(!std::is_same<T, Transform>(), "Cannot add multiple transforms to same object");
     
-    std::shared_ptr<C> rtn = std::make_shared<C>();
+    std::shared_ptr<T> rtn = std::make_shared<T>();
+    rtn->ParentTo(Application::engineContext->GetGameObjRef(this));
+
     components.push_back(rtn);
     
-    return std::weak_ptr(rtn);
+    return std::weak_ptr<T>(rtn);
   }
   
   template <class T>

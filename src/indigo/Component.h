@@ -10,12 +10,14 @@ namespace Indigo
   class Component
   {
     friend class Camera;
+    friend class GameObject;
   public:
-    Component(std::shared_ptr<GameObject> _parent);
-
     virtual void Update() {}
+
+    void ParentTo(std::weak_ptr<GameObject> _go);
   protected:
     std::weak_ptr<GameObject> parent;
+
   };
 }
 
