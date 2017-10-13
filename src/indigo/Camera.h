@@ -1,41 +1,21 @@
 #ifndef __IND_CAMERA__
 #define __IND_CAMERA__
 
-#include <glm/glm.hpp>
-
-#include <list>
-
 #include "Component.h"
 
 namespace Indigo
 {
+  class GameObject;
 
-  class Texture;
-  class Window;
-  class GameObj;
-
-  class Camera : public Component
+  class Camera : protected Component
   {
-    friend class Renderer;
-
+    friend class Engine;
   public:
-    Camera(GameObj *_parent);
-    ~Camera();
-
-    bool isActive;
-
-    void SetRenderToTexture(Texture *_text);
-    void SetRenderToWindow(Window *_window);
-
+    void Render();
   private:
-    glm::mat4 proj;
-    Texture *renderTexture;
-
-    //Assumes that the list passed in is optimal for drawing
-    //as is required
-    void Render(std::list<GameObj*> _toDraw);
+    static bool LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r);
+    static Camera *currentActive;
   };
-
-} //End of namespace
+}
 
 #endif

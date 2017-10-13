@@ -1,39 +1,45 @@
 #include "Camera.h"
 
-#include "RenderManager.h"
-#include "RendererTypeComp.h"
+#include "glm/glm.hpp"
 
-#include "Texture.h"
-#include "Window.h"
-#include "GameObj.h"
+#include "Application.h"
+#include "Engine.h"
+#include "GameObject.h"
+#include "Transform.h"
+
+#include <vector>
+#include <memory>
+#include <algorithm>
 
 using namespace Indigo;
 
-Camera::Camera(GameObj *_parent) : Component(_parent)
+Camera *Camera::currentActive = nullptr;
+
+void Camera::Render()
 {
-  isActive = false;
-  RenderManager::RegisterCamera(this);
-}
-Camera::~Camera()
-{
-  RenderManager::UnregisterCamera(this);
+  currentActive = this;
+
+  std::vector<std::shared_ptr<GameObject>> allObjsCopy
+  (Application::engineContext->gameObjects);
+
+  //Sort by distance to camera
+  std::sort(allObjsCopy.begin(), allObjsCopy.end(), LeftCloser);
+  //Frustum culling here
+
+  //Draw calls
+  for (size_t i = 0; i < allObjsCopy.size(); i++)
+  {
+    allObjsCopy.at(i)->Draw();
+  }
+
+  currentActive = nullptr;
 }
 
-void Camera::SetRenderToTexture(Texture *_text)
+bool Camera::LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r)
 {
-  renderTexture = _text;
-}
-void Camera::SetRenderToWindow(Window *_window)
-{
-  //Nulling the current reference, but not destroying memory
-  renderTexture = nullptr;
-}
-//Assumes that the list passed in is as optimal as is required
-void Camera::Render(std::list<GameObj*> _toDraw)
-{
-  for (std::list<GameObj*>::iterator obj = _toDraw.begin();
-    obj != _toDraw.end(); obj++)
-  {
-    (*obj)->rtc->Draw(this, (*obj)->trans);
-  }
+  return (glm::distance(l->transform->GetPosition(),
+    currentActive->parent.lock()->transform->GetPosition())
+    <
+    glm::distance(r->transform->GetPosition(),
+      currentActive->parent.lock()->transform->GetPosition()));
 }

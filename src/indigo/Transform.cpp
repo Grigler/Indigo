@@ -1,118 +1,80 @@
 #include "Transform.h"
-#include "Environment.h"
 
-#include "glm/gtx/transform.hpp"
-#include "glm/gtx/vector_angle.hpp"
+#include "GameObject.h"
+
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 using namespace Indigo;
 
-glm::vec4 Transform::GetPosition()
+Transform::Transform( glm::vec3 _pos, glm::vec3 _rot, glm::vec3 _scale)
 {
-  return position;
+  pos = _pos;
+  rot = _rot;
+  scale = _scale;
+  _aabbNeedRecalc = false;
 }
-glm::vec4 Transform::GetRelative(glm::vec3 _in)
-{
-  glm::vec4 in4 = glm::vec4(_in, 1);
-  glm::mat4 mat = glm::translate(glm::vec3(position.x, position.y, position.z));
 
-  mat = mat *
-    glm::rotate(glm::radians(rotation.x), glm::vec3(1, 0, 0)) *
-    glm::rotate(glm::radians(rotation.y), glm::vec3(0, 1, 0)) *
-    glm::rotate(glm::radians(rotation.z), glm::vec3(0, 0, 1));
-
-  return mat*in4;
-
-}
-glm::vec3 Transform::GetRotation()
-{
-  return rotation;
-}
-glm::vec3 Transform::GetScale()
-{
-  return scale;
-}
 glm::vec3 Transform::GetForward()
 {
   glm::vec4 forward(0, 0, 1, 1);
-  glm::mat4 rot = 
-    glm::rotate(glm::radians(rotation.x), glm::vec3(1, 0, 0)) *
-    glm::rotate(glm::radians(rotation.y), glm::vec3(0, 1, 0)) *
-    glm::rotate(glm::radians(rotation.z), glm::vec3(0, 0, 1));
-
-  return glm::normalize((glm::vec3)(rot*forward));
+  return glm::normalize((glm::vec3)(_RotVecToMat() * forward));
 }
 glm::vec3 Transform::GetUp()
 {
   glm::vec4 up(0, 1, 0, 1);
-  glm::mat4 rot =
-    glm::rotate(glm::radians(rotation.x), glm::vec3(1, 0, 0)) *
-    glm::rotate(glm::radians(rotation.y), glm::vec3(0, 1, 0)) *
-    glm::rotate(glm::radians(rotation.z), glm::vec3(0, 0, 1));
-
-  return glm::normalize((glm::vec3)(rot*up));
+  return glm::normalize((glm::vec3)(_RotVecToMat() * up));
 }
 glm::vec3 Transform::GetRight()
 {
   return glm::cross(GetUp(), GetForward());
 }
 
-void Transform::SetPosition(glm::vec4 _position)
+glm::mat4 Transform::GetModelMat()
 {
-  position = _position;
+  glm::vec3 transVec = pos * rot * scale * glm::vec3(1);
+  glm::mat4 modelMat = glm::translate(glm::mat4(), transVec);
+  return modelMat;
 }
 
-void Transform::SetRotation(glm::vec3 _rotation)
+void Transform::Translate(glm::vec3 _by)
 {
-  rotation = _rotation;
+  pos += _by;
+}
+void Transform::MoveTo(glm::vec3 _target, float _alpha)
+{
+  glm::vec3 dir = glm::normalize(_target - pos);
+  pos += dir*_alpha;
+}
+void Transform::MoveDir(glm::vec3 _dir, float _alpha)
+{
+  pos += _dir*_alpha;
 }
 
-void Transform::SetScale(glm::vec3 _scale)
+void Transform::Rotate(glm::vec3 _eulerAngles)
 {
-  scale = _scale;
+  rot += _eulerAngles;
+  _aabbNeedRecalc = true;
 }
-
-void Transform::Translate(glm::vec4 _translation)
-{
-  position += _translation;
-}
-void Transform::SmoothMove(glm::vec3 _dir, float _speed)
-{
-  position += (glm::vec4(_dir,1)*(_speed*Environment::GetDT()));
-}
-void Transform::MoveTowards(glm::vec3 _target, float _speed)
-{
-  glm::vec3 dir = glm::normalize(_target - glm::vec3(position.x, position.y, position.z));
-  position += glm::vec4((dir*(_speed)), 1.0f);
-}
-void Transform::MoveForward(float _speed)
-{
-  position = GetRelative(glm::vec3(0, 0, 1.0f * _speed));
-}
-void Transform::MoveBackwards(float _speed)
-{
-  position = GetRelative(glm::vec3(0, 0, -1.0f * _speed));
-}
-void Transform::MoveRight(float _speed)
-{
-  position = GetRelative(glm::vec3(1.0f * _speed, 0, 0));
-}
-void Transform::MoveLeft(float _speed)
-{
-  position = GetRelative(glm::vec3(-1.0f * _speed, 0, 0));
-}
-
-void Transform::Rotate(glm::vec3 _rotation)
-{
-  rotation += _rotation;
-}
-
 void Transform::Scale(glm::vec3 _scaleBy)
 {
-  scale += _scaleBy;
+  scale.x *= _scaleBy.x;
+  scale.y *= _scaleBy.y;
+  scale.z *= _scaleBy.z;
+  _aabbNeedRecalc = true;
 }
 
-
-Transform::Transform(GameObj* _parent):Component(_parent)
+void Transform::Update()
 {
-  scale = glm::vec3(1, 1, 1);
+  //Resetting flag for AABB
+  _aabbNeedRecalc = false;
+}
+
+glm::mat4 Transform::_RotVecToMat()
+{
+  return glm::mat4(
+    glm::rotate(glm::radians(rot.x), glm::vec3(1, 0, 0)) *
+    glm::rotate(glm::radians(rot.y), glm::vec3(0, 1, 0)) *
+    glm::rotate(glm::radians(rot.z), glm::vec3(0, 0, 1))
+  );
 }

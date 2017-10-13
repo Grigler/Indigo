@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 2.6)
 project(INDIGO)
 
-# SETTING UP DIRECTORIES
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/src
@@ -15,33 +19,26 @@ if(WIN32)
     ${PROJECT_SOURCE_DIR}/contrib/msvc/lib
   )
 endif()
-# END DIRECTORY SETUP
 
+add_library(Indigo
+  src/Indigo/plank.cpp
 
-# SETTING UP INDIGO ENGINE LIB
-add_executable(Indigo
-  src/indigo/main.cpp
+  src/Indigo/Application.cpp
+  src/Indigo/Engine.cpp
+  src/Indigo/Input.cpp
+  src/Indigo/MemObj.cpp
+  src/Indigo/GameObject.cpp
+  src/Indigo/Component.cpp
+  src/Indigo/Transform.cpp
+  src/Indigo/Camera.cpp
+  src/Indigo/Resources.cpp
 
-  src/indigo/Environment.cpp
-  src/indigo/Scene.cpp
-  src/indigo/GameObj.cpp
-  src/indigo/Component.cpp
-  src/indigo/MessageQueue.cpp
-  
-  src/indigo/RenderManager.cpp
-  src/indigo/Renderer.cpp
-  src/indigo/Camera.cpp
-  src/indigo/Texture.cpp
-  src/indigo/Window.cpp
-  src/indigo/ShaderProgram.cpp
-  
-  src/indigo/Transform.cpp
-  src/indigo/KeyHandler.cpp
-
+  src/Indigo/AABB.cpp
+  src/Indigo/MeshRenderer.cpp
+  src/Indigo/Mesh.cpp
 )
-# LINKING NECESSARY DLLs
+
 if(WIN32)
-  #UNCOMMENT THINGS WHEN YOU NEED TO START ADDING LIBRARIES BACK IN
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
   target_link_libraries(Indigo glew32 freeglut)
 endif()
@@ -55,6 +52,13 @@ endif()
 #)
 # LINKING TO INDIGO ENGINE LIB
 #target_link_libraries(editor indigo)
+
+add_executable(example
+
+  src/example/main.cpp
+
+)
+target_link_libraries(example Indigo)
 
 
 #indigo colour code in rgb (75, 0, 130)

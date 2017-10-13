@@ -1,45 +1,22 @@
 #ifndef __IND_MESH__
 #define __IND_MESH__
 
-#include <list>
-#include <vector>
-#include <string>
+#include <memory>
 
-#include "GL/glew.h"
+#include "Component.h"
 
 namespace Indigo
 {
-  class Mesh;
-  class Transform;
-
-  struct MeshPoolInstace
-  {
-    Mesh *m;
-    std::string _path;
-  };
-
-  class MeshPool
-  {
-    friend class RenderManager;
-  public:
-    static Mesh* CheckMesh(std::string _path);
-  private:
-    static MeshPool *instance;
-
-    std::list<MeshPoolInstace*> pool;
-  };
+  class MeshResource;
 
   class Mesh
   {
-    friend class MeshRednerer;
+    friend class MeshRenderer;
   public:
-    Mesh(std::string _path);
+    void Assign(std::weak_ptr<MeshResource> _m);
   private:
-    std::vector<GLfloat> vertsCoords;
-    //Extra data goes here
-
+    std::shared_ptr<MeshResource> mesh;
   };
-
-} //End of namespace
+}
 
 #endif

@@ -1,20 +1,10 @@
 #include "Component.h"
 
-#include "GameObj.h"
-
 using namespace Indigo;
 
-Component::Component(GameObj* _parent) 
+void Component::ParentTo(std::weak_ptr<GameObject> _go)
 {
-  parentObj = _parent;
-  _parent->RegisterComponent(this);
-}
-Component::~Component()
-{
-  parentObj->UnregisterComponent(this);
-}
-
-GameObj* Component::GetGameObj() 
-{
-  return parentObj;
+  //Changing parent weak_ptr to have access to shared_ptr
+  //that _go has access to
+  parent = _go;
 }

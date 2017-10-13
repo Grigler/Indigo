@@ -1,28 +1,24 @@
 #ifndef __IND_COMPONENT__
 #define __IND_COMPONENT__
 
+#include <memory>
+
 namespace Indigo
 {
-
-  class GameObj;
+  class GameObject;
 
   class Component
   {
+    friend class Camera;
+    friend class GameObject;
   public:
-    GameObj* parentObj;
-    ~Component();
+    virtual void Update() {}
 
+    void ParentTo(std::weak_ptr<GameObject> _go);
   protected:
-    virtual void OnUpdate() {};
-    virtual void OnDestroy() {};
-    virtual void OnFixedUpdate() {};
+    std::weak_ptr<GameObject> parent;
 
-    GameObj* GetGameObj();
-
-    Component(GameObj* _parent);
-    
   };
-
 }
 
 #endif

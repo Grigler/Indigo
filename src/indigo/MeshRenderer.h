@@ -1,27 +1,22 @@
 #ifndef __IND_MESH_RENDERER__
 #define __IND_MESH_RENDERER__
 
-#include "RendererTypeComp.h"
+#include <string>
+#include <memory>
 
-#include "GL/glew.h"
+#include "Component.h"
 
 namespace Indigo
 {
-
   class Mesh;
 
-  class MeshRenderer : public RendererTypeComp
+  class MeshRenderer : public Component
   {
-    friend class Camera;
   public:
-
+    void Update();
+    void LoadMesh(std::string _path);
   private:
-    Mesh *mesh;
-    void Draw(Camera *_c, Transform *_trans);
-
-    GLuint vao;
+    std::weak_ptr<Mesh> mesh;
   };
-
-} //End of namespace
-
+}
 #endif
