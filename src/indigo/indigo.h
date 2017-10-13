@@ -9,6 +9,6 @@
 #include "Resources.h"
 #include "resource.h"
 #include "Mesh.h"
-#include "Texture.h"
+#include "TextureResource.h"
 
 #endif

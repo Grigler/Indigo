@@ -1,6 +1,7 @@
 #include "Engine.h"
 
 #include "Application.h"
+#include "Transform.h"
 #include "GameObject.h"
 #include "Camera.h"
 #include "message.h"
@@ -18,27 +19,31 @@ Engine::~Engine()
 
 void Engine::Update()
 {
+  //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
     (*i)->Update();
   }
-
-  for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
-  {
-    (*i)->LateUpdate();
-  }
-
+  //Calling callback funcs for all Messages
   for (auto i = messageQueue.begin(); i != messageQueue.end(); i++)
   {
     (*i).to.lock()->RecieveMessage((*i).msg, (*i).from);
   }
   messageQueue.clear();
+
+  //Calling LateUpdate after everything else
+  for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
+  {
+    (*i)->LateUpdate();
+  }
 }
 void Engine::Draw()
 {
   //Call Render() on active camera
-  if(activeCamera.get() != nullptr)
+  if (activeCamera.get() != nullptr)
+  {
     activeCamera->Render();
+  }
 }
 
 void Engine::RegisterMemObj(MemObj *_obj)

@@ -12,18 +12,18 @@
 
 namespace Indigo
 {
-  class Mesh;
-  class Texture;
+  class MeshResource;
+  class TextureResource;
 
   class Resources
   {
   public:
-    static std::weak_ptr<Mesh> LoadMesh(std::string _path);
-    static std::weak_ptr<Texture> LoadTexture(std::string _path);
+    static std::weak_ptr<MeshResource> LoadMesh(std::string _path);
+    static std::weak_ptr<TextureResource> LoadTexture(std::string _path);
 
   private:
-    static std::vector<std::shared_ptr<Mesh>> meshVec;
-    static std::vector<std::shared_ptr<Texture>> textureVec;
+    static std::vector<std::shared_ptr<MeshResource>> meshVec;
+    static std::vector<std::shared_ptr<TextureResource>> textureVec;
   };
 
 }

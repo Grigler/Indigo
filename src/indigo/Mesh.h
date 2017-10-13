@@ -1,23 +1,22 @@
 #ifndef __IND_MESH__
 #define __IND_MESH__
 
-#include <string>
+#include <memory>
 
-#include "resource.h"
+#include "Component.h"
 
 namespace Indigo
 {
-  //TODO - pull apart obj loader for this
-  class Mesh : public Resource
+  class MeshResource;
+
+  class Mesh
   {
-    friend class Resources;
+    friend class MeshRenderer;
   public:
-
+    void Assign(std::weak_ptr<MeshResource> _m);
   private:
-    std::string path;
-    void ReadFromFile(std::string _path) { printf("This is just a test"); }
+    std::shared_ptr<MeshResource> mesh;
   };
-
 }
 
 #endif

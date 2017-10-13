@@ -33,6 +33,9 @@ add_library(Indigo
   src/Indigo/Camera.cpp
   src/Indigo/Resources.cpp
 
+  src/Indigo/AABB.cpp
+  src/Indigo/MeshRenderer.cpp
+  src/Indigo/Mesh.cpp
 )
 
 if(WIN32)

@@ -1,5 +1,5 @@
-#ifndef __IND_TEXUTRE__
-#define __IND_TEXTURE__
+#ifndef __IND_TEXUTRE_RESOURCE__
+#define __IND_TEXTURE_RESOURCE__
 
 #include <string>
 
@@ -7,7 +7,7 @@
 
 namespace Indigo
 {
-  class Texture : public Resource
+  class TextureResource : public Resource
   {
     friend class Resources;
   public:
