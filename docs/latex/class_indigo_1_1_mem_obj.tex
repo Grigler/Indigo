@@ -1,0 +1,44 @@
+\hypertarget{class_indigo_1_1_mem_obj}{}\section{Indigo\+:\+:Mem\+Obj Class Reference}
+\label{class_indigo_1_1_mem_obj}\index{Indigo\+::\+Mem\+Obj@{Indigo\+::\+Mem\+Obj}}
+Inheritance diagram for Indigo\+:\+:Mem\+Obj\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_indigo_1_1_mem_obj}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_a36b1eb75290fdb4aae51b557660f521d}\label{class_indigo_1_1_mem_obj_a36b1eb75290fdb4aae51b557660f521d}} 
+void {\bfseries Mark\+To\+Kill} ()
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_ad69aa8beafdf695d1e54b6f96dc2b2da}\label{class_indigo_1_1_mem_obj_ad69aa8beafdf695d1e54b6f96dc2b2da}} 
+void {\bfseries Send\+Message} (\hyperlink{class_indigo_1_1_mem_obj}{Mem\+Obj} $\ast$\+\_\+to, std\+::string \+\_\+msg)
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_a71ab9a36e458eb1415016f80c486c48b}\label{class_indigo_1_1_mem_obj_a71ab9a36e458eb1415016f80c486c48b}} 
+void {\bfseries Recieve\+Message} (std\+::string \+\_\+msg, std\+::weak\+\_\+ptr$<$ \hyperlink{class_indigo_1_1_mem_obj}{Mem\+Obj} $>$ \+\_\+from)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_af1d22b7153149088a46a67f1da54b7ab}\label{class_indigo_1_1_mem_obj_af1d22b7153149088a46a67f1da54b7ab}} 
+void {\bfseries Register\+Message} (std\+::string \+\_\+msg, void(call)(\hyperlink{class_indigo_1_1_mem_obj}{Mem\+Obj} $\ast$from))
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_ace3ed963f343268a689144c4546cac8f}\label{class_indigo_1_1_mem_obj_ace3ed963f343268a689144c4546cac8f}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries registered\+Messages}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_mem_obj_a3e1914489e4bed4f9f23cdeab34a43dc}\label{class_indigo_1_1_mem_obj_a3e1914489e4bed4f9f23cdeab34a43dc}} 
+class {\bfseries Engine}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/indigo/Mem\+Obj.\+h\item 
+src/indigo/Mem\+Obj.\+cpp\end{DoxyCompactItemize}
