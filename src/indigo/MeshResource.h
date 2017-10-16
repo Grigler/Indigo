@@ -6,8 +6,6 @@
 
 #include <glm/glm.hpp>
 
-#include "AABB.h"
-
 #include "Component.h"
 #include "resource.h"
 
@@ -26,8 +24,6 @@ namespace Indigo
     void ReadFromFile(std::string _path) { printf("This is just a test"); }
 
     std::vector<glm::vec3> verts;
-
-    AABB aabb;
   };
 
 }

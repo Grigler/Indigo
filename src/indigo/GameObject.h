@@ -34,6 +34,12 @@ namespace Indigo
     //Creates, adds and returns new instance of C component
 	  template <class T>
 	  std::weak_ptr<T> AddComponent();
+    template <class T>
+    //Returns first found instance of T in components list
+    std::weak_ptr<T> GetComponent();
+    template <class T>
+    //Returns vector of all found instances of T in components list
+    std::vector<std::weak_ptr<T>> GetComponents();
 
   private:
     std::weak_ptr<GameObject> parent;
@@ -58,7 +64,40 @@ namespace Indigo
     
     return std::weak_ptr<T>(rtn);
   }
-  
+  template <class T>
+  std::weak_ptr<T> GameObject::GetComponent()
+  {
+    static_assert(std::is_base_of<Component, T>(),
+      "T must be a derived class of Component");
+
+    for (auto i = components.begin(); i != components.end(); i++)
+    {
+      if (std::is_same<T, (*i)>())
+      {
+        return std::weak_ptr<T>((*i));
+      }
+    }
+
+    return std::weak_ptr<T>();
+  }
+  template <class T>
+  std::vector<std::weak_ptr<T>> GameObject::GetComponents()
+  {
+    static_assert(std::is_base_of<Component, T>(),
+      "T must be a derived class of Component");
+
+    std::vector<std::weak_ptr<T>> rtn;
+    for (auto i = components.begin(); i != components.end(); i++)
+    {
+      if (std::is_same < T, (*i))
+      {
+        rtn.push_back(std::weak_ptr((*i));)
+      }
+    }
+
+    return rtn;
+  }
+
   template <class T>
   std::weak_ptr<T> GameObject::CreateGameObject()
   {
@@ -72,6 +111,7 @@ namespace Indigo
 
     return std::weak_ptr<T>(rtn);
   }
+  
 }
 
 #endif

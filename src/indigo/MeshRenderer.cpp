@@ -11,7 +11,7 @@ void MeshRenderer::Update()
 {
   if (parent.lock()->transform->_CheckForAABBRecalc())
   {
-    
+    glm::mat4 modelMat = parent.lock()->transform->GetModelMat();
   }
 }
 
