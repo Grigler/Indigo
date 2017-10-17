@@ -19,6 +19,10 @@ void MeshRenderer::Update()
     glm::mat4 modelMat = parent.lock()->transform->GetModelMat();
   }
 }
+void MeshRenderer::Draw()
+{
+
+}
 
 void MeshRenderer::LoadMesh(std::string _path)
 {

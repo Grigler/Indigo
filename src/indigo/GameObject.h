@@ -22,6 +22,7 @@ namespace Indigo
 
     virtual void Update() {}
     virtual void LateUpdate() {}
+    //Called by Camera when it is optimal for its draw call
     virtual void Draw() {}
 
     //All derived GameObjects must contain a transform

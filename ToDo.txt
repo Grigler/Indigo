@@ -1,0 +1,5 @@
+TODO
+====
+
+- Start creating some kind of simple wrapper OpenGL, only encompassing a simple shader program
+for drawing a mesh. Don't get too overwhelmed, just get SOMETHING drawing using the meshrenderer

@@ -12,13 +12,17 @@ namespace Indigo
 
   class MeshRenderer : public RenderComponent
   {
+    friend class Camera;
   public:
     MeshRenderer();
 
     void Update();
+
     void LoadMesh(std::string _path);
   private:
     std::unique_ptr<Mesh> mesh;
+    //Called by GO
+    void Draw();
   };
 }
 #endif

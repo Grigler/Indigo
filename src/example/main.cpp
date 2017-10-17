@@ -5,13 +5,6 @@ class ExampleObject : public Indigo::GameObject
 public:
   ExampleObject()
   {
-    //Messages can be registered on any class derived from memObj
-    //(currently only GameObject and Component)
-    //RegisterMessage("leftMsg", onLeftMsg);
-    //RegisterMessage("rightMsg", onRightMsg);
-    sending = false;
-    to = nullptr;
-
     mr = AddComponent<Indigo::MeshRenderer>();
 
     mr.lock()->LoadMesh("This Doesn't matter yet");
@@ -19,35 +12,17 @@ public:
   }
   void Update()
   {
-    if (sending && Indigo::Input::GetKey('a'))
-    {
-      //SendMessage(to, "leftMsg");
-    }
-    else if (sending && Indigo::Input::GetKey('d'))
-    {
-      //SendMessage(to, "rightMsg");
-    }
 
-    if (Indigo::Input::GetKey('q'))
-    {
-      Indigo::Application::ShutDown();
-    }
   }
-
-  bool sending;
-  ExampleObject *to;
-  std::weak_ptr<Indigo::MeshRenderer> mr;
+  void Draw()
+  {
+    mr.lock()->Draw();
+  }
 
 private:
-  //This could handle any interaction with _m
-  static void onLeftMsg(Indigo::MemObj *_m)
-  {
-    std::printf("Left Message recieved\n");
-  }
-  static void onRightMsg(Indigo::MemObj *_m)
-  {
-    std::printf("Right Message recieved\n");
-  }
+
+  std::weak_ptr<Indigo::MeshRenderer> mr;
+
 };
 
 class NotDerived
