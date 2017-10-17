@@ -12,6 +12,7 @@ namespace Indigo
 {
   class Component;
   class Transform;
+  class RenderComponent;
 
   class GameObject : public MemObj
   {
@@ -45,6 +46,7 @@ namespace Indigo
     std::weak_ptr<GameObject> parent;
 
     std::vector<std::shared_ptr<Component>> components;
+    std::shared_ptr<RenderComponent> renderComponent;
     
     static std::shared_ptr<GameObject> _MakeReg();
   };
@@ -56,7 +58,7 @@ namespace Indigo
       "Added Component must be a derived class of Component, not the base Component");
     static_assert(!std::is_same<T, Transform>(),
       "Cannot add multiple transforms to same GameObject");
-    
+
     std::shared_ptr<T> rtn = std::make_shared<T>();
     rtn->ParentTo(Application::engineContext->GetGameObjRef(this));
 

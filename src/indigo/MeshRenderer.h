@@ -4,19 +4,21 @@
 #include <string>
 #include <memory>
 
-#include "Component.h"
+#include "RenderComponent.h"
 
 namespace Indigo
 {
   class Mesh;
 
-  class MeshRenderer : public Component
+  class MeshRenderer : public RenderComponent
   {
   public:
+    MeshRenderer();
+
     void Update();
     void LoadMesh(std::string _path);
   private:
-    std::weak_ptr<Mesh> mesh;
+    std::unique_ptr<Mesh> mesh;
   };
 }
 #endif

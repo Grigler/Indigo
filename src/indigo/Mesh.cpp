@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
 #include "MeshResource.h"
+#include "AABB.h"
 
 #include <glm/gtx/transform.hpp>
 #include <vector>
@@ -19,4 +20,9 @@ void Mesh::_updateAABB(glm::mat4 _modelMat)
   }
   
   aabb.Recalc(modelVerts);
+}
+
+void Mesh::Assign(std::weak_ptr<MeshResource> _m)
+{
+  meshResource = _m.lock();
 }

@@ -36,6 +36,7 @@ add_library(Indigo
   src/Indigo/AABB.cpp
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
+  src/Indigo/Mesh.cpp
 )
 
 if(WIN32)

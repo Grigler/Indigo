@@ -9,6 +9,8 @@
 #include "Resources.h"
 #include "resource.h"
 #include "Mesh.h"
+#include "MeshRenderer.h"
+#include "MeshResource.h"
 #include "TextureResource.h"
 
 #endif

@@ -11,12 +11,12 @@ namespace Indigo
   {
   public:
     
-    inline void Recalc(std::vector<glm::vec3> _verts);
+    void Recalc(std::vector<glm::vec3> &_verts);
     //Dereferences this and calls static test
     inline bool Test(AABB _against);
     //Generic public static for testing collision
     //between two AABBs
-    inline static bool Test(AABB _a, AABB _b);
+    static bool Test(AABB _a, AABB _b);
 
     void SetPos(glm::vec3 _p) { centerPos = _p; }
     //Scales offset xyz by _s xyz

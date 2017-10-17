@@ -11,6 +11,11 @@ public:
     //RegisterMessage("rightMsg", onRightMsg);
     sending = false;
     to = nullptr;
+
+    mr = AddComponent<Indigo::MeshRenderer>();
+
+    mr.lock()->LoadMesh("This Doesn't matter yet");
+
   }
   void Update()
   {
@@ -31,6 +36,7 @@ public:
 
   bool sending;
   ExampleObject *to;
+  std::weak_ptr<Indigo::MeshRenderer> mr;
 
 private:
   //This could handle any interaction with _m
@@ -65,16 +71,8 @@ int main(int argc, char** argv)
   //Future TODO - Allow specific subsytem initialisation
   //from #define flags
   Indigo::Application::Init(argc, argv);
-  
-  //a.lock()->sending = true;
 
-  //a.lock()->AddComponent<SomeComp>();
-  //a.lock()->AddComponent<Indigo::Transform>();
-
-  //Does not cause a compile error as ExampleObject derives from GameObject
-  //std::weak_ptr<ExampleObject> a = Indigo::GameObject::CreateGameObject<ExampleObject>();
-  //Causes compile error - as it should
-  //std::weak_ptr<NotDerived> b = Indigo::GameObject::CreateGameObject<NotDerived>();
+  std::shared_ptr<ExampleObject> eo = std::make_shared<ExampleObject>();
 
   //Application gameLoop is executed
   Indigo::Application::Run();

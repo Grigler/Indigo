@@ -7,6 +7,11 @@
 
 using namespace Indigo;
 
+MeshRenderer::MeshRenderer()
+{
+  mesh = std::make_unique<Mesh>();
+}
+
 void MeshRenderer::Update()
 {
   if (parent.lock()->transform->_CheckForAABBRecalc())
@@ -17,5 +22,5 @@ void MeshRenderer::Update()
 
 void MeshRenderer::LoadMesh(std::string _path)
 {
-  mesh.lock()->Assign(Resources::LoadMesh(_path));
+  mesh->Assign(Resources::LoadMesh(_path));
 }

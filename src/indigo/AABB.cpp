@@ -2,7 +2,7 @@
 
 using namespace Indigo;
 
-void AABB::Recalc(std::vector<glm::vec3> _verts)
+void AABB::Recalc(std::vector<glm::vec3> &_verts)
 {
   if (_verts.size() <= 0) return;
 
@@ -45,7 +45,7 @@ bool AABB::Test(AABB _a, AABB _b)
 
 void AABB::SetScale(glm::vec3 _s)
 {
-  offset.x * _s.x;
-  offset.y * _s.y;
-  offset.z * _s.z;
+  offset.x *= _s.x;
+  offset.y *= _s.y;
+  offset.z *= _s.z;
 }

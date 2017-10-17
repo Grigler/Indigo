@@ -8,6 +8,8 @@
 #include "Transform.h"
 
 #include <vector>
+#include <list>
+#include <iterator>
 #include <memory>
 #include <algorithm>
 
@@ -18,18 +20,33 @@ Camera *Camera::currentActive = nullptr;
 void Camera::Render()
 {
   currentActive = this;
+  //Converting to list due to constant removals
+  std::list<std::shared_ptr<GameObject>> allObjsCopy;
+  std::copy(Application::engineContext->gameObjects.begin(), Application::engineContext->gameObjects.end(),
+    std::back_inserter(allObjsCopy));
+  
+  glm::vec3 forward = parent.lock()->transform->GetForward();
+  glm::vec3 pos = parent.lock()->transform->GetPosition();
 
-  std::vector<std::shared_ptr<GameObject>> allObjsCopy
-  (Application::engineContext->gameObjects);
+  //Removing all objects behind the camera
+  for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
+  {
+    glm::vec3 dir = (*i)->transform->GetPosition() - pos;
+    if (glm::dot(forward, dir) <= 0.0f)
+    {
+      allObjsCopy.erase(i);
+    }
+  }
 
   //Sort by distance to camera
-  std::sort(allObjsCopy.begin(), allObjsCopy.end(), LeftCloser);
+  //std::sort(allObjsCopy.begin(), allObjsCopy.end(), LeftCloser);
+  allObjsCopy.sort(LeftCloser); //List version
   //Frustum culling here
 
   //Draw calls
-  for (size_t i = 0; i < allObjsCopy.size(); i++)
+  for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
   {
-    allObjsCopy.at(i)->Draw();
+	  (*i)->Draw();
   }
 
   currentActive = nullptr;
