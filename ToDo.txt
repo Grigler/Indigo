@@ -1,5 +1,14 @@
 TODO
 ====
 
-- Start creating some kind of simple wrapper OpenGL, only encompassing a simple shader program
-for drawing a mesh. Don't get too overwhelmed, just get SOMETHING drawing using the meshrenderer
+- Brush up on the concept of VAOs and work out whether it should belong to either
+	- Mesh
+	- MeshResource and given to mesh on assignment
+	- MeshRenderer
+
+- Rendering Management
+	- I know that I should not be buffering data in and out multiple times for no reason
+	so maybe I should just create vectors of GOs with identical meshes and then batch it that way?
+
+	- An extra step and would result in a lot of management, probably could be done as it is loaded in
+	rather than having to do it every draw call the same way every time

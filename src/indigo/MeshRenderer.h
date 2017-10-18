@@ -19,10 +19,11 @@ namespace Indigo
     void Update();
 
     void LoadMesh(std::string _path);
-  private:
-    std::unique_ptr<Mesh> mesh;
+
     //Called by GO
     void Draw();
+  private:
+    std::unique_ptr<Mesh> mesh;
   };
 }
 #endif

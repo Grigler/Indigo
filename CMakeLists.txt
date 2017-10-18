@@ -37,6 +37,8 @@ add_library(Indigo
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
   src/Indigo/Mesh.cpp
+
+  src/Indigo/Shader.cpp
 )
 
 if(WIN32)

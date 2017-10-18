@@ -28,6 +28,9 @@ namespace Indigo
 
     static float GetDT();
 
+    static void ErrPrint(std::exception _e);
+    static void ErrPrint(std::string _msg);
+
   private:
     static std::shared_ptr<Engine> engineContext;
 
@@ -37,9 +40,6 @@ namespace Indigo
     static void KeyboardUp(unsigned char _k, int _x, int _y);
 
     static float deltaTime;
-
-    static void ErrPrint(std::exception _e);
-    static void ErrPrint(std::string _msg);
   };
 
 }
