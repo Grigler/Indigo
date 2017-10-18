@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "Resources.h"
 #include "Mesh.h"
+#include "Shader.h"
+#include "Camera.h"
 
 using namespace Indigo;
 
@@ -21,6 +23,20 @@ void MeshRenderer::Update()
 }
 void MeshRenderer::Draw()
 {
+  //Activate the Mesh's VAO
+  mesh->ActivateVAO();
+  shader->Activate();
+
+  {
+    //Uniforms and such here
+    std::weak_ptr<Camera> cam = Camera::currentActive;
+    glm::mat4 identity = cam.lock()->GetIdentity();
+    //TODO - other stuff
+
+    glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertCount());
+  }
+
+  glBindVertexArray(0);
 
 }
 

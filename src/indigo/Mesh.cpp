@@ -8,6 +8,20 @@
 
 using namespace Indigo;
 
+void Mesh::Assign(std::weak_ptr<MeshResource> _m)
+{
+  meshResource = _m.lock();
+}
+void Mesh::ActivateVAO()
+{
+  meshResource->ActivateVAO();
+}
+
+GLsizei Mesh::GetVertCount()
+{
+  return meshResource->GetVertCount();
+}
+
 void Mesh::_updateAABB(glm::mat4 _modelMat)
 {
   std::vector<glm::vec3> modelVerts = *(meshResource->GetVerts());
@@ -20,9 +34,4 @@ void Mesh::_updateAABB(glm::mat4 _modelMat)
   }
   
   aabb.Recalc(modelVerts);
-}
-
-void Mesh::Assign(std::weak_ptr<MeshResource> _m)
-{
-  meshResource = _m.lock();
 }

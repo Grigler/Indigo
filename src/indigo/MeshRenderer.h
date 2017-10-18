@@ -9,6 +9,7 @@
 namespace Indigo
 {
   class Mesh;
+  class Shader;
 
   class MeshRenderer : public RenderComponent
   {
@@ -24,6 +25,7 @@ namespace Indigo
     void Draw();
   private:
     std::unique_ptr<Mesh> mesh;
+    std::shared_ptr<Shader> shader;
   };
 }
 #endif

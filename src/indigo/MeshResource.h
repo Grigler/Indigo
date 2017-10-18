@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 
 #include "Component.h"
 #include "resource.h"
@@ -16,14 +17,25 @@ namespace Indigo
   {
     friend class Resources;
   public:
-
+    ~MeshResource();
     std::vector<glm::vec3> *GetVerts() { return &verts; }
+
+    void ActivateVAO();
+    GLsizei GetVertCount() { return vertCount; }
 
   private:
     std::string path;
-    void ReadFromFile(std::string _path) { printf("This is just a test"); }
+    //Detects correct function for parsing from file extension
+    void ReadFromFile(std::string _path);
 
+    //Utility functions for loading meshes in specific formats
+    void _LoadOBJ(std::string _path);
+
+    GLsizei vertCount;
     std::vector<glm::vec3> verts;
+
+    GLuint vaoID;
+
   };
 
 }

@@ -15,11 +15,12 @@
 
 using namespace Indigo;
 
-Camera *Camera::currentActive = nullptr;
+std::weak_ptr<Camera> Camera::currentActive;
 
 void Camera::Render()
 {
-  currentActive = this;
+  //Horrible hack to get around having to use shared_from_this
+  currentActive = parent.lock()->GetComponent<Camera>();
   //Converting to list due to constant removals
   std::list<std::shared_ptr<GameObject>> allObjsCopy;
   std::copy(Application::engineContext->gameObjects.begin(), Application::engineContext->gameObjects.end(),
@@ -49,14 +50,14 @@ void Camera::Render()
 	  (*i)->Draw();
   }
 
-  currentActive = nullptr;
+  currentActive.reset();
 }
 
 bool Camera::LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r)
 {
   return (glm::distance(l->transform->GetPosition(),
-    currentActive->parent.lock()->transform->GetPosition())
+    currentActive.lock()->parent.lock()->transform->GetPosition())
     <
     glm::distance(r->transform->GetPosition(),
-      currentActive->parent.lock()->transform->GetPosition()));
+      currentActive.lock()->parent.lock()->transform->GetPosition()));
 }

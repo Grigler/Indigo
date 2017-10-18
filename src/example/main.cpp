@@ -6,7 +6,7 @@ public:
   ExampleObject()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-    mr.lock()->LoadMesh("This Doesn't matter yet");
+    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
   }
   void Get(ExampleObject *e)
   {
@@ -45,18 +45,9 @@ public:
 
 int main(int argc, char** argv)
 {
-  //Intialising Application layer - creating the engineContext
-  //Future TODO - Allow specific subsytem initialisation
-  //from #define flags
   Indigo::Application::Init(argc, argv);
 
-  //std::shared_ptr<ExampleObject> eo = std::make_shared<ExampleObject>();
-  //std::shared_ptr<ExampleObject> eo2 = std::make_shared<ExampleObject>();
-  //eo->Get(eo2.get());
-
   std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
-
-
 
   //Application gameLoop is executed
   Indigo::Application::Run();

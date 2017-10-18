@@ -18,6 +18,7 @@ namespace Indigo
   class Resources
   {
   public:
+    virtual ~Resources() {}
     static std::weak_ptr<MeshResource> LoadMesh(std::string _path);
     static std::weak_ptr<TextureResource> LoadTexture(std::string _path);
 
