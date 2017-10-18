@@ -75,9 +75,13 @@ namespace Indigo
 
     for (auto i = components.begin(); i != components.end(); i++)
     {
-      if (std::is_same<T, (*i)>())
+      T *checkT = dynamic_cast<T*>((*i).get());
+
+      if (checkT != nullptr)
       {
-        return std::weak_ptr<T>((*i));
+        return std::weak_ptr<T>(std::dynamic_pointer_cast<T>((*i)));
+        
+        //return std::weak_ptr<T>((*i));
       }
     }
 
@@ -92,9 +96,11 @@ namespace Indigo
     std::vector<std::weak_ptr<T>> rtn;
     for (auto i = components.begin(); i != components.end(); i++)
     {
-      if (std::is_same < T, (*i))
+      T *checkT = dynamic_cast<T*>((*i));
+
+      if (checkT != nullptr)
       {
-        rtn.push_back(std::weak_ptr((*i));)
+        rtn.push_back(std::weak_ptr(std::dynamic_pointer_cast<T>((*i)));)
       }
     }
 
@@ -108,7 +114,7 @@ namespace Indigo
       "Created Object must be a derived class of GameObject or base GameObject");
     
     std::shared_ptr<T> rtn = std::make_shared<T>();
-    Application::engineContext->RegisterGameObject(rtn);
+    Application::engineContext->RegisterGameObject(std::dynamic_pointer_cast<GameObject>(rtn));
     
     rtn->transform = std::make_shared<Transform>();
 

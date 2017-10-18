@@ -6,9 +6,12 @@ public:
   ExampleObject()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-
     mr.lock()->LoadMesh("This Doesn't matter yet");
-
+  }
+  void Get(ExampleObject *e)
+  {
+    std::weak_ptr<Indigo::MeshRenderer> m;
+    m = e->GetComponent<Indigo::MeshRenderer>();
   }
   void Update()
   {
@@ -47,7 +50,13 @@ int main(int argc, char** argv)
   //from #define flags
   Indigo::Application::Init(argc, argv);
 
-  std::shared_ptr<ExampleObject> eo = std::make_shared<ExampleObject>();
+  //std::shared_ptr<ExampleObject> eo = std::make_shared<ExampleObject>();
+  //std::shared_ptr<ExampleObject> eo2 = std::make_shared<ExampleObject>();
+  //eo->Get(eo2.get());
+
+  std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
+
+
 
   //Application gameLoop is executed
   Indigo::Application::Run();
