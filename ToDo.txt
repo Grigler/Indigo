@@ -10,3 +10,6 @@ TODO
 
 - Finish getting SOMETHING to render - namely the MeshRenderer-Draw function to get it working properly
 	- Probably should move bind uniforms and such to the Shader Class (Create a generic meshRenderer Shader)
+
+- Change AABB to use min-max implementation
+	- The current center-point size thing is stupid and unwieldly
