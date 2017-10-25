@@ -1,15 +1,10 @@
 TODO
 ====
 
-- Rendering Management
-	- I know that I should not be buffering data in and out multiple times for no reason
-	so maybe I should just create vectors of GOs with identical meshes and then batch it that way?
-
-	- An extra step and would result in a lot of management, probably could be done as it is loaded in
-	rather than having to do it every draw call the same way every time
-
-- Finish getting SOMETHING to render - namely the MeshRenderer-Draw function to get it working properly
-	- Probably should move bind uniforms and such to the Shader Class (Create a generic meshRenderer Shader)
-
 - Change AABB to use min-max implementation
 	- The current center-point size thing is stupid and unwieldly
+
+- Put AABB around the camera using the frustum and use that for cheap frustum culling
+
+-There seems to be an issue with how the shaders files are read in using the release build.
+	- I might need to handle the files in a more C++ way (sstream?)
