@@ -12,5 +12,6 @@
 #include "MeshRenderer.h"
 #include "MeshResource.h"
 #include "TextureResource.h"
+#include "Camera.h"
 
 #endif

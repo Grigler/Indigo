@@ -41,6 +41,7 @@ void Application::Init(int _argc, char* _argv[])
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
+  glClearColor(75.0f/255.0f, 0.0f, 130.0f/255.0f, 1.0f);
 }
 void Application::Kill()
 {
@@ -73,7 +74,7 @@ void Application::Idle()
   static float lastT = glutGet(GLUT_ELAPSED_TIME); //only run 1st time
   float t = glutGet(GLUT_ELAPSED_TIME);
   deltaTime = (t - lastT) / 1000.0f;
-
+  lastT = glutGet(GLUT_ELAPSED_TIME);
   //Sleep for vsync here
 
   //Update all objects
@@ -90,6 +91,7 @@ void Application::Idle()
 }
 void Application::Display()
 {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   engineContext->Draw();
   glutSwapBuffers();
 }
@@ -109,11 +111,19 @@ void Application::ErrPrint(std::exception _e)
     << "Run-time Exception:" 
     << std::endl 
     << _e.what() << std::endl;
+  throw;
 }
 void Application::ErrPrint(std::string _msg)
 {
   std::cerr << std::endl
-    << "Run-time error:"
+    << "Run-time Error:"
     << std::endl
     << _msg.c_str() << std::endl;
+}
+void Application::ErrPrint(GLchar *_msg)
+{
+  std::cerr << std::endl
+    << "Run-time Error:"
+    << std::endl
+    << _msg << std::endl;
 }

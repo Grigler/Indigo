@@ -32,8 +32,24 @@ glm::vec3 Transform::GetRight()
 
 glm::mat4 Transform::GetModelMat()
 {
-  glm::vec3 transVec = pos * rot * scale * glm::vec3(1);
-  glm::mat4 modelMat = glm::translate(glm::mat4(), transVec);
+  //TODO - cache the model matrix as it is calculated
+
+  //Starting from either an identity matrix if it has no parent
+  //or from the model matrix of its parent
+  glm::mat4 from = glm::mat4(1);
+  if (!parent.expired())
+  {
+    from = parent.lock()->transform->GetModelMat();
+  }
+  //Converting translation, rotation and scale to matricies
+  glm::mat4 translationMat = glm::translate(from, pos);
+  glm::mat4 rotationMat = glm::rotate(from, rot.y, glm::vec3(0, 1, 0));
+  rotationMat = glm::rotate(rotationMat, rot.z, glm::vec3(0, 0, 1));
+  rotationMat = glm::rotate(rotationMat, rot.x, glm::vec3(1, 0, 0));
+  
+  glm::mat4 scaleMat = glm::scale(scale);
+
+  glm::mat4 modelMat = translationMat*rotationMat*scaleMat;
   return modelMat;
 }
 
@@ -69,12 +85,11 @@ void Transform::Update()
   //Resetting flag for AABB
   _aabbNeedRecalc = false;
 }
-
+//Gets local rotation in matrix form
 glm::mat4 Transform::_RotVecToMat()
 {
-  return glm::mat4(
-    glm::rotate(glm::radians(rot.x), glm::vec3(1, 0, 0)) *
-    glm::rotate(glm::radians(rot.y), glm::vec3(0, 1, 0)) *
-    glm::rotate(glm::radians(rot.z), glm::vec3(0, 0, 1))
-  );
+  glm::mat4 rotationMat = glm::rotate(glm::mat4(1), rot.y, glm::vec3(0, 1, 0));
+  rotationMat = glm::rotate(rotationMat, rot.z, glm::vec3(0, 0, 1));
+  rotationMat = glm::rotate(rotationMat, rot.x, glm::vec3(1, 0, 0));
+  return rotationMat;
 }

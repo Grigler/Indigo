@@ -9,17 +9,20 @@ namespace Indigo
 {
   class GameObject;
 
-  class Camera : protected Component
+  class Camera : public Component
   {
     friend class Engine;
     //Used to easily get current active camera
     friend class MeshRenderer;
   public:
     void Render();
-    glm::mat4 GetIdentity();
+    //TODO
+    glm::mat4 GetIdentity() { return glm::mat4(1); }
+    void MakeActive();
+    static std::weak_ptr<Camera> currentActive;
   private:
     static bool LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r);
-    static std::weak_ptr<Camera> currentActive;
+    
   };
 }
 

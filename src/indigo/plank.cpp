@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define PLANK_ENABLE
+//#define PLANK_ENABLE
 
 size_t allocations;
 size_t allocatedSize;

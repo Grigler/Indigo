@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <GL/glew.h>
 
 namespace Indigo
 {
@@ -30,6 +31,7 @@ namespace Indigo
 
     static void ErrPrint(std::exception _e);
     static void ErrPrint(std::string _msg);
+    static void ErrPrint(GLchar *_msg);
 
   private:
     static std::shared_ptr<Engine> engineContext;

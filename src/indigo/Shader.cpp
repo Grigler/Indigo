@@ -11,6 +11,8 @@ void Shader::Init()
   programID = glCreateProgram();
   if (programID == 0)
   {
+    //DEBUG
+    printf("\nSHADER PROGRAM FAIL\n");
     Application::ErrPrint(std::exception("Failed to create shader program"));
   }
 }
@@ -71,6 +73,28 @@ bool Shader::LoadShader(GLenum _type, std::string _path)
     return false;
   }
 }
+/*
+bool Shader::LoadShader(GLenum _type, GLchar *_src)
+{
+  GLuint *id;
+  switch (_type)
+  {
+  case GL_VERTEX_SHADER:   id = &vertID; break;
+  case GL_GEOMETRY_SHADER: id = &geomID; break;
+  case GL_FRAGMENT_SHADER: id = &fragID; break;
+  }
+
+  *id = glCreateShader(_type);
+  glShaderSource(*id, 1, &_src, NULL);
+  glCompileShader(*id);
+
+  bool rtn = CheckCompile(programID);
+  if (rtn)
+  {
+    glAttachShader(programID, *id);
+  }
+  return rtn;
+}*/
 bool Shader::Link()
 {
   glLinkProgram(programID);
@@ -84,25 +108,39 @@ bool Shader::Link()
 
     GLchar *log = new GLchar[len + 1];
     glGetProgramInfoLog(programID, len, &len, log);
-    Application::ErrPrint(log);
+    //DEBUG
+    printf("\nSHADER LINK\n");
+    fprintf(stderr, log);
+    Application::ErrPrint("Failed to link shader - reasons above");
     delete[] log;
     return false;
   }
+
+  LinkUniforms();
+
   return true;
 }
 
 bool Shader::CheckCompile(GLuint _programID)
 {
-  GLint compiled;
-  glGetShaderiv(_programID, GL_COMPILE_STATUS, &compiled);
-  if (!compiled)
+  GLboolean hasCompiler;
+  glGetBooleanv(GL_SHADER_COMPILER, &hasCompiler);
+  if (hasCompiler)
   {
-    GLsizei len;
-    glGetShaderiv(_programID, GL_INFO_LOG_LENGTH, &len);
-    GLchar *log = new GLchar[len + 1];
-    Application::ErrPrint(log);
-    delete[] log;
-    return false;
+    GLint compiled;
+    glGetShaderiv(_programID, GL_COMPILE_STATUS, &compiled);
+    if (!compiled)
+    {
+      GLsizei len;
+      glGetShaderiv(_programID, GL_INFO_LOG_LENGTH, &len);
+      GLchar *log = new GLchar[len + 1];
+      //DEBUG
+      printf("\nSHADER COMPILE\n");
+      fprintf(stderr, log);
+      Application::ErrPrint("Failed to compile shader - reasons above");
+      delete[] log;
+      return false;
+    }
   }
   return true;
 }

@@ -22,7 +22,7 @@ void Engine::Update()
   //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
-    (*i)->Update();
+    (*i)->onUpdate();
   }
   //Calling callback funcs for all Messages
   for (auto i = messageQueue.begin(); i != messageQueue.end(); i++)
@@ -34,15 +34,21 @@ void Engine::Update()
   //Calling LateUpdate after everything else
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
-    (*i)->LateUpdate();
+    (*i)->onLateUpdate();
   }
 }
 void Engine::Draw()
 {
   //Call Render() on active camera
+  /*
   if (activeCamera.get() != nullptr)
   {
     activeCamera->Render();
+  }
+  */
+  if (Camera::currentActive.lock().get() != nullptr)
+  {
+    Camera::currentActive.lock()->Render();
   }
 }
 

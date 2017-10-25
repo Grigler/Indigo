@@ -20,12 +20,12 @@ std::weak_ptr<Camera> Camera::currentActive;
 void Camera::Render()
 {
   //Horrible hack to get around having to use shared_from_this
-  currentActive = parent.lock()->GetComponent<Camera>();
+  //currentActive = parent.lock()->GetComponent<Camera>();
   //Converting to list due to constant removals
   std::list<std::shared_ptr<GameObject>> allObjsCopy;
   std::copy(Application::engineContext->gameObjects.begin(), Application::engineContext->gameObjects.end(),
     std::back_inserter(allObjsCopy));
-  
+ /* 
   glm::vec3 forward = parent.lock()->transform->GetForward();
   glm::vec3 pos = parent.lock()->transform->GetPosition();
 
@@ -38,7 +38,7 @@ void Camera::Render()
       allObjsCopy.erase(i);
     }
   }
-
+  */
   //Sort by distance to camera
   //std::sort(allObjsCopy.begin(), allObjsCopy.end(), LeftCloser);
   allObjsCopy.sort(LeftCloser); //List version
@@ -50,7 +50,12 @@ void Camera::Render()
 	  (*i)->Draw();
   }
 
-  currentActive.reset();
+  //currentActive.reset();
+}
+
+void Camera::MakeActive()
+{
+  currentActive = parent.lock()->GetComponent<Camera>();
 }
 
 bool Camera::LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r)

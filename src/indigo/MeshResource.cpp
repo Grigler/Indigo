@@ -18,7 +18,7 @@ MeshResource::~MeshResource()
 
 void MeshResource::ActivateVAO()
 {
-  glEnableVertexAttribArray(vaoID);
+  glBindVertexArray(vaoID);
 }
 
 void MeshResource::ReadFromFile(std::string _path)
@@ -40,7 +40,7 @@ void MeshResource::ReadFromFile(std::string _path)
   }
 }
 
-//Modified from OBJLoader provided by Leigh McLoughlin last year
+//Modified from OBJLoader provided by Leigh McLoughlin last academic year
 void MeshResource::_LoadOBJ(std::string _path)
 {
   // Find file
@@ -148,7 +148,7 @@ void MeshResource::_LoadOBJ(std::string _path)
     {
       //Storing verts for AABB forming
       verts = orderedPositionData;
-
+      glGenVertexArrays(1, &vaoID);
       glBindVertexArray(vaoID);
 
       // Variable for storing a VBO

@@ -20,8 +20,9 @@ namespace Indigo
     template <class T>
     static std::weak_ptr<T> CreateGameObject();
 
-    virtual void Update() {}
-    virtual void LateUpdate() {}
+    virtual void onCreation() {}
+    virtual void onUpdate() {}
+    virtual void onLateUpdate() {}
     //Called by Camera when it is optimal for its draw call
     virtual void Draw() {}
 
@@ -114,9 +115,11 @@ namespace Indigo
       "Created Object must be a derived class of GameObject or base GameObject");
     
     std::shared_ptr<T> rtn = std::make_shared<T>();
-    Application::engineContext->RegisterGameObject(std::dynamic_pointer_cast<GameObject>(rtn));
-    
     rtn->transform = std::make_shared<Transform>();
+
+    Application::engineContext->RegisterGameObject(std::dynamic_pointer_cast<GameObject>(rtn));
+
+    rtn->onCreation();
 
     return std::weak_ptr<T>(rtn);
   }
