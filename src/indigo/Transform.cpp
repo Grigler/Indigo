@@ -80,7 +80,7 @@ void Transform::Scale(glm::vec3 _scaleBy)
   _aabbNeedRecalc = true;
 }
 
-void Transform::Update()
+void Transform::onUpdate()
 {
   //Resetting flag for AABB
   _aabbNeedRecalc = false;

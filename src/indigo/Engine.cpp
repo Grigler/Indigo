@@ -23,6 +23,10 @@ void Engine::Update()
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
     (*i)->onUpdate();
+    for (auto j = (*i)->components.begin(); j < (*i)->components.end(); j++)
+    {
+      (*j)->onUpdate();
+    }
   }
   //Calling callback funcs for all Messages
   for (auto i = messageQueue.begin(); i != messageQueue.end(); i++)

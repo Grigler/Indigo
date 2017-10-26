@@ -17,7 +17,7 @@ namespace Indigo
   public:
     MeshRenderer();
 
-    void Update();
+    void onUpdate();
 
     void LoadMesh(std::string _path);
 

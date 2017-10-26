@@ -16,6 +16,7 @@ namespace Indigo
 
   class GameObject : public MemObj
   {
+    friend class Engine;
   public:
     template <class T>
     static std::weak_ptr<T> CreateGameObject();

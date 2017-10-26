@@ -11,6 +11,7 @@ using namespace Indigo;
 void Mesh::Assign(std::weak_ptr<MeshResource> _m)
 {
   meshResource = _m.lock();
+  aabb.Recalc(*(meshResource->GetVerts()));
 }
 void Mesh::ActivateVAO()
 {
@@ -24,14 +25,16 @@ GLsizei Mesh::GetVertCount()
 
 void Mesh::_updateAABB(glm::mat4 _modelMat)
 {
+  /*
   std::vector<glm::vec3> modelVerts = *(meshResource->GetVerts());
 
-  //TODO - TEST THIS ACTUALLY WORKS HERE
-#pragma omp parallel for
+  //Parallelising this using opm actually slowed it down, possibly
+  //from caches misses or something
   for (int i = 0; i < modelVerts.size(); i++)
   {
     modelVerts.at(i) = _modelMat * glm::vec4(modelVerts.at(i), 1.0f);
   }
-  
-  aabb.Recalc(modelVerts);
+  */
+
+  aabb.UpdateFromPrev(_modelMat);
 }

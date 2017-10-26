@@ -41,7 +41,7 @@ namespace Indigo
     //Multiplies each axis by xyz components of param
     void Scale(glm::vec3 _scaleBy);
 
-    void Update();
+    void onUpdate();
 
     bool _CheckForAABBRecalc() { return _aabbNeedRecalc; }
 

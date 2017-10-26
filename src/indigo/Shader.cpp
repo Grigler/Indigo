@@ -31,7 +31,8 @@ bool Shader::LoadShader(GLenum _type, std::string _path)
     int len = file.tellg();
     file.seekg(0, file.beg);
 
-    shaderSrc = new char[len];
+    shaderSrc = new char[len + 10];
+    memset(shaderSrc, 0, sizeof(GLchar)*(len + 10));
     file.read(shaderSrc, len);
 
     if (!file.eof())
@@ -48,7 +49,7 @@ bool Shader::LoadShader(GLenum _type, std::string _path)
       file.close();
     }
 
-    GLuint *id;
+    GLuint *id = NULL;
     switch (_type)
     {
     case GL_VERTEX_SHADER:   id = &vertID; break;
@@ -60,7 +61,7 @@ bool Shader::LoadShader(GLenum _type, std::string _path)
     glShaderSource(*id, 1, &shaderSrc, NULL);
     glCompileShader(*id);
 
-    bool rtn = CheckCompile(programID);
+    bool rtn = CheckCompile(*id);
     if (rtn)
     {
       glAttachShader(programID, *id);
@@ -73,28 +74,6 @@ bool Shader::LoadShader(GLenum _type, std::string _path)
     return false;
   }
 }
-/*
-bool Shader::LoadShader(GLenum _type, GLchar *_src)
-{
-  GLuint *id;
-  switch (_type)
-  {
-  case GL_VERTEX_SHADER:   id = &vertID; break;
-  case GL_GEOMETRY_SHADER: id = &geomID; break;
-  case GL_FRAGMENT_SHADER: id = &fragID; break;
-  }
-
-  *id = glCreateShader(_type);
-  glShaderSource(*id, 1, &_src, NULL);
-  glCompileShader(*id);
-
-  bool rtn = CheckCompile(programID);
-  if (rtn)
-  {
-    glAttachShader(programID, *id);
-  }
-  return rtn;
-}*/
 bool Shader::Link()
 {
   glLinkProgram(programID);
@@ -108,9 +87,7 @@ bool Shader::Link()
 
     GLchar *log = new GLchar[len + 1];
     glGetProgramInfoLog(programID, len, &len, log);
-    //DEBUG
-    printf("\nSHADER LINK\n");
-    fprintf(stderr, log);
+    fprintf(stderr, "%s\n", log);
     Application::ErrPrint("Failed to link shader - reasons above");
     delete[] log;
     return false;
@@ -127,16 +104,16 @@ bool Shader::CheckCompile(GLuint _programID)
   glGetBooleanv(GL_SHADER_COMPILER, &hasCompiler);
   if (hasCompiler)
   {
-    GLint compiled;
+    GLint compiled = 0;
     glGetShaderiv(_programID, GL_COMPILE_STATUS, &compiled);
-    if (!compiled)
+    if (compiled != GL_TRUE)
     {
       GLsizei len;
       glGetShaderiv(_programID, GL_INFO_LOG_LENGTH, &len);
       GLchar *log = new GLchar[len + 1];
-      //DEBUG
-      printf("\nSHADER COMPILE\n");
-      fprintf(stderr, log);
+      memset(log, 0, sizeof(GLchar) * (len + 1));
+      glGetShaderInfoLog(_programID, len, &len, log);
+      fprintf(stderr, "%s\n", log);
       Application::ErrPrint("Failed to compile shader - reasons above");
       delete[] log;
       return false;

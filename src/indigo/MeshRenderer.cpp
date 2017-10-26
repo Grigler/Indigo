@@ -24,11 +24,12 @@ MeshRenderer::MeshRenderer()
 
 }
 
-void MeshRenderer::Update()
+void MeshRenderer::onUpdate()
 {
   if (parent.lock()->transform->_CheckForAABBRecalc())
   {
     glm::mat4 modelMat = parent.lock()->transform->GetModelMat();
+    mesh->_updateAABB(modelMat);
   }
 }
 void MeshRenderer::Draw()
@@ -36,7 +37,6 @@ void MeshRenderer::Draw()
   //Activate the Mesh's VAO
   mesh->ActivateVAO();
   shader->Activate();
-  glDisable(GL_CULL_FACE);
 
   {
     //Uniforms and such here
@@ -55,7 +55,7 @@ void MeshRenderer::Draw()
     glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertCount());
   }
 
-  glBindVertexArray(0);
+  //glBindVertexArray(0);
 }
 
 void MeshRenderer::LoadMesh(std::string _path)

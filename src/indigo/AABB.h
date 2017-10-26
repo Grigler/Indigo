@@ -10,24 +10,20 @@ namespace Indigo
   class AABB
   {
   public:
-    
+    AABB();
+    //Recalculates from 
     void Recalc(std::vector<glm::vec3> &_verts);
+    //Uses current values and given modelMatrix to
+    //create a new estimated AABB
+    void UpdateFromPrev(glm::mat4 _modelMat);
+
     //Dereferences this and calls static test
     inline bool Test(AABB _against);
-    //Generic public static for testing collision
-    //between two AABBs
     static bool Test(AABB _a, AABB _b);
 
-    void SetPos(glm::vec3 _p) { centerPos = _p; }
-    //Scales offset xyz by _s xyz
-    void SetScale(glm::vec3 _s);
-    void TransPos(glm::vec3 _deltaP) { centerPos += _deltaP; }
-
   private:
-    //Using centerPoint and offset
-    //in xyz for sizes
-    glm::vec3 centerPos;
-    glm::vec3 offset;
+    glm::vec3 min;
+    glm::vec3 max;
 
   };
 }

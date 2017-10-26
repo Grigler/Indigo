@@ -11,14 +11,6 @@ public:
 
     transform->SetPosition(glm::vec3(rand()%500 - 250, 0, -1 * (rand()%380 + 20)));
     transform->SetScale(glm::vec3(0.125f, 0.125f, 0.125f));
-    //cam = AddComponent<Indigo::Camera>();
-    //cam.lock()->MakeActive();
-    //Indigo::Camera::currentActive = cam;
-  }
-  void Get(ExampleObject *e)
-  {
-    std::weak_ptr<Indigo::MeshRenderer> m;
-    m = e->GetComponent<Indigo::MeshRenderer>();
   }
   void onUpdate()
   {
@@ -41,15 +33,13 @@ private:
 class CamObject : public Indigo::GameObject
 {
 public:
+  std::weak_ptr<Indigo::Camera> cam;
   void onCreation()
   {
     cam = AddComponent<Indigo::Camera>();
     //cam.lock()->MakeActive();
     Indigo::Camera::currentActive = cam;
   }
-
-
-  std::weak_ptr<Indigo::Camera> cam;
 };
 
 class NotDerived
@@ -74,6 +64,7 @@ int main(int argc, char** argv)
   //std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
 
+  
   const int amnt = 50;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
@@ -81,8 +72,12 @@ int main(int argc, char** argv)
   {
     eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
   }
-
-
+  
+  /*
+  std::weak_ptr<ExampleObject> eoRoot = Indigo::GameObject::CreateGameObject<ExampleObject>();
+  std::weak_ptr<ExampleObject> eoChild = Indigo::GameObject::CreateGameObject<ExampleObject>();
+  eoChild.lock()->ParentTo(eoRoot);
+  */
   //Application gameLoop is executed
   glViewport(0, 0, 1280, 720);
   Indigo::Application::Run();

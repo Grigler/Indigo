@@ -11,6 +11,8 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/src
 )
 
+add_definitions(-DGLEW_STATIC)
+
 if(WIN32)
   include_directories(
     ${PROJECT_SOURCE_DIR}/contrib/msvc/include
@@ -43,7 +45,7 @@ add_library(Indigo
 
 if(WIN32)
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
-  target_link_libraries(Indigo glew32 freeglut)
+  target_link_libraries(Indigo glew32s freeglut)
 endif()
 
 
