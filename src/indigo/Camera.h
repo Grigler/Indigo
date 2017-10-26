@@ -3,6 +3,8 @@
 
 #include "Component.h"
 
+#include "AABB.h"
+
 #include <glm/glm.hpp>
 
 namespace Indigo
@@ -15,14 +17,20 @@ namespace Indigo
     //Used to easily get current active camera
     friend class MeshRenderer;
   public:
+    void onCreation();
     void Render();
-    //TODO
-    glm::mat4 GetIdentity() { return glm::mat4(1); }
+
     void MakeActive();
     static std::weak_ptr<Camera> currentActive;
+
+    glm::mat4 GetViewProj();
   private:
     static bool LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r);
     
+    float fov;
+
+    //AABB BV formed from camera's frustum
+    AABB frustumBV;
   };
 }
 

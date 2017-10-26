@@ -15,7 +15,7 @@ using namespace Indigo;
 
 MeshRenderer::MeshRenderer()
 {
-  mesh = std::make_unique<Mesh>();
+  mesh = std::make_shared<Mesh>();
 
   shader = std::make_shared<MeshShader>();
   shader->Init();
@@ -41,13 +41,11 @@ void MeshRenderer::Draw()
   {
     //Uniforms and such here
     std::weak_ptr<Camera> cam = Camera::currentActive;
-    glm::mat4 identity = cam.lock()->GetIdentity();
     //TODO - other stuff
     glm::mat4 model = parent.lock()->transform->GetModelMat();
-    glm::mat4 view = glm::inverse(cam.lock()->parent.lock()->transform->GetModelMat());
-    glm::mat4 proj = glm::perspective(90.0f, 1280.0f/720.0f, 0.3f, 1000.0f);
+    glm::mat4 vp = cam.lock()->GetViewProj();
     
-    glm::mat4 mvp = proj*view*model;
+    glm::mat4 mvp = vp*model;
 
     glUniformMatrix4fv(std::dynamic_pointer_cast<MeshShader>(shader)->mvpHandle,
       1, GL_FALSE, &mvp[0][0]);

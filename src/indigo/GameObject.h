@@ -17,6 +17,7 @@ namespace Indigo
   class GameObject : public MemObj
   {
     friend class Engine;
+    friend class Camera;
   public:
     template <class T>
     static std::weak_ptr<T> CreateGameObject();
@@ -45,6 +46,8 @@ namespace Indigo
     //Returns vector of all found instances of T in components list
     std::vector<std::weak_ptr<T>> GetComponents();
 
+    std::weak_ptr<RenderComponent> GetRenderComponent() {  return renderComponent;  }
+
   private:
     std::weak_ptr<GameObject> parent;
 
@@ -66,6 +69,8 @@ namespace Indigo
     rtn->ParentTo(Application::engineContext->GetGameObjRef(this));
 
     components.push_back(rtn);
+    //std::dynamic_pointer_cast<T>(rtn)->onCreation();
+    rtn->onCreation();
     
     return std::weak_ptr<T>(rtn);
   }
@@ -119,12 +124,12 @@ namespace Indigo
     rtn->transform = std::make_shared<Transform>();
 
     Application::engineContext->RegisterGameObject(std::dynamic_pointer_cast<GameObject>(rtn));
-
+    //Calling onCreation for GO
     rtn->onCreation();
 
     return std::weak_ptr<T>(rtn);
   }
-  
+
 }
 
 #endif

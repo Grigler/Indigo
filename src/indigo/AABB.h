@@ -9,6 +9,7 @@ namespace Indigo
 {
   class AABB
   {
+    friend class Camera;
   public:
     AABB();
     //Recalculates from 

@@ -12,6 +12,7 @@ namespace Indigo
     friend class Camera;
     friend class GameObject;
   public:
+    virtual void onCreation() {}
     virtual void onUpdate() {}
     //TODO - add more virtual functions
     void ParentTo(std::weak_ptr<GameObject> _go);

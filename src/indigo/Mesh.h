@@ -15,6 +15,7 @@ namespace Indigo
   class Mesh
   {
     friend class MeshRenderer;
+    friend class Camera;
   public:
     void Assign(std::weak_ptr<MeshResource> _m);
     void ActivateVAO();
