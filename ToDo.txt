@@ -1,10 +1,9 @@
 TODO
 ====
 
-- Change AABB to use min-max implementation
-	- The current center-point size thing is stupid and unwieldly
+- Implement character controller
+	- 3rd person to allow for easy camera movement
 
-- Put AABB around the camera using the frustum and use that for cheap frustum culling
-
--There seems to be an issue with how the shaders files are read in using the release build.
-	- I might need to handle the files in a more C++ way (sstream?)
+- Test AABB frustum culling using different character controllers
+	- Replace frustum point extraction to use variable near/far distances
+		- Generally neaten that section of code as well
