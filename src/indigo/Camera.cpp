@@ -30,7 +30,7 @@ void Camera::onCreation()
   float widthFar = heightFar * (1280.0f / 720.0f);
 
   std::shared_ptr<Transform> trans = parent.lock()->transform;
-  glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * 1000.0f;
+  glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
   glm::vec3 ftr = farCenter + (trans->GetUp() * heightFar / 2.0f) +
     (trans->GetRight() * widthFar / 2.0f);
 
@@ -43,7 +43,7 @@ void Camera::onCreation()
   //glm::vec3 nbr = nearCenter - (trans->GetUp() * heightNear / 2.0f) + (trans->GetRight()*widthNear / 2.0f);
   glm::vec3 fbr = farCenter + (trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
 
-  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x , fbr.y, nearCenter.z);
+  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x , fbr.y, -nearCenter.z);
 
   //Forming a min-max AABB BV for the frustum
   //frustumBV.min = glm::vec3(fbr.x, minY, nbr.z);
@@ -64,10 +64,6 @@ void Camera::Render()
   glm::vec3 pos = parent.lock()->transform->GetPosition();
 
   allObjsCopy.sort(LeftCloser); //List version
-  //Frustum culling here
-
-  //AABB checking against camera frustum
-  
 
   //Draw calls
   for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
@@ -86,7 +82,7 @@ void Camera::Render()
       }
       else
       {
-        printf("Fail\n");
+        //printf("Fail\n");
       }
     }
   }

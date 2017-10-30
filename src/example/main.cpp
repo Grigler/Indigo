@@ -14,10 +14,14 @@ public:
   }
   void onUpdate()
   {
-    //transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
+    transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
     if (Indigo::Input::GetKey('w'))
     {
       transform->MoveDir(transform->GetForward(), 150.0f * Indigo::Application::GetDT());
+    }
+    else if (Indigo::Input::GetKey('s'))
+    {
+      transform->MoveDir(-transform->GetForward(), 150.0f * Indigo::Application::GetDT());
     }
   }
   void Draw()
