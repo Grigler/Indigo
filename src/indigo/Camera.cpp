@@ -16,6 +16,9 @@
 #include <memory>
 #include <algorithm>
 
+//DEBUG
+#include <iostream>
+
 using namespace Indigo;
 
 std::weak_ptr<Camera> Camera::currentActive;
@@ -23,15 +26,20 @@ std::weak_ptr<Camera> Camera::currentActive;
 void Camera::onCreation()
 {
   fov = 90.0f;
-  //Calculating needed frustum vertex points in world space
-  glm::mat4 inverseVP = glm::inverse(GetViewProj());
 
+  /*Calculating AABB to encompass camera frustum
+  *
+  *  This uses the far plane's dimensions for the xzy sizes
+  *  although it would be more effective at culling nearby complex geometry
+  *  (assuming an LOD system is used) to use a collection of AABBs using
+  *  varying sizes down the frustum, a single one has been used for simplicity
+  */
   float heightFar = 2.0f * glm::tan(fov / 2) * 1000.0f;
   float widthFar = heightFar * (1280.0f / 720.0f);
 
   std::shared_ptr<Transform> trans = parent.lock()->transform;
   glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
-  glm::vec3 ftr = farCenter + (trans->GetUp() * heightFar / 2.0f) +
+  glm::vec3 ftr = glm::vec3(farCenter.x,farCenter.y,-0.3f) + (trans->GetUp() * heightFar / 2.0f) +
     (trans->GetRight() * widthFar / 2.0f);
 
   frustumBV.max = ftr;
@@ -39,16 +47,10 @@ void Camera::onCreation()
   float heightNear = 2.0f * glm::tan(fov / 2) * 0.3f;
   float widthNear = heightNear * (1280.0f / 720.0f);
 
-  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * 0.3f;
-  //glm::vec3 nbr = nearCenter - (trans->GetUp() * heightNear / 2.0f) + (trans->GetRight()*widthNear / 2.0f);
+  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
   glm::vec3 fbr = farCenter + (trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
 
-  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x , fbr.y, -nearCenter.z);
-
-  //Forming a min-max AABB BV for the frustum
-  //frustumBV.min = glm::vec3(fbr.x, minY, nbr.z);
-  //frustumBV.max = ftl;
-
+  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x , fbr.y, nearCenter.z);
 }
 
 void Camera::Render()
@@ -68,26 +70,16 @@ void Camera::Render()
   //Draw calls
   for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
   {
-    glm::vec3 dir = (*i)->transform->GetPosition() - pos;
-    if (glm::dot(forward, dir) <= 0.0f)
+    //std::weak_ptr<RenderComponent> rc = (*i)->GetRenderComponent();
+    //TODO - change to switch on some enum or string in base then cast
+    //std::weak_ptr<MeshRenderer> mr = std::dynamic_pointer_cast<MeshRenderer>(rc.lock());
+    std::weak_ptr<MeshRenderer> mr = (*i)->GetComponent<MeshRenderer>();
+    if (mr.expired()) continue;
+    if (AABB::Test(frustumBV, mr.lock()->mesh->aabb))
     {
-      //std::weak_ptr<RenderComponent> rc = (*i)->GetRenderComponent();
-      //TODO - change to switch on some enum or string in base then cast
-      //std::weak_ptr<MeshRenderer> mr = std::dynamic_pointer_cast<MeshRenderer>(rc.lock());
-      std::weak_ptr<MeshRenderer> mr = (*i)->GetComponent<MeshRenderer>();
-      if (mr.expired()) continue;
-      if (AABB::Test(frustumBV, mr.lock()->mesh->aabb))
-      {
-        (*i)->Draw();
-      }
-      else
-      {
-        //printf("Fail\n");
-      }
+      (*i)->Draw();
     }
   }
-
-  //currentActive.reset();
 }
 
 void Camera::MakeActive()

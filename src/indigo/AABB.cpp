@@ -48,7 +48,10 @@ void AABB::UpdateFromPrev(glm::mat4 _modelMat)
     max = transformedMin;
   }
   */
-
+  /* Adapted from "Real Time Collision Detection" by Christer Ericson, 2005
+  *  ISBN: 1-55860-732-3
+  *  Chapter 4.2.6 - Page 86
+  */
   glm::vec3 t = _modelMat[3];
   glm::mat3 rot = _modelMat;
   
@@ -78,12 +81,6 @@ void AABB::UpdateFromPrev(glm::mat4 _modelMat)
   max = nMax;
 }
 
-
-//Dereferences this and calls static
-bool AABB::Test(AABB _against)
-{
-  return AABB::Test(*this, _against);
-}
 bool AABB::Test(AABB _a, AABB _b)
 {
   //Re-ordered to use x and z test first

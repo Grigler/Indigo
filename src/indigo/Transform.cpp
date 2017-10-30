@@ -42,7 +42,7 @@ glm::mat4 Transform::GetModelMat()
     from = parent.lock()->transform->GetModelMat();
   }
   //Converting translation, rotation and scale to matricies
-  glm::mat4 translationMat = glm::translate(from, pos);
+  glm::mat4 translationMat = glm::translate(from, glm::vec3(pos.x, pos.y, -pos.z));
   glm::mat4 rotationMat = glm::rotate(from, rot.y, glm::vec3(0, 1, 0));
   rotationMat = glm::rotate(rotationMat, rot.z, glm::vec3(0, 0, 1));
   rotationMat = glm::rotate(rotationMat, rot.x, glm::vec3(1, 0, 0));

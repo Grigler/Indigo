@@ -9,12 +9,12 @@ public:
     mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%500 - 250, 0, -1 * (rand()%380 + 20)));
+    transform->SetPosition(glm::vec3(rand()%500 - 250, 0, (rand()%380 + 20)));
     transform->SetScale(glm::vec3(0.125f, 0.125f, 0.125f));
   }
   void onUpdate()
   {
-    transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
+    //transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
     if (Indigo::Input::GetKey('w'))
     {
       transform->MoveDir(transform->GetForward(), 150.0f * Indigo::Application::GetDT());
@@ -22,6 +22,14 @@ public:
     else if (Indigo::Input::GetKey('s'))
     {
       transform->MoveDir(-transform->GetForward(), 150.0f * Indigo::Application::GetDT());
+    }
+    else if (Indigo::Input::GetKey('a'))
+    {
+      transform->MoveDir(-transform->GetRight(), 1500.0f * Indigo::Application::GetDT());
+    }
+    else if (Indigo::Input::GetKey('d'))
+    {
+      transform->MoveDir(transform->GetRight(), 1500.0f * Indigo::Application::GetDT());
     }
   }
   void Draw()

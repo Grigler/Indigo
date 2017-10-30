@@ -19,7 +19,6 @@ namespace Indigo
     void UpdateFromPrev(glm::mat4 _modelMat);
 
     //Dereferences this and calls static test
-    inline bool Test(AABB _against);
     static bool Test(AABB _a, AABB _b);
 
   private:
