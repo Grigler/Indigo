@@ -65,6 +65,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_indigo_1_1_a_a_b_b-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Indigo::AABB Class Reference</div>  </div>
@@ -73,27 +74,24 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abe28ace359bf4c795549f66003277d98"><td class="memItemLeft" align="right" valign="top"><a id="abe28ace359bf4c795549f66003277d98"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalc</b> (std::vector&lt; glm::vec3 &gt; _verts)</td></tr>
-<tr class="separator:abe28ace359bf4c795549f66003277d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad26af46e6323558ba5afd0a1a0ece39c"><td class="memItemLeft" align="right" valign="top"><a id="ad26af46e6323558ba5afd0a1a0ece39c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Test</b> (<a class="el" href="class_indigo_1_1_a_a_b_b.html">AABB</a> _against)</td></tr>
-<tr class="separator:ad26af46e6323558ba5afd0a1a0ece39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e2aa4edcee8d263377f29f0bb4b5c48"><td class="memItemLeft" align="right" valign="top"><a id="a2e2aa4edcee8d263377f29f0bb4b5c48"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPos</b> (glm::vec3 _p)</td></tr>
-<tr class="separator:a2e2aa4edcee8d263377f29f0bb4b5c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10b634ba4b56cea6f7e23600f2038399"><td class="memItemLeft" align="right" valign="top"><a id="a10b634ba4b56cea6f7e23600f2038399"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetScale</b> (glm::vec3 _s)</td></tr>
-<tr class="separator:a10b634ba4b56cea6f7e23600f2038399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f012190d6a7dfad085eaf62cb4e084a"><td class="memItemLeft" align="right" valign="top"><a id="a8f012190d6a7dfad085eaf62cb4e084a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>TransPos</b> (glm::vec3 _deltaP)</td></tr>
-<tr class="separator:a8f012190d6a7dfad085eaf62cb4e084a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb624dc8068d277656712c9904455ae7"><td class="memItemLeft" align="right" valign="top"><a id="acb624dc8068d277656712c9904455ae7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalc</b> (std::vector&lt; glm::vec3 &gt; &amp;_verts)</td></tr>
+<tr class="separator:acb624dc8068d277656712c9904455ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6259d73b28d9180bb232f09a2c2fe75"><td class="memItemLeft" align="right" valign="top"><a id="ab6259d73b28d9180bb232f09a2c2fe75"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateFromPrev</b> (glm::mat4 _modelMat)</td></tr>
+<tr class="separator:ab6259d73b28d9180bb232f09a2c2fe75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae37c74a1e633929b06b6cab1fa678451"><td class="memItemLeft" align="right" valign="top"><a id="ae37c74a1e633929b06b6cab1fa678451"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Test</b> (<a class="el" href="class_indigo_1_1_a_a_b_b.html">AABB</a> _a, <a class="el" href="class_indigo_1_1_a_a_b_b.html">AABB</a> _b)</td></tr>
 <tr class="separator:ae37c74a1e633929b06b6cab1fa678451"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ad8bd9afbbd7af19d996da80e9d25890d"><td class="memItemLeft" align="right" valign="top"><a id="ad8bd9afbbd7af19d996da80e9d25890d"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b></td></tr>
+<tr class="separator:ad8bd9afbbd7af19d996da80e9d25890d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/indigo/<a class="el" href="_a_a_b_b_8h_source.html">AABB.h</a></li>

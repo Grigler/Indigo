@@ -66,6 +66,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_indigo_1_1_game_object-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Indigo::GameObject Class Reference</div>  </div>
@@ -83,12 +84,15 @@ Inheritance diagram for Indigo::GameObject:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a88b1e4bb256ce4bb241a0449b6f8c272"><td class="memItemLeft" align="right" valign="top"><a id="a88b1e4bb256ce4bb241a0449b6f8c272"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></tr>
-<tr class="separator:a88b1e4bb256ce4bb241a0449b6f8c272"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e0b18a5e6c8c8638be4618576412e5b"><td class="memItemLeft" align="right" valign="top"><a id="a0e0b18a5e6c8c8638be4618576412e5b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LateUpdate</b> ()</td></tr>
-<tr class="separator:a0e0b18a5e6c8c8638be4618576412e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a932397dbbf6483a7176ba3e1fce4f44e"><td class="memItemLeft" align="right" valign="top"><a id="a932397dbbf6483a7176ba3e1fce4f44e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onCreation</b> ()</td></tr>
+<tr class="separator:a932397dbbf6483a7176ba3e1fce4f44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd745af3ff2b0e66f812106eb7c4a723"><td class="memItemLeft" align="right" valign="top"><a id="acd745af3ff2b0e66f812106eb7c4a723"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onUpdate</b> ()</td></tr>
+<tr class="separator:acd745af3ff2b0e66f812106eb7c4a723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc2ef646c905807df696c5f23ce8d86"><td class="memItemLeft" align="right" valign="top"><a id="a4cc2ef646c905807df696c5f23ce8d86"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onLateUpdate</b> ()</td></tr>
+<tr class="separator:a4cc2ef646c905807df696c5f23ce8d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c6beac479284b63adf0ee008e5441fa"><td class="memItemLeft" align="right" valign="top"><a id="a3c6beac479284b63adf0ee008e5441fa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
 <tr class="separator:a3c6beac479284b63adf0ee008e5441fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,6 +106,17 @@ std::weak_ptr&lt; <a class="el" href="class_indigo_1_1_game_object.html">GameObj
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ac2716d3d4c2689b075205cd997966557"><td class="memTemplItemLeft" align="right" valign="top">std::weak_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>AddComponent</b> ()</td></tr>
 <tr class="separator:ac2716d3d4c2689b075205cd997966557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfc6522b37a89a1934a687fa9b4edf2"><td class="memTemplParams" colspan="2"><a id="a1cfc6522b37a89a1934a687fa9b4edf2"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a1cfc6522b37a89a1934a687fa9b4edf2"><td class="memTemplItemLeft" align="right" valign="top">std::weak_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetComponent</b> ()</td></tr>
+<tr class="separator:a1cfc6522b37a89a1934a687fa9b4edf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a273065f64485474261b8ddffed244bd0"><td class="memTemplParams" colspan="2"><a id="a273065f64485474261b8ddffed244bd0"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a273065f64485474261b8ddffed244bd0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::weak_ptr&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetComponents</b> ()</td></tr>
+<tr class="separator:a273065f64485474261b8ddffed244bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61c8e0889c22ecf118a7e59daac4002e"><td class="memItemLeft" align="right" valign="top"><a id="a61c8e0889c22ecf118a7e59daac4002e"></a>
+std::weak_ptr&lt; <a class="el" href="class_indigo_1_1_render_component.html">RenderComponent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetRenderComponent</b> ()</td></tr>
+<tr class="separator:a61c8e0889c22ecf118a7e59daac4002e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_indigo_1_1_mem_obj"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_indigo_1_1_mem_obj')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_indigo_1_1_mem_obj.html">Indigo::MemObj</a></td></tr>
 <tr class="memitem:a36b1eb75290fdb4aae51b557660f521d inherit pub_methods_class_indigo_1_1_mem_obj"><td class="memItemLeft" align="right" valign="top"><a id="a36b1eb75290fdb4aae51b557660f521d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MarkToKill</b> ()</td></tr>
@@ -125,6 +140,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a807115c579b93b60fbf69a85ac31a65c"><td class="memItemLeft" align="right" valign="top"><a id="a807115c579b93b60fbf69a85ac31a65c"></a>
 std::shared_ptr&lt; <a class="el" href="class_indigo_1_1_transform.html">Transform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>transform</b></td></tr>
 <tr class="separator:a807115c579b93b60fbf69a85ac31a65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a3e1914489e4bed4f9f23cdeab34a43dc"><td class="memItemLeft" align="right" valign="top"><a id="a3e1914489e4bed4f9f23cdeab34a43dc"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
+<tr class="separator:a3e1914489e4bed4f9f23cdeab34a43dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8bd9afbbd7af19d996da80e9d25890d"><td class="memItemLeft" align="right" valign="top"><a id="ad8bd9afbbd7af19d996da80e9d25890d"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b></td></tr>
+<tr class="separator:ad8bd9afbbd7af19d996da80e9d25890d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

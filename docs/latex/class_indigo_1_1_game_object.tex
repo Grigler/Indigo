@@ -9,11 +9,14 @@ Inheritance diagram for Indigo\+:\+:Game\+Object\+:\begin{figure}[H]
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_indigo_1_1_game_object_a88b1e4bb256ce4bb241a0449b6f8c272}\label{class_indigo_1_1_game_object_a88b1e4bb256ce4bb241a0449b6f8c272}} 
-virtual void {\bfseries Update} ()
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a932397dbbf6483a7176ba3e1fce4f44e}\label{class_indigo_1_1_game_object_a932397dbbf6483a7176ba3e1fce4f44e}} 
+virtual void {\bfseries on\+Creation} ()
 \item 
-\mbox{\Hypertarget{class_indigo_1_1_game_object_a0e0b18a5e6c8c8638be4618576412e5b}\label{class_indigo_1_1_game_object_a0e0b18a5e6c8c8638be4618576412e5b}} 
-virtual void {\bfseries Late\+Update} ()
+\mbox{\Hypertarget{class_indigo_1_1_game_object_acd745af3ff2b0e66f812106eb7c4a723}\label{class_indigo_1_1_game_object_acd745af3ff2b0e66f812106eb7c4a723}} 
+virtual void {\bfseries on\+Update} ()
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a4cc2ef646c905807df696c5f23ce8d86}\label{class_indigo_1_1_game_object_a4cc2ef646c905807df696c5f23ce8d86}} 
+virtual void {\bfseries on\+Late\+Update} ()
 \item 
 \mbox{\Hypertarget{class_indigo_1_1_game_object_a3c6beac479284b63adf0ee008e5441fa}\label{class_indigo_1_1_game_object_a3c6beac479284b63adf0ee008e5441fa}} 
 virtual void {\bfseries Draw} ()
@@ -26,6 +29,15 @@ std\+::weak\+\_\+ptr$<$ \hyperlink{class_indigo_1_1_game_object}{Game\+Object} $
 \item 
 \mbox{\Hypertarget{class_indigo_1_1_game_object_ac2716d3d4c2689b075205cd997966557}\label{class_indigo_1_1_game_object_ac2716d3d4c2689b075205cd997966557}} 
 {\footnotesize template$<$class T $>$ }\\std\+::weak\+\_\+ptr$<$ T $>$ {\bfseries Add\+Component} ()
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a1cfc6522b37a89a1934a687fa9b4edf2}\label{class_indigo_1_1_game_object_a1cfc6522b37a89a1934a687fa9b4edf2}} 
+{\footnotesize template$<$class T $>$ }\\std\+::weak\+\_\+ptr$<$ T $>$ {\bfseries Get\+Component} ()
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a273065f64485474261b8ddffed244bd0}\label{class_indigo_1_1_game_object_a273065f64485474261b8ddffed244bd0}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ std\+::weak\+\_\+ptr$<$ T $>$ $>$ {\bfseries Get\+Components} ()
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a61c8e0889c22ecf118a7e59daac4002e}\label{class_indigo_1_1_game_object_a61c8e0889c22ecf118a7e59daac4002e}} 
+std\+::weak\+\_\+ptr$<$ \hyperlink{class_indigo_1_1_render_component}{Render\+Component} $>$ {\bfseries Get\+Render\+Component} ()
 \end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -38,6 +50,15 @@ std\+::weak\+\_\+ptr$<$ \hyperlink{class_indigo_1_1_game_object}{Game\+Object} $
 \item 
 \mbox{\Hypertarget{class_indigo_1_1_game_object_a807115c579b93b60fbf69a85ac31a65c}\label{class_indigo_1_1_game_object_a807115c579b93b60fbf69a85ac31a65c}} 
 std\+::shared\+\_\+ptr$<$ \hyperlink{class_indigo_1_1_transform}{Transform} $>$ {\bfseries transform}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_a3e1914489e4bed4f9f23cdeab34a43dc}\label{class_indigo_1_1_game_object_a3e1914489e4bed4f9f23cdeab34a43dc}} 
+class {\bfseries Engine}
+\item 
+\mbox{\Hypertarget{class_indigo_1_1_game_object_ad8bd9afbbd7af19d996da80e9d25890d}\label{class_indigo_1_1_game_object_ad8bd9afbbd7af19d996da80e9d25890d}} 
+class {\bfseries Camera}
 \end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
