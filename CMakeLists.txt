@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.6)
+#Version 2.8 for policy-CMP0012 compliance for OPENMP_FOUND conditional
+cmake_minimum_required(VERSION 2.8)
 project(INDIGO)
 
 find_package(OpenMP)
