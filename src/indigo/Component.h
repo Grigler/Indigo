@@ -14,6 +14,7 @@ namespace Indigo
   public:
     virtual void onCreation() {}
     virtual void onUpdate() {}
+    virtual void onLateUpdate() {}
     //TODO - add more virtual functions
     void ParentTo(std::weak_ptr<GameObject> _go);
   protected:

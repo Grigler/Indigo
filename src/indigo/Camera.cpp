@@ -27,30 +27,51 @@ void Camera::onCreation()
 {
   fov = 90.0f;
 
-  /*Calculating AABB to encompass camera frustum
+  CalcFrustumBV();
+}
+
+void Camera::onLateUpdate()
+{
+  if (parent.lock()->transform->_CheckForAABBRecalc())
+  {
+    frustumBV.Update(parent.lock()->transform->GetModelMat());
+    parent.lock()->transform->_aabbNeedRecalc = false;
+  }
+}
+
+void Camera::CalcFrustumBV()
+{
+  /* Calculating AABB to encompass camera frustum
   *
   *  This uses the far plane's dimensions for the xzy sizes
   *  although it would be more effective at culling nearby complex geometry
   *  (assuming an LOD system is used) to use a collection of AABBs using
   *  varying sizes down the frustum, a single one has been used for simplicity
   */
-  float heightFar = 2.0f * glm::tan(fov / 2) * 1000.0f;
+  float heightFar = 2.0f * glm::tan(fov / 2) * -1000.0f;
   float widthFar = heightFar * (1280.0f / 720.0f);
 
   std::shared_ptr<Transform> trans = parent.lock()->transform;
   glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
-  glm::vec3 ftr = glm::vec3(farCenter.x,farCenter.y,-0.3f) + (trans->GetUp() * heightFar / 2.0f) +
+  glm::vec3 ftr = glm::vec3(farCenter.x, farCenter.y, -1000.0f) + (trans->GetUp() * heightFar / 2.0f) +
     (trans->GetRight() * widthFar / 2.0f);
 
   frustumBV.max = ftr;
+  frustumBV.origMax = frustumBV.max;
 
-  float heightNear = 2.0f * glm::tan(fov / 2) * 0.3f;
-  float widthNear = heightNear * (1280.0f / 720.0f);
+  //float heightNear = 2.0f * glm::tan(fov / 2) * 0.3f;
+  //float widthNear = heightNear * (1280.0f / 720.0f);
 
-  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
+  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * -0.3f;
   glm::vec3 fbr = farCenter + (trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
 
-  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x , fbr.y, nearCenter.z);
+  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x, fbr.y, nearCenter.z);
+  frustumBV.origMin = frustumBV.min;
+
+  printf("Min: %f %f %f\n", frustumBV.min.x, frustumBV.min.y, frustumBV.min.z);
+  printf("Max: %f %f %f\n\n", frustumBV.max.x, frustumBV.max.y, frustumBV.max.z);
+
+  parent.lock()->transform->_aabbNeedRecalc = false;
 }
 
 void Camera::Render()

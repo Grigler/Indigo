@@ -23,7 +23,7 @@ void CharacterController::onCreation()
 
 void CharacterController::onUpdate()
 {
-  UpdateRotFromMouse();
+  //UpdateRotFromMouse();
 
   UpdatePosFromKeys();
 }
@@ -61,12 +61,15 @@ void CharacterController::UpdatePosFromKeys()
 
   if (Input::GetKey('e') || Input::GetKey('E'))
   {
-    moveVec += t.lock()->GetRight() * -moveSpeed;
+    moveVec += t.lock()->GetRight() * moveSpeed;
   }
   if (Input::GetKey('q') || Input::GetKey('Q'))
   {
-    moveVec += t.lock()->GetRight() * moveSpeed;
+    moveVec += t.lock()->GetRight() * -moveSpeed;
   }
 
   t.lock()->SetPosition(t.lock()->GetPosition() + moveVec * Application::GetDT());
+
+  //t.lock()->Translate(moveVec * Application::GetDT());
+  //t.lock()->MoveDir(moveVec, moveSpeed*Application::GetDT());
 }

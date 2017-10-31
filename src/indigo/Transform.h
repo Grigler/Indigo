@@ -15,6 +15,7 @@ namespace Indigo
   class Transform : public Component
   {
     friend class Engine;
+    friend class Camera;
   public:
     Transform() { pos = glm::vec3(0); rot = glm::vec3(0); scale = glm::vec3(1); }
     Transform(glm::vec3 _pos, glm::vec3 _rot, glm::vec3 _scale);
@@ -22,9 +23,9 @@ namespace Indigo
     glm::vec3 GetPosition() { return pos; }
     glm::vec3 GetRotation() { return rot; }
     glm::vec3 GetScale() { return scale; }
-    void SetPosition(glm::vec3 _p) { pos = _p; }
-    void SetRotation(glm::vec3 _r) { rot = _r; }
-    void SetScale(glm::vec3 _s) { scale = _s; }
+    void SetPosition(glm::vec3 _p) { pos = _p; _aabbNeedRecalc = true; }
+    void SetRotation(glm::vec3 _r) { rot = _r; _aabbNeedRecalc = true;}
+    void SetScale(glm::vec3 _s) { scale = _s; _aabbNeedRecalc = true; }
 
     glm::vec3 GetForward();
     glm::vec3 GetUp();

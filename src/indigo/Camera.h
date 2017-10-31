@@ -18,6 +18,7 @@ namespace Indigo
     friend class MeshRenderer;
   public:
     void onCreation();
+    void onLateUpdate();
     void Render();
 
     void MakeActive();
@@ -27,6 +28,8 @@ namespace Indigo
   private:
     static bool LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r);
     
+    void CalcFrustumBV();
+
     float fov;
 
     //AABB BV formed from camera's frustum

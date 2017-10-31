@@ -35,6 +35,10 @@ void Engine::Update()
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
     (*i)->onLateUpdate();
+    for (auto j = (*i)->components.begin(); j < (*i)->components.end(); j++)
+    {
+      (*j)->onLateUpdate();
+    }
   }
 }
 void Engine::Draw()

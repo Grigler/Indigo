@@ -4,6 +4,7 @@
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/norm.hpp>
 
 using namespace Indigo;
 
@@ -56,15 +57,18 @@ glm::mat4 Transform::GetModelMat()
 void Transform::Translate(glm::vec3 _by)
 {
   pos += _by;
+  _aabbNeedRecalc = true;
 }
 void Transform::MoveTo(glm::vec3 _target, float _alpha)
 {
   glm::vec3 dir = glm::normalize(_target - pos);
   pos += dir*_alpha;
+  _aabbNeedRecalc = true;
 }
 void Transform::MoveDir(glm::vec3 _dir, float _alpha)
 {
   pos += _dir*_alpha;
+  _aabbNeedRecalc = true;
 }
 
 void Transform::Rotate(glm::vec3 _eulerAngles)

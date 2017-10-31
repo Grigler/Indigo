@@ -10,11 +10,35 @@ public:
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
     transform->SetPosition(glm::vec3(rand()%500 - 250, 0, (rand()%380 + 20)));
+    printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
     transform->SetScale(glm::vec3(0.125f, 0.125f, 0.125f));
   }
   void onUpdate()
   {
     transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
+    /*
+    glm::vec3 moveVec = glm::vec3(0);
+    std::weak_ptr<Indigo::Transform> t = transform;
+    if (Indigo::Input::GetKey('w') || Indigo::Input::GetKey('W'))
+    {
+      moveVec += t.lock()->GetForward() * 150.0f;
+    }
+    if (Indigo::Input::GetKey('s') || Indigo::Input::GetKey('S'))
+    {
+      moveVec += t.lock()->GetForward() * -150.0f;
+    }
+
+    if (Indigo::Input::GetKey('e') || Indigo::Input::GetKey('E'))
+    {
+      moveVec += t.lock()->GetRight() * 150.0f;
+    }
+    if (Indigo::Input::GetKey('q') || Indigo::Input::GetKey('Q'))
+    {
+      moveVec += t.lock()->GetRight() * -150.0f;
+    }
+
+    t.lock()->SetPosition(t.lock()->GetPosition() + moveVec * Indigo::Application::GetDT());
+    */
   }
   void Draw()
   {
