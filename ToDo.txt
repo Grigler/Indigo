@@ -1,8 +1,8 @@
 TODO
 ====
 
-- Implement character controller
-	- 3rd person to allow for easy camera movement
+- Mouse control for character movement has shown how horribly inaccurate the transform getter functionality
+is, so this definitely needs to be revisited now that I've relearnt how to use matricies and vectors properly
 
 - Test AABB frustum culling using different character controllers
 	- Replace frustum point extraction to use variable near/far distances
