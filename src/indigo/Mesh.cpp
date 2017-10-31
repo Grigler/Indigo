@@ -36,5 +36,5 @@ void Mesh::_updateAABB(glm::mat4 _modelMat)
   }
   */
 
-  aabb.UpdateFromPrev(_modelMat);
+  aabb.Update(_modelMat);
 }
