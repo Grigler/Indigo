@@ -15,8 +15,8 @@ namespace Indigo
     //Recalculates from 
     void Recalc(std::vector<glm::vec3> &_verts);
     //Uses current values and given modelMatrix to
-    //create a new estimated AABB
-    void UpdateFromPrev(glm::mat4 _modelMat);
+    //update pre-existing AABB
+    void Update(glm::mat4 _modelMat);
 
     //Dereferences this and calls static test
     static bool Test(AABB _a, AABB _b);
