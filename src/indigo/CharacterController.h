@@ -24,6 +24,9 @@ namespace Indigo
 
   private:
     glm::vec2 lastMouseDelta;
+
+    void UpdateRotFromMouse();
+    void UpdatePosFromKeys();
   };
 }
 
