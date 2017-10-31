@@ -33,7 +33,8 @@ void Application::Init(int _argc, char* _argv[])
   glutDisplayFunc(Display);
   glutKeyboardFunc(Keyboard);
   glutKeyboardUpFunc(KeyboardUp);
-  //TODO - mouse
+  glutPassiveMotionFunc(MouseMotionPassive);
+  glutMotionFunc(MouseMotionPassive);
 
   //Init glew
   glewExperimental = GL_TRUE;
@@ -49,6 +50,7 @@ void Application::Kill()
 }
 void Application::ShutDown()
 {
+  RecenterMouse();
   glutLeaveMainLoop();
 }
 void Application::Run()
@@ -75,12 +77,10 @@ void Application::Idle()
   float t = glutGet(GLUT_ELAPSED_TIME);
   deltaTime = (t - lastT) / 1000.0f;
   lastT = glutGet(GLUT_ELAPSED_TIME);
-  //Sleep for vsync here
+  //Sleep for vSync here
 
   //Update all objects
   engineContext->Update();
-
-  glutPostRedisplay();
 
   //DEBUG - QUITING ON ESCAPE KEY
   if (Input::GetKeyDown(27)) ShutDown();
@@ -88,6 +88,8 @@ void Application::Idle()
   //Clearing upKeys buffer for next input polling
   Input::upKeys.clear();
   Input::downKeys.clear();
+
+  glutPostRedisplay();
 }
 void Application::Display()
 {
@@ -102,6 +104,10 @@ void Application::Keyboard(unsigned char _k, int _x, int _y)
 void Application::KeyboardUp(unsigned char _k, int _x, int _y)
 {
   Input::RemoveKey(_k);
+}
+void Application::MouseMotionPassive(int _x, int _y)
+{
+  Input::UpdateMouseDelta(_x, _y);
 }
 
 void Application::ErrPrint(std::exception _e)
@@ -126,4 +132,9 @@ void Application::ErrPrint(GLchar *_msg)
     << "Run-time Error:"
     << std::endl
     << _msg << std::endl;
+}
+
+void Application::RecenterMouse()
+{
+  glutWarpPointer(640, 360);
 }

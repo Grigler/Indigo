@@ -33,6 +33,8 @@ namespace Indigo
     static void ErrPrint(std::string _msg);
     static void ErrPrint(GLchar *_msg);
 
+    static void RecenterMouse();
+
   private:
     static std::shared_ptr<Engine> engineContext;
 
@@ -40,6 +42,7 @@ namespace Indigo
     static void Display();
     static void Keyboard(unsigned char _k, int _x, int _y);
     static void KeyboardUp(unsigned char _k, int _x, int _y);
+    static void MouseMotionPassive(int _x, int _y);
 
     static float deltaTime;
   };

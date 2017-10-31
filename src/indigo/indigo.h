@@ -13,5 +13,6 @@
 #include "MeshResource.h"
 #include "TextureResource.h"
 #include "Camera.h"
+#include "CharacterController.h"
 
 #endif

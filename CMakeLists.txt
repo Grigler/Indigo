@@ -42,6 +42,8 @@ add_library(Indigo
   src/Indigo/Mesh.cpp
 
   src/Indigo/Shader.cpp
+
+  src/Indigo/CharacterController.cpp
 )
 
 if(WIN32)

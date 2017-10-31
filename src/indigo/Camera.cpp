@@ -61,9 +61,6 @@ void Camera::Render()
   std::list<std::shared_ptr<GameObject>> allObjsCopy;
   std::copy(Application::engineContext->gameObjects.begin(), Application::engineContext->gameObjects.end(),
     std::back_inserter(allObjsCopy));
-  
-  glm::vec3 forward = parent.lock()->transform->GetForward();
-  glm::vec3 pos = parent.lock()->transform->GetPosition();
 
   allObjsCopy.sort(LeftCloser); //List version
 

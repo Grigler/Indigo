@@ -14,23 +14,7 @@ public:
   }
   void onUpdate()
   {
-    //transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
-    if (Indigo::Input::GetKey('w'))
-    {
-      transform->MoveDir(transform->GetForward(), 150.0f * Indigo::Application::GetDT());
-    }
-    else if (Indigo::Input::GetKey('s'))
-    {
-      transform->MoveDir(-transform->GetForward(), 150.0f * Indigo::Application::GetDT());
-    }
-    else if (Indigo::Input::GetKey('a'))
-    {
-      transform->MoveDir(-transform->GetRight(), 1500.0f * Indigo::Application::GetDT());
-    }
-    else if (Indigo::Input::GetKey('d'))
-    {
-      transform->MoveDir(transform->GetRight(), 1500.0f * Indigo::Application::GetDT());
-    }
+    transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
   }
   void Draw()
   {
@@ -40,6 +24,7 @@ public:
 private:
   std::weak_ptr<Indigo::MeshRenderer> mr;
   std::weak_ptr<Indigo::Camera> cam;
+
 };
 
 class CamObject : public Indigo::GameObject
@@ -48,34 +33,24 @@ public:
   std::weak_ptr<Indigo::Camera> cam;
   void onCreation()
   {
+    cc = AddComponent<Indigo::CharacterController>();
+    cc.lock()->moveSpeed = 150.0f;
+    cc.lock()->mouseSens = glm::vec2(1.0f, 1.0f);
+
     cam = AddComponent<Indigo::Camera>();
     //cam.lock()->MakeActive();
     Indigo::Camera::currentActive = cam;
   }
+
+  std::weak_ptr<Indigo::CharacterController> cc;
 };
 
-class NotDerived
-{
-public:
-  int a;
-};
-class SomeComp : public Indigo::Component
-{
-public:
-
-  void Update()
-  {
-    printf("\tSomeComp Update\n");
-  }
-};
 
 int main(int argc, char** argv)
 {
   Indigo::Application::Init(argc, argv);
   
-  //std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
-
   
   const int amnt = 50;
   std::weak_ptr<ExampleObject> eoArr[amnt];
@@ -84,12 +59,7 @@ int main(int argc, char** argv)
   {
     eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
   }
-  
-  /*
-  std::weak_ptr<ExampleObject> eoRoot = Indigo::GameObject::CreateGameObject<ExampleObject>();
-  std::weak_ptr<ExampleObject> eoChild = Indigo::GameObject::CreateGameObject<ExampleObject>();
-  eoChild.lock()->ParentTo(eoRoot);
-  */
+
   //Application gameLoop is executed
   glViewport(0, 0, 1280, 720);
   Indigo::Application::Run();
