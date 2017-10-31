@@ -25,6 +25,9 @@ namespace Indigo
     glm::vec3 min;
     glm::vec3 max;
 
+    glm::vec3 origMin;
+    glm::vec3 origMax;
+
   };
 }
 

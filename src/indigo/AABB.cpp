@@ -23,6 +23,8 @@ void AABB::Recalc(std::vector<glm::vec3> &_verts)
   }
   min = tMin;
   max = tMax;
+  origMin = min;
+  origMax = max;
 }
 
 void AABB::Update(glm::mat4 _modelMat)
@@ -32,7 +34,6 @@ void AABB::Update(glm::mat4 _modelMat)
   *  ISBN: 1-55860-732-3
   *  Chapter 4.2.6 - Page 86
   */
-
   //Transformation from _modelMat
   glm::vec3 t = _modelMat[3];
   //Moving rotation and scale parts into a mat3
@@ -47,8 +48,8 @@ void AABB::Update(glm::mat4 _modelMat)
     for (int j = 0; j < 3; j++)
     {
       //Rotating on relevant axis
-      float e = rot[i][j] * min[j];
-      float f = rot[i][j] * max[j];
+      float e = rot[i][j] * origMin[j];
+      float f = rot[i][j] * origMax[j];
       //Adding to min or max depending on size
       if (e < f)
       {
@@ -62,6 +63,7 @@ void AABB::Update(glm::mat4 _modelMat)
       }
     }
   }
+
   //Re-assigning to new values
   min = nMin;
   max = nMax;
