@@ -16,7 +16,6 @@ namespace Indigo
     friend class Camera;
   public:
     Engine();
-    ~Engine();
 
   private:
     void Update();

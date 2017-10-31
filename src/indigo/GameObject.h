@@ -14,7 +14,7 @@ namespace Indigo
   class Transform;
   class RenderComponent;
 
-  class GameObject : public MemObj
+  class GameObject
   {
     friend class Engine;
     friend class Camera;
