@@ -4,6 +4,4 @@ TODO
 - Mouse control for character movement has shown how horribly inaccurate the transform getter functionality
 is, so this definitely needs to be revisited now that I've relearnt how to use matricies and vectors properly
 
-- Test AABB frustum culling using different character controllers
-	- Replace frustum point extraction to use variable near/far distances
-		- Generally neaten that section of code as well
+- Replace frustum point extraction to use variable near/far distances
