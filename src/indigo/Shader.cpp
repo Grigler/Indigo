@@ -2,19 +2,21 @@
 
 #include "Application.h"
 
+#include "Resources.h"
+
 #include <fstream>
 
 using namespace Indigo;
 
-void Shader::Init()
+void Shader::Init(std::string _name)
 {
   programID = glCreateProgram();
   if (programID == 0)
   {
-    //DEBUG
-    printf("\nSHADER PROGRAM FAIL\n");
     Application::ErrPrint(std::exception("Failed to create shader program"));
   }
+  name = _name;
+
 }
 void Shader::Activate()
 {
@@ -96,6 +98,13 @@ bool Shader::Link()
   LinkUniforms();
 
   return true;
+}
+
+std::shared_ptr<Shader> Shader::CreateShaderResource()
+{
+  std::shared_ptr<Shader> rtn = std::make_shared<Shader>();
+  Resources::PushShader(rtn);
+  return rtn;
 }
 
 bool Shader::CheckCompile(GLuint _programID)

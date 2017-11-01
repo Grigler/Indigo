@@ -26,7 +26,7 @@ namespace Indigo
   private:
     std::shared_ptr<Mesh> mesh;
     //Uses MeshShader from meshShader.h by default
-    std::shared_ptr<Shader> shader;
+    std::weak_ptr<Shader> shader;
   };
 }
 #endif

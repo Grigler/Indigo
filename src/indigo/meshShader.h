@@ -20,14 +20,16 @@ namespace Indigo
 
   void MeshShader::LoadDefaultShaders()
   {
-    LoadShader(GL_VERTEX_SHADER,
-      "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.vert");
+    static bool isFirst = true;
+    if (isFirst)
+    {
+      LoadShader(GL_VERTEX_SHADER,
+        "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.vert");
 
-    LoadShader(GL_FRAGMENT_SHADER,
-      "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.frag");
-
-    //delete[] vertexShader;
-    //delete[] fragmentShader;
+      LoadShader(GL_FRAGMENT_SHADER,
+        "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.frag");
+    }
+    isFirst = false;
   }
 
   void MeshShader::LinkUniforms()

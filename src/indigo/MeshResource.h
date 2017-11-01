@@ -12,7 +12,7 @@
 
 namespace Indigo
 {
-  //TODO - pull apart obj loader for this
+
   class MeshResource : public Resource
   {
     friend class Resources;

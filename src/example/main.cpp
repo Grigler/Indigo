@@ -9,8 +9,8 @@ public:
     mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%500 - 250, 0, (rand()%380 + 20)));
-    printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+    transform->SetPosition(glm::vec3(rand()%1000 - 500, -20, rand()%1000 - 500));
+    //printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
     transform->SetScale(glm::vec3(0.125f, 0.125f, 0.125f));
   }
   void onUpdate()
@@ -76,12 +76,13 @@ int main(int argc, char** argv)
   
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 50;
+  const int amnt = 200;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
   {
     eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
+    printf("Num: %i\n", i + 1);
   }
 
   //Application gameLoop is executed

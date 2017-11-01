@@ -93,7 +93,7 @@ void Camera::Render()
     //std::weak_ptr<MeshRenderer> mr = std::dynamic_pointer_cast<MeshRenderer>(rc.lock());
     std::weak_ptr<MeshRenderer> mr = (*i)->GetComponent<MeshRenderer>();
     if (mr.expired()) continue;
-    if (AABB::Test(frustumBV, mr.lock()->mesh->aabb))
+    if (true || AABB::Test(frustumBV, mr.lock()->mesh->aabb))
     {
       (*i)->Draw();
     }

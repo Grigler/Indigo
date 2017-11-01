@@ -1,12 +1,16 @@
 #include "Resources.h"
 
+#include "Application.h"
+
 #include "MeshResource.h"
 #include "TextureResource.h"
+#include "Shader.h"
 
 using namespace Indigo;
 
 std::vector<std::shared_ptr<MeshResource>> Resources::meshVec;
 std::vector<std::shared_ptr<TextureResource>> Resources::textureVec;
+std::vector<std::shared_ptr<Shader>> Resources::shaderVec;
 
 std::weak_ptr<MeshResource> Resources::LoadMesh(std::string _path)
 {
@@ -32,4 +36,21 @@ std::weak_ptr<TextureResource> Resources::LoadTexture(std::string _path)
   rtn->ReadFromFile(_path);
   textureVec.push_back(rtn);
   return std::weak_ptr<TextureResource>(rtn);
+}
+std::weak_ptr<Shader> Resources::GetShaderProgram(std::string _name)
+{
+  for (auto i = shaderVec.begin(); i != shaderVec.end(); i++)
+  {
+    if ((*i)->name == _name)
+    {
+      return std::weak_ptr<Shader>((*i));
+    }
+  } 
+  Application::ErrPrint("Error: Shaders must be built before loaded");
+  return std::weak_ptr<Shader>();
+}
+
+void Resources::PushShader(std::shared_ptr<Shader> _shader)
+{
+  shaderVec.push_back(_shader);
 }

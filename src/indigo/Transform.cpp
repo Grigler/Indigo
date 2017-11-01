@@ -8,6 +8,8 @@
 
 using namespace Indigo;
 
+#define SET_AABB_RECALC_FLAG _aabbNeedRecalc = true;
+
 Transform::Transform( glm::vec3 _pos, glm::vec3 _rot, glm::vec3 _scale)
 {
   pos = _pos;
@@ -57,31 +59,31 @@ glm::mat4 Transform::GetModelMat()
 void Transform::Translate(glm::vec3 _by)
 {
   pos += _by;
-  _aabbNeedRecalc = true;
+  SET_AABB_RECALC_FLAG
 }
 void Transform::MoveTo(glm::vec3 _target, float _alpha)
 {
   glm::vec3 dir = glm::normalize(_target - pos);
   pos += dir*_alpha;
-  _aabbNeedRecalc = true;
+  SET_AABB_RECALC_FLAG
 }
 void Transform::MoveDir(glm::vec3 _dir, float _alpha)
 {
   pos += _dir*_alpha;
-  _aabbNeedRecalc = true;
+  SET_AABB_RECALC_FLAG
 }
 
 void Transform::Rotate(glm::vec3 _eulerAngles)
 {
   rot += _eulerAngles;
-  _aabbNeedRecalc = true;
+  SET_AABB_RECALC_FLAG
 }
 void Transform::Scale(glm::vec3 _scaleBy)
 {
   scale.x *= _scaleBy.x;
   scale.y *= _scaleBy.y;
   scale.z *= _scaleBy.z;
-  _aabbNeedRecalc = true;
+  SET_AABB_RECALC_FLAG
 }
 
 void Transform::onUpdate()
