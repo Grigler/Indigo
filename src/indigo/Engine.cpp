@@ -6,11 +6,28 @@
 #include "Camera.h"
 #include "message.h"
 
+#include "AudioManager.h"
+
 using namespace Indigo;
 
 Engine::Engine()
 {
+#define IND_USE_AUDIO
+#ifdef IND_USE_AUDIO
+  audioManager = std::make_unique<AudioManager>();
+  if (!audioManager->Init())
+  {
+    Application::ErrPrint(std::exception());
+  }
+#endif
+}
 
+Engine::~Engine()
+{
+#ifdef IND_USE_AUDIO
+  audioManager->Destroy();
+  audioManager.reset();
+#endif
 }
 
 void Engine::Update()

@@ -37,6 +37,7 @@ add_library(Indigo
   src/Indigo/Resources.cpp
 
   src/Indigo/AABB.cpp
+
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
   src/Indigo/Mesh.cpp
@@ -44,11 +45,13 @@ add_library(Indigo
   src/Indigo/Shader.cpp
 
   src/Indigo/CharacterController.cpp
+
+  src/Indigo/AudioManager.cpp
 )
 
 if(WIN32)
   #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
-  target_link_libraries(Indigo glew32s freeglut)
+  target_link_libraries(Indigo glew32s freeglut openal)
 endif()
 
 

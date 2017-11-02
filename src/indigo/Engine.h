@@ -8,6 +8,8 @@
 
 namespace Indigo
 {
+  class AudioManager;
+
   class Engine
   {
     friend class Application;
@@ -16,6 +18,7 @@ namespace Indigo
     friend class Camera;
   public:
     Engine();
+    ~Engine();
 
   private:
     void Update();
@@ -23,8 +26,6 @@ namespace Indigo
 
     std::shared_ptr<Camera> activeCamera;
 
-    //MemObjs Memory register
-    //TODO - ask Karsten about handling smart pointers in a vector
     std::vector<std::shared_ptr<MemObj>> allMemObjs;
     void RegisterMemObj(MemObj *_obj);
     void SweepDestroy();
@@ -33,13 +34,15 @@ namespace Indigo
     //Full list of gameObjects
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::weak_ptr<GameObject> Engine::GetGameObjRef(GameObject *_obj);
-    //void RegisterGameObject(GameObject *_obj);
     void RegisterGameObject(std::shared_ptr<GameObject> _obj);
 
     //Message queue
     std::vector<Message> messageQueue;
     //MemObjs register messages that are then sent at the end of update
     void RegisterMsg(Message _msg);
+
+    //Audio Management
+    std::unique_ptr<AudioManager> audioManager;
   };
 }
 #endif
