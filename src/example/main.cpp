@@ -1,8 +1,11 @@
+#define IND_AUDIO_OPENAL
+
 #include <indigo/indigo.h>
 
 class ExampleObject : public Indigo::GameObject
 {
 public:
+  
   void onCreation()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
@@ -73,7 +76,7 @@ public:
 int main(int argc, char** argv)
 {
   Indigo::Application::Init(argc, argv);
-  
+  getchar();
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
   const int amnt = 200;

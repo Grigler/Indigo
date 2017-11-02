@@ -6,9 +6,13 @@
 
 #include "message.h"
 
+#include "config.h"
+
 namespace Indigo
 {
+#ifdef IND_USE_AUDIO
   class AudioManager;
+#endif
 
   class Engine
   {
@@ -41,8 +45,10 @@ namespace Indigo
     //MemObjs register messages that are then sent at the end of update
     void RegisterMsg(Message _msg);
 
-    //Audio Management
+#ifdef IND_USE_AUDIO
     std::unique_ptr<AudioManager> audioManager;
+#endif
+
   };
 }
 #endif

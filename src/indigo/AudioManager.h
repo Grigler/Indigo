@@ -1,3 +1,9 @@
+#ifndef IND_AUDIO_OPENAL
+#define A_API __declspec(dllexport)
+#else
+#define A_API __declspec(dllimport)
+#endif
+
 #ifndef __IND_AUDIO_MANAGER__
 #define __IND_AUDIO_MANAGER__
 
@@ -10,12 +16,13 @@ namespace Indigo
   {
     friend class Engine;
   public:
-    bool Init();
-    void Destroy();
+    A_API bool Init();
+    A_API void Destroy();
 
   private:
     ALCdevice *device;
     ALCcontext *context;
+
   };
 }
 

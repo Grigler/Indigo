@@ -12,13 +12,18 @@ using namespace Indigo;
 
 Engine::Engine()
 {
-#define IND_USE_AUDIO
 #ifdef IND_USE_AUDIO
   audioManager = std::make_unique<AudioManager>();
   if (!audioManager->Init())
   {
     Application::ErrPrint(std::exception());
   }
+  else
+  {
+    printf("flkdsjfalk;dsajf\n");
+  }
+#else
+  printf("No Audio Loading\n");
 #endif
 }
 
@@ -60,13 +65,6 @@ void Engine::Update()
 }
 void Engine::Draw()
 {
-  //Call Render() on active camera
-  /*
-  if (activeCamera.get() != nullptr)
-  {
-    activeCamera->Render();
-  }
-  */
   if (Camera::currentActive.lock().get() != nullptr)
   {
     Camera::currentActive.lock()->Render();

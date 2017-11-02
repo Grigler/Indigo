@@ -23,6 +23,12 @@ if(WIN32)
   )
 endif()
 
+add_library(AL_AUDIO SHARED
+  src/Indigo/AudioManager.cpp
+)
+target_link_libraries(AL_AUDIO openal)
+
+
 add_library(Indigo
   src/Indigo/plank.cpp
 
@@ -45,24 +51,9 @@ add_library(Indigo
   src/Indigo/Shader.cpp
 
   src/Indigo/CharacterController.cpp
-
-  src/Indigo/AudioManager.cpp
 )
+target_link_libraries(Indigo glew32s freeglut AL_AUDIO)
 
-if(WIN32)
-  #target_link_libraries(indigo glew32 freeglut libogg libvorbis libvorbisfile openal)
-  target_link_libraries(Indigo glew32s freeglut openal)
-endif()
-
-
-# SETTING UP EDITOR EXECUTABLE
-#add_executable(editor
-#
-#  src/editor/main.cpp
-#
-#)
-# LINKING TO INDIGO ENGINE LIB
-#target_link_libraries(editor indigo)
 
 add_executable(example
 
@@ -70,6 +61,3 @@ add_executable(example
 
 )
 target_link_libraries(example Indigo)
-
-
-#indigo colour code in rgb (75, 0, 130)

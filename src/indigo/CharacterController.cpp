@@ -23,7 +23,7 @@ void CharacterController::onCreation()
 
 void CharacterController::onUpdate()
 {
-  //UpdateRotFromMouse();
+  UpdateRotFromMouse();
 
   UpdatePosFromKeys();
 }
