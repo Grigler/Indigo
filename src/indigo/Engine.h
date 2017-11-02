@@ -48,7 +48,6 @@ namespace Indigo
 #ifdef IND_USE_AUDIO
     std::unique_ptr<AudioManager> audioManager;
 #endif
-
   };
 }
 #endif

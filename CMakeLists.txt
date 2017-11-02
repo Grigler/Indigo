@@ -26,7 +26,7 @@ endif()
 add_library(AL_AUDIO SHARED
   src/Indigo/AudioManager.cpp
 )
-target_link_libraries(AL_AUDIO openal)
+target_link_libraries(AL_AUDIO openal libogg libvorbis libvorbisfile) 
 
 
 add_library(Indigo

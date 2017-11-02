@@ -14,5 +14,6 @@
 #include "TextureResource.h"
 #include "Camera.h"
 #include "CharacterController.h"
+#include "AudioManager.h"
 
 #endif
