@@ -3,10 +3,14 @@
 
 //Defined in config - used to switch between
 //dllimport (for engine) and dllexport (for dll build)
-#ifndef IND_AUDIO_OPENAL
-#define A_API __declspec(dllexport)
+#ifdef _WIN32
+  #ifndef IND_AUDIO_OPENAL
+  #define A_API __declspec(dllexport)
+  #else
+  #define A_API __declspec(dllimport)
+  #endif
 #else
-#define A_API __declspec(dllimport)
+  #define A_API
 #endif
 
 #include <AL/al.h>
