@@ -2,6 +2,7 @@
 #define __IND_AABB__
 
 #include <vector>
+#include <memory>
 
 #include <glm/glm.hpp>
 
@@ -20,6 +21,7 @@ namespace Indigo
 
     //Dereferences this and calls static test
     static bool Test(AABB _a, AABB _b);
+    static bool Test(std::weak_ptr<AABB> _a, std::weak_ptr<AABB> _b);
 
   private:
     glm::vec3 min;

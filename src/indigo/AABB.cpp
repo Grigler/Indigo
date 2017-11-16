@@ -78,3 +78,15 @@ bool AABB::Test(AABB _a, AABB _b)
 
   return true;
 }
+bool AABB::Test(std::weak_ptr<AABB> _a, std::weak_ptr<AABB> _b)
+{
+  AABB a = *_a.lock().get();
+  AABB b = *_b.lock().get();
+
+  //Re-ordered to use x and z test first
+  if (a.max.z < b.min.z || a.min.z > b.max.z) return false;
+  if (a.max.x < b.min.x || a.min.x > b.max.x) return false;
+  if (a.max.y < b.min.y || a.min.y > b.max.y) return false;
+
+  return true;
+}

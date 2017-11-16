@@ -17,15 +17,21 @@ namespace Indigo
     friend class MeshRenderer;
     friend class Camera;
   public:
+    Mesh();
+
     void Assign(std::weak_ptr<MeshResource> _m);
     void ActivateVAO();
 
     GLsizei GetVertCount();
+    
+    void AllowCollision();
 
   private:
+    std::weak_ptr<GameObject> goParent;
+
     std::shared_ptr<MeshResource> meshResource;
 
-    AABB aabb;
+    std::shared_ptr<AABB> aabb;
     void _updateAABB(glm::mat4 _modelMat);
   };
 }

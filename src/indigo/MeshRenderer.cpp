@@ -16,6 +16,7 @@ using namespace Indigo;
 MeshRenderer::MeshRenderer()
 {
   mesh = std::make_shared<Mesh>();
+  mesh->goParent = parent;
 
   shader = Resources::GetShaderProgram("Basic");
   if (shader.expired())
@@ -34,8 +35,6 @@ MeshRenderer::MeshRenderer()
   {
     printf("\tLoaded from pool\n");
   }
-
-  
 
 }
 

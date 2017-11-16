@@ -6,7 +6,11 @@
 #include "Camera.h"
 #include "message.h"
 
-#include "AudioManager.h"
+#ifdef IND_USE_AUDIO
+  #include "AudioManager.h"
+#endif
+
+#include "PhysicsSpace.h"
 
 using namespace Indigo;
 
@@ -37,6 +41,8 @@ Engine::~Engine()
 
 void Engine::Update()
 {
+  PhysicsSpace::Update();
+
   //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {

@@ -23,8 +23,11 @@ namespace Indigo
 
     //Called by GO
     void Draw();
-  private:
+
+    //DEBUG AS PUBLIC
     std::shared_ptr<Mesh> mesh;
+
+  private:
     //Uses MeshShader from meshShader.h by default
     std::weak_ptr<Shader> shader;
   };

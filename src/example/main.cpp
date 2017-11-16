@@ -1,4 +1,5 @@
-#define IND_AUDIO_OPENAL
+//#define IND_AUDIO_OPENAL
+//#define IND_PHYS_IND
 
 #include <indigo/indigo.h>
 
@@ -9,14 +10,22 @@ public:
   void onCreation()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
+    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%1000 - 500, -20, rand()%1000 - 500));
+    transform->SetPosition(glm::vec3(rand()%3000 - 1500, -25, rand()%1000 - 500));
+    //transform->SetPosition(glm::vec3(0, 0, 0));
     //printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
-    transform->SetScale(glm::vec3(0.125f, 0.125f, 0.125f));
+    transform->SetScale(glm::vec3(10.0f, 10.0f, 10.0f));
     sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
-    sound.lock()->Play();
+    if (p == false)
+    {
+      sound.lock()->Play();
+      p = true;
+    }
+    
+    mr.lock()->mesh->AllowCollision();
+
   }
   void onUpdate()
   {
@@ -32,8 +41,9 @@ private:
   std::weak_ptr<Indigo::Camera> cam;
   std::weak_ptr<Indigo::Sound> sound;
 
+  static bool p;
 };
-
+bool ExampleObject::p = false;
 class CamObject : public Indigo::GameObject
 {
 public:
@@ -58,7 +68,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 200;
+  const int amnt = 1000;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
