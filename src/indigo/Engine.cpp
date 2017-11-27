@@ -44,6 +44,7 @@ Engine::~Engine()
 
 void Engine::Update()
 {
+  physicsHandler->Integrate();
   physicsHandler->BroadPhase();
   physicsHandler->NarrowPhase();
 

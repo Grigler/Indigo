@@ -9,7 +9,7 @@ public:
 
   void onCollision(std::weak_ptr<Indigo::Collision> _col)
   {
-    printf("I collided!\n");
+    //printf("I collided!\n");
   }
 };
 
@@ -23,10 +23,9 @@ public:
     mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%50 - 25, -25, rand()%50 - 25));
-    //transform->SetPosition(glm::vec3(0, 0, 0));
-    //printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+    transform->SetPosition(glm::vec3(rand()%50 - 25, -25, rand()%100 + 50));
     transform->SetScale(glm::vec3(10.0f, 10.0f, 10.0f));
+
     sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     if (p == false)
     {
@@ -35,13 +34,18 @@ public:
     }
 
     rb = AddComponent<Indigo::RB>();
-    rb.lock()->AssignCollider(Indigo::ColliderType::Sphere);
 
     ts = AddComponent<TestScript>();
   }
   void onUpdate()
   {
-    transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
+    //transform->SetRotation(transform->GetRotation() + glm::vec3(0,1,0) * Indigo::Application::GetDT());
+    glm::vec3 r = transform->GetRotation();
+    glm::vec3 v = rb.lock()->GetLinearVel();
+    glm::vec3 a = rb.lock()->GetAngularVel();
+    //printf("R: %f, %f, %f\n", r.x, r.y, r.z);
+    printf("V: %f, %f, %f\n", v.x, v.y, v.z);
+    printf("A: %f, %f, %f\n\n", a.x, a.y, a.z);
   }
   void Draw()
   {
@@ -84,7 +88,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 10;
+  const int amnt = 1;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
@@ -92,6 +96,10 @@ int main(int argc, char** argv)
     eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
     printf("Num: %i\n", i + 1);
   }
+
+  eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 100.0f),
+    glm::vec3(0.0f, 5.0f, 0.0f));
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyTorque(glm::vec3(0.0f, 15000.0f, 0.0f));
 
   //Application gameLoop is executed
   glViewport(0, 0, 1280, 720);

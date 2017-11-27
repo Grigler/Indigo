@@ -26,6 +26,7 @@ namespace Indigo
   {
     friend class Collider;
     friend class PhysicsHandler;
+
   public:
     //Register the RB component with physics handler
     void onCreation();
@@ -34,10 +35,26 @@ namespace Indigo
     void AssignCollider(ColliderType _type);
     void ColliderResize(float _size);
     void ColliderSetOffset(glm::vec3 _offset);
-  private:
 
-    //Check if it is deemed as colliding?
+    //Force Stuff
+    void ApplyForceAtLocation(glm::vec3 _force, glm::vec3 _loc);
+    void ApplyTorque(glm::vec3 _torque);
+
+    glm::vec3 GetLinearVel() { return linearVel; }
+    glm::vec3 GetAngularVel() { return angularVel; }
+  private:
+    //Not sure if this function is entirely necessary
     void onUpdate();
+
+    void Integrate();
+    glm::vec3 linearVel;
+    glm::vec3 angularVel;
+    glm::vec3 force;
+    glm::vec3 torque;
+    float mass;
+    float drag;
+    bool isGravityOn;
+    glm::mat3 inertiaTensor;
 
     //Lower-level function, called by interface func, to handle
     //collider change at a lower-level

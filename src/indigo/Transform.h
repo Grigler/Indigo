@@ -7,6 +7,7 @@
 #include <memory>
 
 #include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace Indigo
 {
@@ -22,6 +23,8 @@ namespace Indigo
 
     glm::vec3 GetPosition() { return pos; }
     glm::vec3 GetRotation() { return rot; }
+    glm::mat3 GetRotationMat();
+    glm::quat GetRotationQuat();
     glm::vec3 GetScale() { return scale; }
     void SetPosition(glm::vec3 _p) { pos = _p; _aabbNeedRecalc = true; }
     void SetRotation(glm::vec3 _r) { rot = _r; _aabbNeedRecalc = true;}

@@ -36,6 +36,14 @@ void PhysicsHandler::NarrowPhase()
   }
 }
 
+void PhysicsHandler::Integrate()
+{
+  for (auto i = bodies.begin(); i != bodies.end(); i++)
+  {
+    (*i).lock()->Integrate();
+  }
+}
+
 void PhysicsHandler::RegisterRB(std::weak_ptr<RB> _rb)
 {
   bodies.push_back(_rb);

@@ -16,6 +16,8 @@ namespace Indigo
     void BroadPhase();
     void NarrowPhase();
 
+    void Integrate();
+
     static void RegisterRB(std::weak_ptr<RB> _rb);
 
   private:

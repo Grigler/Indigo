@@ -33,6 +33,23 @@ glm::vec3 Transform::GetRight()
   return glm::cross(GetUp(), GetForward());
 }
 
+glm::mat3 Transform::GetRotationMat()
+{
+  glm::mat4 from = glm::mat4(1);
+  if (!parent.expired())
+  {
+    from = parent.lock()->transform->GetRotationMat();
+  }
+  glm::mat4 rotationMat = glm::rotate(from, rot.y, glm::vec3(0, 1, 0));
+  rotationMat = glm::rotate(rotationMat, rot.z, glm::vec3(0, 0, 1));
+  rotationMat = glm::rotate(rotationMat, rot.x, glm::vec3(1, 0, 0));
+  return rotationMat;
+}
+glm::quat Transform::GetRotationQuat()
+{
+  return glm::quat(GetRotationMat());
+}
+
 glm::mat4 Transform::GetModelMat()
 {
   //TODO - cache the model matrix as it is calculated
