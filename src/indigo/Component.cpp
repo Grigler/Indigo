@@ -1,6 +1,13 @@
 #include "Component.h"
 
+#include "GameObject.h"
+
 using namespace Indigo;
+
+Component::Component()
+{
+  transform = parent.lock()->transform;
+}
 
 void Component::ParentTo(std::weak_ptr<GameObject> _go)
 {

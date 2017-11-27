@@ -5,8 +5,6 @@
 #include <string>
 #include <GL/glew.h>
 
-#include "config.h"
-
 namespace Indigo
 {
 

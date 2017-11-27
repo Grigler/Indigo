@@ -6,8 +6,6 @@
 
 #include "message.h"
 
-#include "config.h"
-
 namespace Indigo
 {
 #ifdef IND_USE_AUDIO

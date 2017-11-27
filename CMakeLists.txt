@@ -12,8 +12,6 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/src
 )
 
-add_definitions(-DGLEW_STATIC)
-
 if(WIN32)
   include_directories(
     ${PROJECT_SOURCE_DIR}/contrib/msvc/include
@@ -23,12 +21,23 @@ if(WIN32)
   )
 endif()
 
+
 add_library(AL_AUDIO SHARED
+  src/Indigo/AL_AUDIO/AudioManager.h
   src/Indigo/AL_AUDIO/AudioManager.cpp
 )
 target_link_libraries(AL_AUDIO openal libogg libvorbis libvorbisfile) 
 
+#I don't like doing this, but it means the header files don't appear in "External Dependencies"
+#in Visual Studio and that I don't have to fill up the add_library with .h files
+message(STATUS "Rel: ${PROJECT_SOURCE_DIR}/indigo/src")
+file(GLOB HEADERS RELATIVE ${PROJECT_SOURCE_DIR} src/indigo/*h)
+message(STATUS "Glob: ${HEADERS}")
+
+add_definitions(-DGLEW_STATIC)
 add_library(Indigo
+  ${HEADERS}
+
   src/Indigo/plank.cpp
 
   src/Indigo/Application.cpp
@@ -43,7 +52,9 @@ add_library(Indigo
 
   src/Indigo/AABB.cpp
   src/Indigo/PhysicsSpace.cpp
+  
   src/Indigo/Collider.cpp
+  src/Indigo/RB.cpp
   
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
@@ -55,10 +66,24 @@ add_library(Indigo
 )
 target_link_libraries(Indigo glew32s freeglut AL_AUDIO)
 
+#Hacky way of using the ${HEADERS} glob and writing it into an API header
+set(INCLUDE_OUT ${PROJECT_SOURCE_DIR}/include/indigo/indigo.h)
+file(REMOVE ${INCLUDE_OUT})
+file(APPEND ${INCLUDE_OUT} "#ifndef __INDIGO__\n#define __INDIGO__\n")
+foreach(CURR_HEADER ${HEADERS})
+  string(REGEX MATCH indigo/.* PATH_FIX ${CURR_HEADER})
+  file(APPEND ${INCLUDE_OUT} "#include \"${PATH_FIX}\"\n")
+endforeach(${CURR_HEADER})
+file(APPEND ${INCLUDE_OUT} "#endif\n")
+
+
+include_directories(
+  ${PROJECT_SOURCE_DIR}/include
+  )
 
 add_executable(example
+  src/example/config.h
 
   src/example/main.cpp
-
 )
 target_link_libraries(example Indigo)

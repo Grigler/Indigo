@@ -8,6 +8,7 @@
 
 #include "RB.h"
 
+
 using namespace Indigo;
 
 std::shared_ptr<GameObject> GameObject::_MakeReg()

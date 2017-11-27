@@ -41,9 +41,9 @@ void RB::ColliderResize(float _size)
 {
   collider->size = _size;
 }
-void RB::ColliderRePosition(glm::vec3 _pos)
+void RB::ColliderSetOffset(glm::vec3 _offset)
 {
-  collider->centerPos = _pos;
+  collider->offset = _offset;
 }
 
 void RB::_AssignCollider(std::weak_ptr<Collider> _col)
@@ -52,6 +52,7 @@ void RB::_AssignCollider(std::weak_ptr<Collider> _col)
 
   collider = _col.lock();
   collider->parent = parent.lock()->GetComponent<RB>();
+  collider->transform = transform;
 }
 
 void RB::RegCollision(std::weak_ptr<RB> _other)

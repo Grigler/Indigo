@@ -30,7 +30,7 @@ namespace Indigo
     //Interface function to change collider type by enum
     void AssignCollider(ColliderType _type);
     void ColliderResize(float _size);
-    void ColliderRePosition(glm::vec3 _pos);
+    void ColliderSetOffset(glm::vec3 _offset);
 
   private:
     //Lower-level function, called by interface func, to handle

@@ -31,8 +31,10 @@ namespace Indigo
     glm::vec3 GetUp();
     glm::vec3 GetRight();
 
-    //Updates viewMatrix and returns it
+    //Returns model matrix with translation and rotation applied
     glm::mat4 GetModelMat();
+    //Offsets position by _offset, then returns MM with trans and rot
+    glm::mat4 GetModelMatWithOffset(glm::vec3 _offset);
 
     void Translate(glm::vec3 _by);
     void MoveTo(glm::vec3 _target, float _alpha);

@@ -8,11 +8,11 @@
 namespace Indigo
 {
   //Bitfield for easy | collider type checking
-#define COL_TYPE_BOX     0x001
-#define COL_TYPE_SPHERE  0x010
-#define COL_TYPE_CAPSULE 0x100
+#define COL_TYPE_BOX     0b001
+#define COL_TYPE_SPHERE  0b010
+#define COL_TYPE_CAPSULE 0b100
 
-  enum ColliderType
+  enum ColliderType : unsigned char
   {
     Box = COL_TYPE_BOX,
     Sphere = COL_TYPE_SPHERE,
@@ -20,11 +20,13 @@ namespace Indigo
   };
 
   class RB;
+  class Transform;
 
   class Collider
   {
   public:
     std::weak_ptr<RB> parent;
+    std::weak_ptr<Transform> transform;
 
     ColliderType type;
 
@@ -32,7 +34,8 @@ namespace Indigo
     //collision test function
     bool CheckCol(std::weak_ptr<Collider> _against);
 
-    glm::vec3 centerPos;
+    //Defined in local space - tranformed by Model Matrix in col check
+    glm::vec3 offset;
     float size;
 
   private:

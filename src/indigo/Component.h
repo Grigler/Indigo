@@ -6,6 +6,7 @@
 namespace Indigo
 {
   class GameObject;
+  class Transform;
   struct Collision;
 
   class Component
@@ -13,6 +14,8 @@ namespace Indigo
     friend class Camera;
     friend class GameObject;
   public:
+    Component();
+
     virtual void onCreation() {}
     virtual void onUpdate() {}
     virtual void onLateUpdate() {}
@@ -24,6 +27,7 @@ namespace Indigo
     void ParentTo(std::weak_ptr<GameObject> _go);
   protected:
     std::weak_ptr<GameObject> parent;
+    std::weak_ptr<Transform> transform;
 
   };
 }

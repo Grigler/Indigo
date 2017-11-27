@@ -1,12 +1,14 @@
 #include "Collider.h"
 
+#include "GameObject.h"
+#include "Transform.h"
 #include "RB.h"
 
 using namespace Indigo;
 
 bool Collider::CheckCol(std::weak_ptr<Collider> _against)
 {
-  unsigned int bitField = type | _against.lock()->type;
+  unsigned char bitField = type | _against.lock()->type;
 
   //Note: Identical types could be directly compared to bitfield
   //but have been left in this form for readability
@@ -50,6 +52,13 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
 //TODO - make it return a hitvec too
 bool Collider::BoxBox(std::weak_ptr<Collider> _against)
 {
+  //Transforming position by modelmatrix to give WS coords
+  glm::vec3 transPos = glm::vec4(1.0f) * transform.lock()->GetModelMatWithOffset(offset);
+  glm::vec3 otherTransPos = glm::vec4(1.0f) *
+    _against.lock()->transform.lock()->GetModelMatWithOffset(_against.lock()->offset);
+
+
+
 
   return false;
 }
