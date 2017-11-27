@@ -1,4 +1,4 @@
-#Version 2.8 for policy-CMP0012 compliance for OPENMP_FOUND conditional
+#Version 2.8 for policy-CMP0012 compliance - OPENMP_FOUND conditional
 cmake_minimum_required(VERSION 2.8)
 project(INDIGO)
 
@@ -42,7 +42,9 @@ add_library(Indigo
   src/Indigo/Resources.cpp
 
   src/Indigo/AABB.cpp
-
+  src/Indigo/PhysicsSpace.cpp
+  src/Indigo/Collider.cpp
+  
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
   src/Indigo/Mesh.cpp

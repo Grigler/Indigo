@@ -6,6 +6,7 @@
 namespace Indigo
 {
   class GameObject;
+  struct Collision;
 
   class Component
   {
@@ -15,6 +16,10 @@ namespace Indigo
     virtual void onCreation() {}
     virtual void onUpdate() {}
     virtual void onLateUpdate() {}
+
+    //Called by GO when collision is detected
+    virtual void onCollision(std::weak_ptr<Collision> _other) {}
+
     //TODO - add more virtual functions
     void ParentTo(std::weak_ptr<GameObject> _go);
   protected:
