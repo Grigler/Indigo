@@ -32,7 +32,6 @@ target_link_libraries(AL_AUDIO openal libogg libvorbis libvorbisfile)
 #in Visual Studio and that I don't have to fill up the add_library with .h files
 message(STATUS "Rel: ${PROJECT_SOURCE_DIR}/indigo/src")
 file(GLOB HEADERS RELATIVE ${PROJECT_SOURCE_DIR} src/indigo/*h)
-message(STATUS "Glob: ${HEADERS}")
 
 add_definitions(-DGLEW_STATIC)
 add_library(Indigo
@@ -51,7 +50,7 @@ add_library(Indigo
   src/Indigo/Resources.cpp
 
   src/Indigo/AABB.cpp
-  src/Indigo/PhysicsSpace.cpp
+ # src/Indigo/PhysicsSpace.cpp
   
   src/Indigo/Collider.cpp
   src/Indigo/RB.cpp
@@ -67,14 +66,16 @@ add_library(Indigo
 target_link_libraries(Indigo glew32s freeglut AL_AUDIO)
 
 #Hacky way of using the ${HEADERS} glob and writing it into an API header
-set(INCLUDE_OUT ${PROJECT_SOURCE_DIR}/include/indigo/indigo.h)
-file(REMOVE ${INCLUDE_OUT})
-file(APPEND ${INCLUDE_OUT} "#ifndef __INDIGO__\n#define __INDIGO__\n")
-foreach(CURR_HEADER ${HEADERS})
-  string(REGEX MATCH indigo/.* PATH_FIX ${CURR_HEADER})
-  file(APPEND ${INCLUDE_OUT} "#include \"${PATH_FIX}\"\n")
-endforeach(${CURR_HEADER})
-file(APPEND ${INCLUDE_OUT} "#endif\n")
+#set(INCLUDE_OUT ${PROJECT_SOURCE_DIR}/include/indigo/indigo.h)
+#file(REMOVE ${INCLUDE_OUT})
+#file(APPEND ${INCLUDE_OUT} "#ifndef __INDIGO__\n#define __INDIGO__\n")
+#file(APPEND ${INCLUDE_OUT} "#include \"config.h\"\n\n")
+#foreach(CURR_HEADER ${HEADERS})
+#  string(REGEX MATCH indigo/.* PATH_FIX ${CURR_HEADER})
+#  file(APPEND ${INCLUDE_OUT} "#include \"${PATH_FIX}\"\n")
+#endforeach(${CURR_HEADER})
+
+#file(APPEND ${INCLUDE_OUT} "\n#endif\n")
 
 
 include_directories(

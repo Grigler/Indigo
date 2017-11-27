@@ -1,28 +1,24 @@
 #ifndef __INDIGO__
 #define __INDIGO__
-#include "indigo/AABB.h"
-#include "indigo/Application.h"
+
+#include "config.h"
 #include "indigo/AudioManager.h"
-#include "indigo/Camera.h"
-#include "indigo/CharacterController.h"
-#include "indigo/Collider.h"
-#include "indigo/Component.h"
+
+#include "indigo/PhysicsHandler.h"
+#include "indigo/RB.h"
+
+#include "indigo/Application.h"
 #include "indigo/Engine.h"
-#include "indigo/GameObject.h"
 #include "indigo/Input.h"
-#include "indigo/MemObj.h"
+#include "indigo/GameObject.h"
+#include "indigo/Transform.h"
+#include "indigo/Resources.h"
+#include "indigo/resource.h"
 #include "indigo/Mesh.h"
 #include "indigo/MeshRenderer.h"
 #include "indigo/MeshResource.h"
-#include "indigo/PhysicsSpace.h"
-#include "indigo/RB.h"
-#include "indigo/RenderComponent.h"
-#include "indigo/Resources.h"
-#include "indigo/Shader.h"
-#include "indigo/Sound.h"
 #include "indigo/TextureResource.h"
-#include "indigo/Transform.h"
-#include "indigo/meshShader.h"
-#include "indigo/message.h"
-#include "indigo/resource.h"
+#include "indigo/Camera.h"
+#include "indigo/CharacterController.h"
+
 #endif
