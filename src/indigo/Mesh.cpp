@@ -29,11 +29,12 @@ GLsizei Mesh::GetVertCount()
 {
   return meshResource->GetVertCount();
 }
-
+/*
 void Mesh::AllowCollision()
 {
   PhysicsSpace::Register(WorldEntry(aabb, goParent));
 }
+*/
 
 void Mesh::_updateAABB(glm::mat4 _modelMat)
 {

@@ -14,8 +14,6 @@ namespace Indigo
     friend class Camera;
     friend class GameObject;
   public:
-    Component();
-
     virtual void onCreation() {}
     virtual void onUpdate() {}
     virtual void onLateUpdate() {}

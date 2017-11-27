@@ -1,17 +1,33 @@
 #include "RB.h"
 
+#include "PhysicsHandler.h"
+#include "Collider.h"
+
 #include "GameObject.h"
+#include "MeshRenderer.h"
+#include "Mesh.h"
+
 
 using namespace Indigo;
 
 void RB::onCreation()
 {
   //Register to physics handler here
+  PhysicsHandler::RegisterRB(parent.lock()->GetComponent<RB>());
+
+  //Creating a default collider box
+  collider = std::make_shared<Collider>();
+  collider->type = ColliderType::Box;
+  collider->offset = glm::vec3(0);
+  collider->size = 1.0f;
+
+  //Getting a local shared_ptr to aabb defined and updated in mesh
+  aabb = parent.lock()->GetComponent<MeshRenderer>().lock()->mesh->aabb;
 }
 
 void RB::onUpdate()
 {
-
+  //Do I even need this function?
 }
 
 void RB::AssignCollider(ColliderType _type)

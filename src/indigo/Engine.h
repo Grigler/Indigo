@@ -18,6 +18,7 @@ namespace Indigo
     friend class MemObj;
     friend class GameObject;
     friend class Camera;
+    friend class PhysicsHandler;
   public:
     Engine();
     ~Engine();
@@ -42,6 +43,9 @@ namespace Indigo
     std::vector<Message> messageQueue;
     //MemObjs register messages that are then sent at the end of update
     void RegisterMsg(Message _msg);
+
+    //PhysicsHandler
+    std::unique_ptr<PhysicsHandler> physicsHandler;
 
 #ifdef IND_USE_AUDIO
     std::unique_ptr<AudioManager> audioManager;

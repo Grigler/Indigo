@@ -16,6 +16,8 @@ namespace Indigo
   {
     friend class MeshRenderer;
     friend class Camera;
+    //Needs to access RB and other mesh data
+    friend class RB;
   public:
     Mesh();
 
@@ -24,7 +26,7 @@ namespace Indigo
 
     GLsizei GetVertCount();
     
-    void AllowCollision();
+    //void AllowCollision();
 
   private:
     std::weak_ptr<GameObject> goParent;

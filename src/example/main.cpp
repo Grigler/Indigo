@@ -3,6 +3,16 @@
 
 #include <indigo/indigo.h>
 
+class TestScript : public Indigo::Component
+{
+public:
+
+  void onCollision(std::weak_ptr<Indigo::Collision> _col)
+  {
+    printf("I collided!\n");
+  }
+};
+
 class ExampleObject : public Indigo::GameObject
 {
 public:
@@ -13,7 +23,7 @@ public:
     mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%3000 - 1500, -25, rand()%1000 - 500));
+    transform->SetPosition(glm::vec3(rand()%50 - 25, -25, rand()%50 - 25));
     //transform->SetPosition(glm::vec3(0, 0, 0));
     //printf("Pos %f %f %f\n", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
     transform->SetScale(glm::vec3(10.0f, 10.0f, 10.0f));
@@ -23,9 +33,11 @@ public:
       sound.lock()->Play();
       p = true;
     }
-    
-    mr.lock()->mesh->AllowCollision();
 
+    rb = AddComponent<Indigo::RB>();
+    rb.lock()->AssignCollider(Indigo::ColliderType::Sphere);
+
+    ts = AddComponent<TestScript>();
   }
   void onUpdate()
   {
@@ -41,9 +53,13 @@ private:
   std::weak_ptr<Indigo::Camera> cam;
   std::weak_ptr<Indigo::Sound> sound;
 
+  std::weak_ptr<Indigo::RB> rb;
+  std::weak_ptr<TestScript> ts;
+
   static bool p;
 };
 bool ExampleObject::p = false;
+
 class CamObject : public Indigo::GameObject
 {
 public:
@@ -68,7 +84,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 1000;
+  const int amnt = 10;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)

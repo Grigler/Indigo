@@ -24,6 +24,7 @@ namespace Indigo
 
   class Collider
   {
+    friend class PhysicsHandler;
   public:
     std::weak_ptr<RB> parent;
     std::weak_ptr<Transform> transform;
@@ -36,6 +37,7 @@ namespace Indigo
 
     //Defined in local space - tranformed by Model Matrix in col check
     glm::vec3 offset;
+    //Radius for sphere, uniform half-extents for box
     float size;
 
   private:

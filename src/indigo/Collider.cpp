@@ -4,6 +4,11 @@
 #include "Transform.h"
 #include "RB.h"
 
+#include "Application.h"
+
+//Used for easy square distance function
+#include <glm/gtx/norm.hpp>
+
 using namespace Indigo;
 
 bool Collider::CheckCol(std::weak_ptr<Collider> _against)
@@ -37,6 +42,7 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
     break;
   default:
     //COLLIDER TYPE DOES NOT EXIST
+    Application::ErrPrint(std::exception("Collider type does not exist"));
     break;
   }
 
@@ -50,7 +56,45 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
 }
 
 //TODO - make it return a hitvec too
+//This should work as an OBB-OBB test, but I'm currently just doing a basic AABB-AABB test
 bool Collider::BoxBox(std::weak_ptr<Collider> _against)
+{
+  //Transforming position by modelmatrix to give WS coords
+  glm::vec3 a = glm::vec4(1.0f) * transform.lock()->GetModelMatWithOffset(offset);
+  glm::vec3 b = glm::vec4(1.0f) *
+    _against.lock()->transform.lock()->GetModelMatWithOffset(_against.lock()->offset);
+
+  float r = _against.lock()->size + size;
+
+  if (glm::abs(a.x - b.x) > r) return false;
+  if (glm::abs(a.y - b.y) > r) return false;
+  if (glm::abs(a.z - b.z) > r) return false;
+
+  //Registering hit
+  parent.lock()->RegCollision(_against.lock()->parent);
+
+  return true;
+}
+bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
+{
+  //Transforming position by modelmatrix to give WS coords
+  glm::vec3 transPos = glm::vec4(1.0f) * transform.lock()->GetModelMatWithOffset(offset);
+  glm::vec3 otherTransPos = glm::vec4(1.0f) *
+    _against.lock()->transform.lock()->GetModelMatWithOffset(_against.lock()->offset);
+
+  //Comparing square distance with (rad1+rad2)^2
+  if (glm::distance2(transPos, otherTransPos) <= (size + _against.lock()->size)*(size + _against.lock()->size))
+  {
+    //Registering hit
+    parent.lock()->RegCollision(_against.lock()->parent);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+bool Collider::BoxSphere(std::weak_ptr<Collider> _against)
 {
   //Transforming position by modelmatrix to give WS coords
   glm::vec3 transPos = glm::vec4(1.0f) * transform.lock()->GetModelMatWithOffset(offset);
@@ -58,17 +102,6 @@ bool Collider::BoxBox(std::weak_ptr<Collider> _against)
     _against.lock()->transform.lock()->GetModelMatWithOffset(_against.lock()->offset);
 
 
-
-
-  return false;
-}
-bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
-{
-
-  return false;
-}
-bool Collider::BoxSphere(std::weak_ptr<Collider> _against)
-{
 
   return false;
 }

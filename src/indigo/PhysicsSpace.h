@@ -1,3 +1,4 @@
+/*
 #ifndef __IND_PHYSICS_SPACE__
 #define __IND_PHYSICS_SPACE__
 
@@ -32,7 +33,7 @@ namespace Indigo
       r = _r.parent;
     }
   };
-
+  
   struct Collision
   {
     //Collider and hit information
@@ -56,3 +57,4 @@ namespace Indigo
 }
 
 #endif
+*/

@@ -10,7 +10,7 @@
   #include "AudioManager.h"
 #endif
 
-#include "PhysicsSpace.h"
+#include "PhysicsHandler.h"
 
 
 using namespace Indigo;
@@ -30,6 +30,8 @@ Engine::Engine()
 #else
   printf("No Audio Loading\n");
 #endif
+
+  physicsHandler = std::make_unique<PhysicsHandler>();
 }
 
 Engine::~Engine()
@@ -42,7 +44,8 @@ Engine::~Engine()
 
 void Engine::Update()
 {
-  PhysicsSpace::Update();
+  physicsHandler->BroadPhase();
+  physicsHandler->NarrowPhase();
 
   //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
