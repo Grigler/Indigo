@@ -46,11 +46,6 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
     break;
   }
 
-  if (hit)
-  {
-    parent.lock()->RegCollision(_against.lock()->parent);
-  }
-
   return hit;
 }
 
@@ -70,7 +65,7 @@ bool Collider::BoxBox(std::weak_ptr<Collider> _against)
   if (glm::abs(a.z - b.z) > r) return false;
 
   //Registering hit
-  parent.lock()->RegCollision(_against.lock()->parent);
+  //parent.lock()->RegContact(_against.lock()->parent);
 
   return true;
 }
@@ -86,13 +81,13 @@ bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
     glm::vec3 contactNorm = glm::normalize(rji);
     glm::vec3 contactPoint = contactNorm*glm::normalize(transPos) + transPos;
 
-    std::shared_ptr<Collision> col = std::make_shared<Collision>();
-    col->hitPoint = contactPoint;
-    col->hitNorm = contactNorm;
-    col->otherRB = _against.lock()->parent;
+    std::shared_ptr<Contact> c = std::make_shared<Contact>();
+    c->contactPoint = contactPoint;
+    c->contactNorm = contactNorm;
+    c->otherRB = _against.lock()->parent;
 
     //Registering hit
-    parent.lock()->RegCollision(col);
+    parent.lock()->RegContact(c);
     return true;
   }
   else

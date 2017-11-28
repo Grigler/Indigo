@@ -18,11 +18,12 @@ std::shared_ptr<GameObject> GameObject::_MakeReg()
   return rtn;
 }
 
-void GameObject::onCollision(std::weak_ptr<Collision> _col)
+void GameObject::onCollision(std::weak_ptr<Contact> _contact)
 {
   for (auto c = components.begin(); c != components.end(); c++)
   {
-    (*c)->onCollision(_col);
+    //TODO
+    //(*c)->onCollision(_contact);
   }
 }
 

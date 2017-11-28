@@ -10,12 +10,13 @@
 
 namespace Indigo
 {
-  struct Collision
+  struct Contact
   {
     std::weak_ptr<RB> thisRB;
     std::weak_ptr<RB> otherRB;
-    glm::vec3 hitPoint;
-    glm::vec3 hitNorm;
+    glm::vec3 contactPoint;
+    glm::vec3 contactNorm;
+    float penetrationDepth;
   };
 
   class AABB;
@@ -70,8 +71,8 @@ namespace Indigo
     std::shared_ptr<AABB> aabb;
 
     //Called by collider when collision is detected
-    void RegCollision(std::weak_ptr<RB> _other);
-    void RegCollision(std::weak_ptr<Collision> _col);
+    //void RegCollision(std::weak_ptr<RB> _other);
+    void RegContact(std::weak_ptr<Contact> _contact);
   };
 }
 

@@ -135,23 +135,13 @@ void RB::_AssignCollider(std::weak_ptr<Collider> _col)
   collider->parent = parent.lock()->GetComponent<RB>();
   collider->transform = transform;
 }
-void RB::RegCollision(std::weak_ptr<RB> _other)
-{
-  std::shared_ptr<Collision> c = std::make_shared<Collision>();
-  c->thisRB = parent.lock()->GetComponent<RB>();
-  c->otherRB = _other;
-  //TODO
-  c->hitPoint = glm::vec3(0);
 
-  //Calling onCollision for GO that will call it on all components
-  parent.lock()->onCollision(c);
-}
-void RB::RegCollision(std::weak_ptr<Collision> _col)
+void RB::RegContact(std::weak_ptr<Contact> _contact)
 {
   //Registering this component for onCollision func
-  _col.lock()->thisRB = parent.lock()->GetComponent<RB>();
+  _contact.lock()->thisRB = parent.lock()->GetComponent<RB>();
 
-  PhysicsHandler::RegisterCol(_col);
+  PhysicsHandler::_RegisterContact(_contact);
 
-  parent.lock()->onCollision(_col);
+  parent.lock()->onCollision(_contact);
 }
