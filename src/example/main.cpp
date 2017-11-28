@@ -3,11 +3,12 @@
 class TestScript : public Indigo::Component
 {
 public:
-
+  /*
   void onCollision(std::weak_ptr<Indigo::Collision> _col)
   {
     printf("I collided!\n");
   }
+  */
 };
 
 class ExampleObject : public Indigo::GameObject

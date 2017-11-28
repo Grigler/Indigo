@@ -14,7 +14,7 @@ namespace Indigo
   class Transform;
   class RenderComponent;
 
-  struct Collision;
+  struct Contact;
 
   class GameObject
   {
@@ -29,7 +29,7 @@ namespace Indigo
     virtual void onLateUpdate() {}
 
     //Calls onCollision function of all components
-    void onCollision(std::weak_ptr<Collision> _col);
+    void onCollision(std::weak_ptr<Contact> _contact);
 
     //Called by Camera when it is optimal for its draw call
     virtual void Draw() {}

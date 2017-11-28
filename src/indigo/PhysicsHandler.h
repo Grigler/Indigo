@@ -8,7 +8,7 @@
 namespace Indigo
 {
   class RB;
-  struct Collision;
+  struct Contact;
 
   class PhysicsHandler
   {
@@ -20,7 +20,7 @@ namespace Indigo
     void Integrate();
 
     static void RegisterRB(std::weak_ptr<RB> _rb);
-    static void _RegisterCollision(std::weak_ptr<Collision> _col);
+    static void _RegisterContact(std::weak_ptr<Contact> _contact);
 
   private:
     static std::list< std::weak_ptr<RB> > bodies;
@@ -32,8 +32,8 @@ namespace Indigo
     };
     std::vector<PossibleCol> posCol;
 
-    static std::vector< std::shared_ptr<Collision> > cols;
-    void ResolveCollision(std::weak_ptr<Collision> _col);
+    static std::vector< std::shared_ptr<Contact> > contacts;
+    void ResolveContact(std::weak_ptr<Contact> _contact);
   };
 }
 

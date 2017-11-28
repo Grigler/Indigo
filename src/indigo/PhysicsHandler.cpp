@@ -9,6 +9,7 @@
 using namespace Indigo;
 
 std::list< std::weak_ptr<RB> > PhysicsHandler::bodies;
+std::vector< std::shared_ptr<Contact> > PhysicsHandler::contacts;
 
 void PhysicsHandler::BroadPhase()
 {
@@ -43,9 +44,9 @@ void PhysicsHandler::NarrowPhase()
   }
 
   //Resolving collision contacts
-  for (auto i = cols.begin(); i != cols.end(); i++)
+  for (auto i = contacts.begin(); i != contacts.end(); i++)
   {
-    ResolveCollision((*i));
+    ResolveContact((*i));
   }
 
 }
@@ -62,12 +63,12 @@ void PhysicsHandler::RegisterRB(std::weak_ptr<RB> _rb)
 {
   bodies.push_back(_rb);
 }
-void PhysicsHandler::_RegisterCollision(std::weak_ptr<Collision> _col)
+void PhysicsHandler::_RegisterContact(std::weak_ptr<Contact> _contact)
 {
-  cols.push_back(_col.lock());
+  contacts.push_back(_contact.lock());
 }
 
-void PhysicsHandler::ResolveCollision(std::weak_ptr<Collision> _col)
+void PhysicsHandler::ResolveContact(std::weak_ptr<Contact> _contact)
 {
  
 }
