@@ -44,9 +44,9 @@ Engine::~Engine()
 
 void Engine::Update()
 {
-  physicsHandler->Integrate();
   physicsHandler->BroadPhase();
   physicsHandler->NarrowPhase();
+  physicsHandler->Integrate();
 
   //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)

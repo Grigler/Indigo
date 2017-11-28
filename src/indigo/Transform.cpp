@@ -104,6 +104,7 @@ void Transform::MoveTo(glm::vec3 _target, float _alpha)
   pos += dir*_alpha;
   SET_AABB_RECALC_FLAG
 }
+//Moves in _dir (world-space)
 void Transform::MoveDir(glm::vec3 _dir, float _alpha)
 {
   pos += _dir*_alpha;

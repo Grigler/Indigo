@@ -26,7 +26,7 @@ void RB::onCreation()
 
   collider->type = ColliderType::Sphere;
   collider->offset = glm::vec3(0);
-  collider->size = 10.0f;
+  collider->size = 0.5f;
 
   //Getting a local shared_ptr to aabb defined and updated in mesh
   aabb = parent.lock()->GetComponent<MeshRenderer>().lock()->mesh->aabb;
@@ -36,7 +36,7 @@ void RB::onCreation()
   angularVel = glm::vec3(0);
   force = glm::vec3(0);
   torque = glm::vec3(0);
-  mass = 10.0f;
+  mass = 5.0f;
   drag = 10.0f;
   isGravityOn = true;
   inertiaTensor = glm::mat3(1);
@@ -83,7 +83,7 @@ void RB::ApplyForceAtLocation(glm::vec3 _force, glm::vec3 _loc)
 {
   force += _force;
   
-  glm::vec3 centMass; //TODO get from collider
+  glm::vec3 centMass = glm::vec3(0); //TODO get from collider
   glm::vec3 localFLocation = centMass - _loc;
   torque += glm::cross(localFLocation, _force);
 }
@@ -98,35 +98,33 @@ void RB::onUpdate()
 }
 void RB::Integrate()
 {
+  //TODO - pass dt in as an argument, could be difference between
+  //bodies.at(0) and bodies.at(bodies.size())
+
+  //Storing dt at start of integration step
   float dt = glm::clamp(Application::GetDT(), 0.0001f, 0.016f);
 
-  //Applying drag to velocity
-  //linearVel = linearVel * (1 - dt * drag);
-  //angularVel = angularVel * (1 - dt * drag); 
+  //Using forces to calculate a to get v
+  glm::vec3 lastAccel = linearAccel + (force / mass);
+  if (isGravityOn) lastAccel += glm::vec3(0.0f, -9.81f, 0.0f);
+  linearVel += lastAccel * dt;
 
-  //Apply forces to velocity
-  glm::vec3 linearAccel = force / mass;
-  linearVel += linearAccel * dt;
-  //Drag
-  linearVel *= (1 - dt * drag);
-
-  //glm::mat3 inertiaTensor = glm::mat3(1); //TODO Get from collider
-  
-  //glm::mat3 R = glm::toMat3(glm::normalize(transform.lock()->GetRotationQuat()));
+  //Calculating Angular Velocity from torque and inertia tensor
   glm::mat3 R = transform.lock()->GetRotationMat();
   glm::mat3 inertiaTensorInv = R*glm::inverse(inertiaTensor)*glm::transpose(R);
-  angularVel = inertiaTensorInv*torque;
-  //Drag
+  angularVel += inertiaTensorInv*torque*dt;
+
+  //Applying drag to linear and angular velocities
+  linearVel *= (1 - dt * drag);
   angularVel *= (1 - dt * drag);
 
+  //Applying linearVel and angularVel to position and rotation
   transform.lock()->MoveDir(linearVel, dt);
-
-  //glm::quat q = glm::quat(angularVel) * dt;
   transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
 
   //Resetting force and torque as these are impulses
-  //isGravityOn ? force = glm::vec3(0.0f, -9.81f*dt, 0.0f) : glm::vec3(0);
-  //torque = glm::vec3(0.0f);
+  force = glm::vec3(0.0f);
+  torque = glm::vec3(0.0f);
 }
 
 void RB::_AssignCollider(std::weak_ptr<Collider> _col)
@@ -137,7 +135,6 @@ void RB::_AssignCollider(std::weak_ptr<Collider> _col)
   collider->parent = parent.lock()->GetComponent<RB>();
   collider->transform = transform;
 }
-
 void RB::RegCollision(std::weak_ptr<RB> _other)
 {
   std::shared_ptr<Collision> c = std::make_shared<Collision>();
@@ -148,4 +145,13 @@ void RB::RegCollision(std::weak_ptr<RB> _other)
 
   //Calling onCollision for GO that will call it on all components
   parent.lock()->onCollision(c);
+}
+void RB::RegCollision(std::weak_ptr<Collision> _col)
+{
+  //Registering this component for onCollision func
+  _col.lock()->thisRB = parent.lock()->GetComponent<RB>();
+
+  PhysicsHandler::RegisterCol(_col);
+
+  parent.lock()->onCollision(_col);
 }

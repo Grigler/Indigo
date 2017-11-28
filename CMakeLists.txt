@@ -50,6 +50,7 @@ add_library(Indigo
   src/Indigo/Resources.cpp
 
   src/Indigo/AABB.cpp
+  src/Indigo/PhysicsHandler.cpp
  # src/Indigo/PhysicsSpace.cpp
   
   src/Indigo/Collider.cpp

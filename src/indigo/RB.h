@@ -42,15 +42,20 @@ namespace Indigo
 
     glm::vec3 GetLinearVel() { return linearVel; }
     glm::vec3 GetAngularVel() { return angularVel; }
+
+    void SetGravity(bool _to) { isGravityOn = _to; }
   private:
     //Not sure if this function is entirely necessary
     void onUpdate();
 
     void Integrate();
     glm::vec3 linearVel;
-    glm::vec3 angularVel;
+    glm::vec3 linearAccel;
     glm::vec3 force;
+
+    glm::vec3 angularVel;
     glm::vec3 torque;
+
     float mass;
     float drag;
     bool isGravityOn;
@@ -66,6 +71,7 @@ namespace Indigo
 
     //Called by collider when collision is detected
     void RegCollision(std::weak_ptr<RB> _other);
+    void RegCollision(std::weak_ptr<Collision> _col);
   };
 }
 

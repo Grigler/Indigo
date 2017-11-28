@@ -1,6 +1,3 @@
-//#define IND_AUDIO_OPENAL
-//#define IND_PHYS_IND
-
 #include <indigo/indigo.h>
 
 class TestScript : public Indigo::Component
@@ -9,7 +6,7 @@ public:
 
   void onCollision(std::weak_ptr<Indigo::Collision> _col)
   {
-    //printf("I collided!\n");
+    printf("I collided!\n");
   }
 };
 
@@ -20,19 +17,27 @@ public:
   void onCreation()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
+    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
     //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
 
-    transform->SetPosition(glm::vec3(rand()%50 - 25, -25, rand()%100 + 50));
-    transform->SetScale(glm::vec3(10.0f, 10.0f, 10.0f));
+    //transform->SetPosition(glm::vec3(rand()%50 - 25, 0.0f, rand()%100 + 50));
+    if (p == false)
+    {
+      transform->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+      p = true;
+    }
+    else
+      transform->SetPosition(glm::vec3(0.0f, 2.5f, 1.0f));
 
+    transform->SetScale(glm::vec3(0.005f, 0.005f, 0.005f));
+    /*
     sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     if (p == false)
     {
       sound.lock()->Play();
       p = true;
     }
-
+    */
     rb = AddComponent<Indigo::RB>();
 
     ts = AddComponent<TestScript>();
@@ -44,8 +49,8 @@ public:
     glm::vec3 v = rb.lock()->GetLinearVel();
     glm::vec3 a = rb.lock()->GetAngularVel();
     //printf("R: %f, %f, %f\n", r.x, r.y, r.z);
-    printf("V: %f, %f, %f\n", v.x, v.y, v.z);
-    printf("A: %f, %f, %f\n\n", a.x, a.y, a.z);
+    //printf("V: %f, %f, %f\n", v.x, v.y, v.z);
+    //printf("A: %f, %f, %f\n\n", a.x, a.y, a.z);
   }
   void Draw()
   {
@@ -55,7 +60,7 @@ public:
 private:
   std::weak_ptr<Indigo::MeshRenderer> mr;
   std::weak_ptr<Indigo::Camera> cam;
-  std::weak_ptr<Indigo::Sound> sound;
+  //std::weak_ptr<Indigo::Sound> sound;
 
   std::weak_ptr<Indigo::RB> rb;
   std::weak_ptr<TestScript> ts;
@@ -71,7 +76,7 @@ public:
   void onCreation()
   {
     cc = AddComponent<Indigo::CharacterController>();
-    cc.lock()->moveSpeed = 150.0f;
+    cc.lock()->moveSpeed = 1.5f;
     cc.lock()->mouseSens = glm::vec2(1.0f, 1.0f);
 
     cam = AddComponent<Indigo::Camera>();
@@ -88,7 +93,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 1;
+  const int amnt = 2;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
@@ -97,9 +102,13 @@ int main(int argc, char** argv)
     printf("Num: %i\n", i + 1);
   }
 
-  eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 100.0f),
-    glm::vec3(0.0f, 5.0f, 0.0f));
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyTorque(glm::vec3(0.0f, 15000.0f, 0.0f));
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 100.0f),
+  //  glm::vec3(0.0f, 5.0f, 0.0f));
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyTorque(glm::vec3(-500.0f, 0.0f, 0.0f));
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 20000.0f),
+  //  glm::vec3(0.0f, 1.5f, 0.0f));
+
+  eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->SetGravity(false);
 
   //Application gameLoop is executed
   glViewport(0, 0, 1280, 720);

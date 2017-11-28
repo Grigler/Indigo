@@ -25,8 +25,6 @@ namespace Indigo
     void ActivateVAO();
 
     GLsizei GetVertCount();
-    
-    //void AllowCollision();
 
   private:
     std::weak_ptr<GameObject> goParent;

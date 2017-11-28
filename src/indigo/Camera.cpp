@@ -25,7 +25,7 @@ std::weak_ptr<Camera> Camera::currentActive;
 
 void Camera::onCreation()
 {
-  fov = 90.0f;
+  fov = 1.5708f;
 
   CalcFrustumBV();
 }
@@ -109,7 +109,7 @@ glm::mat4 Camera::GetViewProj()
 {
   glm::mat4 view = glm::inverse(parent.lock()->transform->GetModelMat());
   //TODO - Change to have better customisability
-  glm::mat4 proj = glm::perspective(fov, 1280.0f / 720.0f, 0.3f, 1000.0f);
+  glm::mat4 proj = glm::perspective(fov, 1280.0f / 720.0f, 0.01f, 1000.0f);
   return proj * view;
 }
 

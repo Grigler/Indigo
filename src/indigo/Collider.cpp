@@ -51,7 +51,6 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
     parent.lock()->RegCollision(_against.lock()->parent);
   }
 
-
   return hit;
 }
 
@@ -78,15 +77,22 @@ bool Collider::BoxBox(std::weak_ptr<Collider> _against)
 bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
 {
   //Transforming position by modelmatrix to give WS coords
-  glm::vec3 transPos = glm::vec4(1.0f) * transform.lock()->GetModelMatWithOffset(offset);
-  glm::vec3 otherTransPos = glm::vec4(1.0f) *
-    _against.lock()->transform.lock()->GetModelMatWithOffset(_against.lock()->offset);
-
+  glm::vec3 transPos = transform.lock()->GetPosition();
+  glm::vec3 otherTransPos = _against.lock()->transform.lock()->GetPosition();
   //Comparing square distance with (rad1+rad2)^2
-  if (glm::distance2(transPos, otherTransPos) <= (size + _against.lock()->size)*(size + _against.lock()->size))
+  if (glm::distance(transPos, otherTransPos) <= (size + _against.lock()->size))
   {
+    glm::vec3 rji = otherTransPos - transPos;
+    glm::vec3 contactNorm = glm::normalize(rji);
+    glm::vec3 contactPoint = contactNorm*glm::normalize(transPos) + transPos;
+
+    std::shared_ptr<Collision> col = std::make_shared<Collision>();
+    col->hitPoint = contactPoint;
+    col->hitNorm = contactNorm;
+    col->otherRB = _against.lock()->parent;
+
     //Registering hit
-    parent.lock()->RegCollision(_against.lock()->parent);
+    parent.lock()->RegCollision(col);
     return true;
   }
   else

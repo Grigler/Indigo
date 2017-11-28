@@ -2,7 +2,6 @@
 
 #include "MeshResource.h"
 
-#include "PhysicsSpace.h"
 #include "AABB.h"
 
 #include <glm/gtx/transform.hpp>
@@ -29,12 +28,7 @@ GLsizei Mesh::GetVertCount()
 {
   return meshResource->GetVertCount();
 }
-/*
-void Mesh::AllowCollision()
-{
-  PhysicsSpace::Register(WorldEntry(aabb, goParent));
-}
-*/
+
 
 void Mesh::_updateAABB(glm::mat4 _modelMat)
 {
