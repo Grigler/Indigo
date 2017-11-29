@@ -33,7 +33,8 @@ namespace Indigo
     std::vector<PossibleCol> posCol;
 
     static std::vector< std::shared_ptr<Contact> > contacts;
-    void ResolveContact(std::weak_ptr<Contact> _contact);
+    //Iterates contact resolution techniques over contacts vec
+    void ResolveContacts();
   };
 }
 

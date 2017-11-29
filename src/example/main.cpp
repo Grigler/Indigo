@@ -9,6 +9,22 @@ public:
     printf("I collided!\n");
   }
   */
+  void onCreation()
+  {
+    rb = parent.lock()->GetComponent<Indigo::RB>();
+    rb.lock()->SetGravity(false);
+  }
+
+  void onUpdate()
+  {
+    if (Indigo::Input::GetKeyDown('f'))
+    {
+      rb.lock()->ApplyForceAtLocation(
+        glm::vec3(0.0f, 0.0f, 200.0f),
+        glm::vec3(0.0f, 0.5f, 0.0f));
+    }
+  }
+  std::weak_ptr<Indigo::RB> rb;
 };
 
 class ExampleObject : public Indigo::GameObject
@@ -18,8 +34,7 @@ public:
   void onCreation()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/teapot.obj");
-    //mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/tri.obj");
+    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
 
     //transform->SetPosition(glm::vec3(rand()%50 - 25, 0.0f, rand()%100 + 50));
     if (p == false)
@@ -30,7 +45,7 @@ public:
     else
       transform->SetPosition(glm::vec3(0.0f, 2.5f, 1.0f));
 
-    transform->SetScale(glm::vec3(0.005f, 0.005f, 0.005f));
+    transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
     /*
     sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     if (p == false)
@@ -94,7 +109,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 2;
+  const int amnt = 1;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
@@ -106,13 +121,14 @@ int main(int argc, char** argv)
   //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 100.0f),
   //  glm::vec3(0.0f, 5.0f, 0.0f));
   //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyTorque(glm::vec3(-500.0f, 0.0f, 0.0f));
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 20000.0f),
-  //  glm::vec3(0.0f, 1.5f, 0.0f));
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
+  //  glm::vec3(0.0f, 0.0f, 200000.0f),
+  //  glm::vec3(0.0f, 0.5f, 0.0f));
 
-  eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->SetGravity(false);
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->SetGravity(false);
 
   //Application gameLoop is executed
-  glViewport(0, 0, 1280, 720);
+  //glViewport(0, 0, 1280, 720);
   Indigo::Application::Run();
   //Kill is then called for memory cleanup
   Indigo::Application::Kill();

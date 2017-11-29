@@ -37,7 +37,7 @@ void RB::onCreation()
   force = glm::vec3(0);
   torque = glm::vec3(0);
   mass = 5.0f;
-  drag = 10.0f;
+  drag = 1.0f;
   isGravityOn = true;
   inertiaTensor = glm::mat3(1);
   //TODO - CURRENTLY HARD CODED FOR SPHERE

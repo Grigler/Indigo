@@ -4,6 +4,8 @@
 #include "Collider.h"
 #include "AABB.h"
 
+#include "ContactResolver.h"
+
 #include "Application.h"
 
 using namespace Indigo;
@@ -68,7 +70,7 @@ void PhysicsHandler::_RegisterContact(std::weak_ptr<Contact> _contact)
   contacts.push_back(_contact.lock());
 }
 
-void PhysicsHandler::ResolveContact(std::weak_ptr<Contact> _contact)
+void PhysicsHandler::ResolveContacts()
 {
- 
+  ContactResolver::ResolveContacts(contacts);
 }
