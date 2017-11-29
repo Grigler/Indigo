@@ -41,16 +41,11 @@ void PhysicsHandler::NarrowPhase()
   {
     PossibleCol c = (*i);
     //This will call other onCollision event functions
-    //Also registers the collision in the cols vector
+    //Also registers contacts in contacs vec for resolving later
     c.l.lock()->collider->CheckCol(c.r.lock()->collider);
   }
 
-  //Resolving collision contacts
-  for (auto i = contacts.begin(); i != contacts.end(); i++)
-  {
-    ResolveContact((*i));
-  }
-
+  ResolveContacts();
 }
 
 void PhysicsHandler::Integrate()
