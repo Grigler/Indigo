@@ -15,6 +15,7 @@ namespace Indigo
     std::weak_ptr<RB> thisRB;
     std::weak_ptr<RB> otherRB;
     glm::vec3 contactPoint;
+    glm::vec3 contactOther;
     glm::vec3 contactNorm;
     float penetrationDepth;
   };
@@ -27,7 +28,7 @@ namespace Indigo
   {
     friend class Collider;
     friend class PhysicsHandler;
-
+    friend class ContactResolver;
   public:
     //Register the RB component with physics handler
     void onCreation();
@@ -45,6 +46,7 @@ namespace Indigo
     glm::vec3 GetAngularVel() { return angularVel; }
 
     void SetGravity(bool _to) { isGravityOn = _to; }
+    void SetMass(float _to) { mass = _to; }
   private:
     //Not sure if this function is entirely necessary
     void onUpdate();
@@ -60,6 +62,9 @@ namespace Indigo
     float drag;
     bool isGravityOn;
     glm::mat3 inertiaTensor;
+
+    //Return InverseInertiaTensore rotated by transform
+    glm::mat3 GetInverseInertiaTensor();
 
     //Lower-level function, called by interface func, to handle
     //collider change at a lower-level

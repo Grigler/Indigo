@@ -26,7 +26,8 @@ void RB::onCreation()
 
   collider->type = ColliderType::Sphere;
   collider->offset = glm::vec3(0);
-  collider->size = 0.5f;
+  collider->size = 1.0f;
+  collider->_normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
   //Getting a local shared_ptr to aabb defined and updated in mesh
   aabb = parent.lock()->GetComponent<MeshRenderer>().lock()->mesh->aabb;
@@ -49,6 +50,7 @@ void RB::onCreation()
 
 void RB::AssignCollider(ColliderType _type)
 {
+  /*
   std::shared_ptr<Collider> newCol = std::make_shared<Collider>();
 
   //Create collider of _type and send to
@@ -69,6 +71,8 @@ void RB::AssignCollider(ColliderType _type)
   }
 
   _AssignCollider(newCol);
+  */
+  collider->type = _type;
 }
 void RB::ColliderResize(float _size)
 {
@@ -109,9 +113,8 @@ void RB::Integrate()
   if (isGravityOn) linearAccel += glm::vec3(0.0f, -9.81f, 0.0f);
   linearVel += linearAccel * dt;
 
-  //Calculating Angular Velocity from torque and inertia tensor
-  glm::mat3 R = transform.lock()->GetRotationMat();
-  glm::mat3 inertiaTensorInv = R*glm::inverse(inertiaTensor)*glm::transpose(R);
+  //Calculating Angular Velocity from torque and inverse ffffinertia tensor
+  glm::mat3 inertiaTensorInv = GetInverseInertiaTensor();
   angularVel += inertiaTensorInv*torque*dt;
 
   //Applying drag to linear and angular velocities
@@ -127,13 +130,10 @@ void RB::Integrate()
   torque = glm::vec3(0.0f);
 }
 
-void RB::_AssignCollider(std::weak_ptr<Collider> _col)
+glm::mat3 RB::GetInverseInertiaTensor()
 {
-  collider.reset();
-
-  collider = _col.lock();
-  collider->parent = parent.lock()->GetComponent<RB>();
-  collider->transform = transform;
+  glm::mat3 R = transform.lock()->GetRotationMat();
+  return R*glm::inverse(inertiaTensor)*glm::transpose(R);
 }
 
 void RB::RegContact(std::weak_ptr<Contact> _contact)

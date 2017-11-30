@@ -20,8 +20,8 @@ public:
     if (Indigo::Input::GetKeyDown('f'))
     {
       rb.lock()->ApplyForceAtLocation(
-        glm::vec3(0.0f, 0.0f, 200.0f),
-        glm::vec3(0.0f, 0.25f, 0.0f));
+        glm::vec3(0.0f, -200.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 0.0f));
     }
   }
   std::weak_ptr<Indigo::RB> rb;
@@ -34,18 +34,26 @@ public:
   void onCreation()
   {
     mr = AddComponent<Indigo::MeshRenderer>();
-    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/gourd.obj");
+    mr.lock()->LoadMesh("C:/Users/i7465070/Indigo/data/Models/sphere.obj");
+
+    rb = AddComponent<Indigo::RB>();
 
     //transform->SetPosition(glm::vec3(rand()%50 - 25, 0.0f, rand()%100 + 50));
     if (p == false)
     {
-      transform->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+      transform->SetPosition(glm::vec3(0.0f, 0.0f, 10.0f));
+      rb.lock()->AssignCollider(Indigo::ColliderType::Plane);
+      rb.lock()->SetGravity(false);
+      rb.lock()->SetMass(std::numeric_limits<float>::max());
       p = true;
     }
     else
-      transform->SetPosition(glm::vec3(0.0f, 2.5f, 1.0f));
+    {
+      transform->SetPosition(glm::vec3(0.0f, 2.5f, 10.0f));
+      rb.lock()->SetGravity(true);
+    }
 
-    transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+    transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
     /*
     sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     if (p == false)
@@ -54,7 +62,7 @@ public:
       p = true;
     }
     */
-    rb = AddComponent<Indigo::RB>();
+    
 
     ts = AddComponent<TestScript>();
   }
@@ -109,7 +117,7 @@ int main(int argc, char** argv)
 
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   
-  const int amnt = 1;
+  const int amnt = 2;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
@@ -126,6 +134,13 @@ int main(int argc, char** argv)
   //  glm::vec3(0.0f, 0.5f, 0.0f));
 
   //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->SetGravity(false);
+  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
+  //  glm::vec3(0.0f, 50000.0f, 0.0f),
+  //  glm::vec3(0.0f));
+  eoArr[1].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
+    glm::vec3(0.0f, -500000.0f, 0.0f),
+    glm::vec3(0.0f));
+
 
   //Application gameLoop is executed
   //glViewport(0, 0, 1280, 720);

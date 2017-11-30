@@ -22,6 +22,8 @@ namespace Indigo
     static void AdjPosition(std::shared_ptr<Contact> _contact);
     static void AdjVelocity(std::shared_ptr<Contact> _contact);
 
+    //static void SolvePenetration(float _depth, glm::vec3 _dir, std::weak_ptr<RB> _rb);
+
     static glm::mat3 GetContactBasis(std::shared_ptr<Contact> _contact);
   };
 }

@@ -34,6 +34,9 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
   case (COL_TYPE_SPHERE | COL_TYPE_SPHERE):
     hit = SphereSphere(_against);
     break;
+  case (COL_TYPE_SPHERE | COL_TYPE_PLANE):
+    hit = SpherePlane(_against);
+    break;
   case (COL_TYPE_SPHERE | COL_TYPE_CAPSULE):
     //TODO
     break;
@@ -87,7 +90,10 @@ bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
 
     c->contactNorm = norm;
     c->contactPoint = transPos + (midLine*0.5f);
+    c->contactOther = otherTransPos - (midLine*0.5f);
     c->penetrationDepth = (size + _against.lock()->size) - d;
+
+    c->otherRB = _against.lock()->parent;
 
     parent.lock()->RegContact(c);
 
@@ -97,6 +103,48 @@ bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
   {
     return false;
   }
+}
+bool Collider::SpherePlane(std::weak_ptr<Collider> _against)
+{
+  std::weak_ptr<Collider> sphereCol;
+  glm::vec3 spherePos;
+
+  std::weak_ptr<Collider> planeCol;
+  glm::vec3 planePos;
+  if (type == COL_TYPE_PLANE)
+  {
+    planeCol = parent.lock()->collider;
+    sphereCol = _against;
+  }
+  else
+  {
+    planeCol = _against;
+    sphereCol = parent.lock()->collider;
+  }
+
+  spherePos = sphereCol.lock()->transform.lock()->GetPosition();
+  planePos = planeCol.lock()->transform.lock()->GetPosition();
+
+  
+  float d = glm::dot(spherePos - planePos, planeCol.lock()->_normal);
+
+
+  printf("D: %f\n", d);
+  if (d < sphereCol.lock()->size)
+  {
+    std::shared_ptr<Contact> c = std::make_shared<Contact>();
+
+    c->contactNorm = planeCol.lock()->_normal;
+    c->penetrationDepth = sphereCol.lock()->size - d;
+    c->contactPoint = -planeCol.lock()->_normal * (d+sphereCol.lock()->size);
+
+    c->otherRB = _against.lock()->parent;
+
+    parent.lock()->RegContact(c);
+    return true;
+  }
+
+  return false;
 }
 bool Collider::BoxSphere(std::weak_ptr<Collider> _against)
 {
