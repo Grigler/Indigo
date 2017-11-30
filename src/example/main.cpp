@@ -12,7 +12,7 @@ public:
   void onCreation()
   {
     rb = parent.lock()->GetComponent<Indigo::RB>();
-    rb.lock()->SetGravity(false);
+    //rb.lock()->SetGravity(false);
   }
 
   void onUpdate()
@@ -21,7 +21,7 @@ public:
     {
       rb.lock()->ApplyForceAtLocation(
         glm::vec3(0.0f, 0.0f, 200.0f),
-        glm::vec3(0.0f, 0.5f, 0.0f));
+        glm::vec3(0.0f, 0.25f, 0.0f));
     }
   }
   std::weak_ptr<Indigo::RB> rb;

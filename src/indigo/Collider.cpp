@@ -74,20 +74,23 @@ bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
   //Transforming position by modelmatrix to give WS coords
   glm::vec3 transPos = transform.lock()->GetPosition();
   glm::vec3 otherTransPos = _against.lock()->transform.lock()->GetPosition();
+
   //Comparing square distance with (rad1+rad2)^2
-  if (glm::distance(transPos, otherTransPos) <= (size + _against.lock()->size))
-  {
-    glm::vec3 rji = otherTransPos - transPos;
-    glm::vec3 contactNorm = glm::normalize(rji);
-    glm::vec3 contactPoint = contactNorm*glm::normalize(transPos) + transPos;
+  glm::vec3 midLine = transPos - otherTransPos;
+  float d2 = glm::length2(midLine);
+  if (d2 <= glm::pow((size + _against.lock()->size),2))
+  { 
+    float d = glm::sqrt(d2);
+    glm::vec3 norm = midLine*(1.0f / d);
 
     std::shared_ptr<Contact> c = std::make_shared<Contact>();
-    c->contactPoint = contactPoint;
-    c->contactNorm = contactNorm;
-    c->otherRB = _against.lock()->parent;
 
-    //Registering hit
+    c->contactNorm = norm;
+    c->contactPoint = transPos + (midLine*0.5f);
+    c->penetrationDepth = (size + _against.lock()->size) - d;
+
     parent.lock()->RegContact(c);
+
     return true;
   }
   else

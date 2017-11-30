@@ -105,9 +105,9 @@ void RB::Integrate()
   float dt = glm::clamp(Application::GetDT(), 0.0001f, 0.016f);
 
   //Using forces to calculate a to get v
-  glm::vec3 lastAccel = linearAccel + (force / mass);
-  if (isGravityOn) lastAccel += glm::vec3(0.0f, -9.81f, 0.0f);
-  linearVel += lastAccel * dt;
+  glm::vec3 linearAccel = (force / mass);
+  if (isGravityOn) linearAccel += glm::vec3(0.0f, -9.81f, 0.0f);
+  linearVel += linearAccel * dt;
 
   //Calculating Angular Velocity from torque and inertia tensor
   glm::mat3 R = transform.lock()->GetRotationMat();
@@ -143,5 +143,5 @@ void RB::RegContact(std::weak_ptr<Contact> _contact)
 
   PhysicsHandler::_RegisterContact(_contact);
 
-  parent.lock()->onCollision(_contact);
+  //parent.lock()->onCollision(_contact);
 }

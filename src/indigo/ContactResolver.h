@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 namespace Indigo
 {
   struct Contact;
@@ -19,6 +21,8 @@ namespace Indigo
     static void CalcInternals(std::shared_ptr<Contact> _contact);
     static void AdjPosition(std::shared_ptr<Contact> _contact);
     static void AdjVelocity(std::shared_ptr<Contact> _contact);
+
+    static glm::mat3 GetContactBasis(std::shared_ptr<Contact> _contact);
   };
 }
 

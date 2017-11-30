@@ -51,7 +51,6 @@ namespace Indigo
 
     void Integrate();
     glm::vec3 linearVel;
-    glm::vec3 linearAccel;
     glm::vec3 force;
 
     glm::vec3 angularVel;
