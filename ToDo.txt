@@ -9,4 +9,5 @@ is, so this definitely needs to be revisited now that I've relearnt how to use m
 - Work on getting some nice drag forces going - look into how to properly implement impulse forces as opposed to continuous
   - A force generator system seem to be the intuitive solution
   
-- Collision Responses
+- Interpenetration handling
+  - Look at ~pg 360 in your book, that describes what you need to do
