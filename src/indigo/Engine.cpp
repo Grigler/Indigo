@@ -15,6 +15,8 @@
 
 using namespace Indigo;
 
+bool Engine::isRunning = false;
+
 Engine::Engine()
 {
 #ifdef IND_USE_AUDIO
@@ -51,12 +53,17 @@ void Engine::Update()
   //Calling Update for GOs
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
   {
-    (*i)->onUpdate();
-    for (auto j = (*i)->components.begin(); j < (*i)->components.end(); j++)
+    std::weak_ptr<GameObject> g = (*i);
+    g.lock()->onUpdate();
+    if (!g.expired())
     {
-      (*j)->onUpdate();
+      for (auto j = g.lock()->components.begin(); j < g.lock()->components.end(); j++)
+      {
+        (*j)->onUpdate();
+      }
     }
   }
+
   //Calling callback funcs for all Messages
   for (auto i = messageQueue.begin(); i != messageQueue.end(); i++)
   {
@@ -71,6 +78,36 @@ void Engine::Update()
     for (auto j = (*i)->components.begin(); j < (*i)->components.end(); j++)
     {
       (*j)->onLateUpdate();
+    }
+  }
+
+  //Appending goBuffer to gameObject list
+  if (goBuffer.size() > 0)
+  {
+    for (auto i = goBuffer.begin(); i != goBuffer.end(); i++)
+    {
+      gameObjects.push_back((*i));
+    }
+    goBuffer.clear();
+  }
+}
+void Engine::FixedUpdate()
+{
+  physicsHandler->BroadPhase();
+  physicsHandler->NarrowPhase();
+  physicsHandler->Integrate();
+
+  //Calling Update for GOs
+  for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
+  {
+    std::weak_ptr<GameObject> g = (*i);
+    g.lock()->onFixedUpdate();
+    if (!g.expired())
+    {
+      for (auto j = g.lock()->components.begin(); j < g.lock()->components.end(); j++)
+      {
+        (*j)->onFixedUpdate();
+      }
     }
   }
 }
@@ -120,11 +157,20 @@ std::weak_ptr<GameObject> Engine::GetGameObjRef(GameObject *_obj)
     if ((*i).get() == _obj)
       return std::weak_ptr<GameObject>((*i));
   }
+  for (auto i = goBuffer.begin(); i != goBuffer.end(); i++)
+  {
+    if ((*i).get() == _obj)
+      return std::weak_ptr<GameObject>((*i));
+  }
   return std::weak_ptr<GameObject>();
 }
+
 void Engine::RegisterGameObject(std::shared_ptr<GameObject> _obj)
 {
-  gameObjects.push_back(_obj);
+  if(isRunning)
+    goBuffer.push_back(_obj);
+  else
+    gameObjects.push_back(_obj);
 }
 
 void Engine::RegisterMsg(Message _msg)

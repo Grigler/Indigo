@@ -23,8 +23,13 @@ namespace Indigo
     Engine();
     ~Engine();
 
+    static bool isRunning;
+
   private:
+    
+
     void Update();
+    void FixedUpdate();
     void Draw();
 
     std::shared_ptr<Camera> activeCamera;
@@ -36,7 +41,9 @@ namespace Indigo
 
     //Full list of gameObjects
     std::vector<std::shared_ptr<GameObject>> gameObjects;
+    std::vector<std::shared_ptr<GameObject>> goBuffer;
     std::weak_ptr<GameObject> Engine::GetGameObjRef(GameObject *_obj);
+    //Pushes _obj to a buffer to be pushed to main vector next tick
     void RegisterGameObject(std::shared_ptr<GameObject> _obj);
 
     //Message queue

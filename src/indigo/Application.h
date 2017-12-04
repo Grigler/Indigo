@@ -45,6 +45,7 @@ namespace Indigo
     static void MouseMotionPassive(int _x, int _y);
 
     static float deltaTime;
+    static float fixedTime;
   };
 
 }

@@ -4,6 +4,7 @@
 #include "RB.h"
 #include "Collider.h"
 
+#include "Application.h"
 #include "Transform.h"
 
 using namespace Indigo;
@@ -13,12 +14,12 @@ using namespace Indigo;
 //Resolves a given vector of contacts using non-linear projection
 void ContactResolver::ResolveContacts(std::vector< std::shared_ptr<Contact> > &_contacts)
 {
-  printf("Contacts: %i\n", _contacts.size());
+  //printf("Contacts: %i\n", _contacts.size());
 
   for (auto c = _contacts.begin(); c != _contacts.end(); c++)
   {
     //Adjust Positions to fix interpenetrations
-    //AdjPosition((*c));
+    AdjPosition((*c));
 
     //Adjust velocities to resolve contact
     AdjVelocity((*c));
@@ -43,41 +44,52 @@ void ContactResolver::CalcInternals(std::shared_ptr<Contact> _contact)
 }
 void ContactResolver::AdjPosition(std::shared_ptr<Contact> _contact)
 {
-  if (glm::abs(_contact->penetrationDepth) > 0.0f)
+  //Basic linear projection - does not handle angular components
+  glm::vec3 lVel = _contact->thisRB.lock()->linearVel;
+  glm::vec3 rVel = _contact->otherRB.lock()->linearVel;
+  glm::vec3 norm = _contact->contactNorm;
+
+  float invMassL = 1.0f / _contact->thisRB.lock()->mass;
+  float invMassR = 1.0f / _contact->otherRB.lock()->mass;
+
+  glm::vec3 relVel = lVel - rVel;
+
+  //Arbritary limit for correcting
+  if (glm::length2(relVel) <= 2.5f*2.5f)
   {
-    glm::vec3 toOther = glm::normalize(_contact->thisRB.lock()->transform.lock()->GetPosition() -
-      _contact->otherRB.lock()->transform.lock()->GetPosition());
-    
-    float dirChange;
-    glm::dot(toOther, _contact->contactNorm) > 0.0f ? dirChange = -1.0f : dirChange = 1.0f;
+    float linear = glm::dot(lVel - rVel, norm) / (invMassL + invMassR);
 
-    if (_contact->thisRB.lock()->collider->type != ColliderType::Plane)
-    {
-      //SolvePenetration(_contact->penetrationDepth, _contact->contactNorm*dirChange, _contact->thisRB);
-    }
-    if (_contact->otherRB.lock()->collider->type != ColliderType::Plane)
-    {
-      //SolvePenetration(_contact->penetrationDepth, _contact->contactNorm*dirChange, _contact->otherRB);
-    }
+    float magL = invMassL * _contact->penetrationDepth * linear;
+    float magR = invMassR * -_contact->penetrationDepth * -linear;
 
+    _contact->thisRB.lock()->transform.lock()->MoveDir(norm, magL);
+    _contact->otherRB.lock()->transform.lock()->MoveDir(norm, magR);
+
+    _contact->contactPoint += (norm*magL) + (norm*magR);
   }
+
 }
 void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
 {
   glm::vec3 lVel = _contact->thisRB.lock()->linearVel;
   glm::vec3 rVel = _contact->otherRB.lock()->linearVel;
 
+  glm::vec3 lVelA = _contact->thisRB.lock()->angularVel;
+  glm::vec3 rVelA = _contact->otherRB.lock()->angularVel;
+
   float lMass = _contact->thisRB.lock()->mass;
   float rMass = _contact->otherRB.lock()->mass;
 
   glm::vec3 norm = _contact->contactNorm;
-  glm::vec3 pos = _contact->contactPoint;
-  float restitution = 1.0f; //Todo - pull from physics material
+
+  float restitution = 0.75f; //Todo - pull from physics material
 
   //Used in both linear and angular calculations - so cache it
-  float relVelProj = ((-(1 + restitution))*glm::dot(lVel - rVel, norm));
+  float relVelProj = -(1.0f + restitution)*glm::dot(lVel - rVel, norm);
   //Magnitude of linear momentum
   float linear = relVelProj / ((1.0f / lMass) + (1.0f / rMass));
+
+  relVelProj = -(1.0f + restitution)*glm::dot(lVelA - rVelA, norm);
 
   //Bookkeeping for angular
   glm::mat3 inverseInertiaL = _contact->thisRB.lock()->GetInverseInertiaTensor();
@@ -87,17 +99,17 @@ void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
   glm::vec3 torqueArmR = _contact->contactPoint -
     _contact->otherRB.lock()->transform.lock()->GetPosition();
 
-  float angular = 0.0f;//relVelProj;
-  //angular *= glm::dot(norm, glm::cross(glm::cross(torqueArmL, norm)*inverseInertiaL, torqueArmL))
-  //  + glm::dot(norm, glm::cross(glm::cross(torqueArmR, norm)*inverseInertiaR, torqueArmR));
+  float angular = relVelProj;
+  angular *= glm::dot(norm, glm::cross(glm::cross(torqueArmL, norm)*inverseInertiaL, torqueArmL)) +
+    glm::dot(norm, glm::cross(glm::cross(torqueArmR, norm)*inverseInertiaR, torqueArmR));
 
   float magnitude = linear + angular;
 
-  if(_contact->thisRB.lock()->collider->type != ColliderType::Plane)
-    _contact->thisRB.lock()->linearVel += (magnitude*norm) / lMass;
+  _contact->thisRB.lock()->linearVel += (magnitude*norm) / lMass;
+  _contact->thisRB.lock()->angularVel += glm::cross(torqueArmL, magnitude*norm)*inverseInertiaL;
 
-  if (_contact->otherRB.lock()->collider->type != ColliderType::Plane)
-   _contact->otherRB.lock()->linearVel += (-magnitude*norm) / rMass;
+  _contact->otherRB.lock()->linearVel += (-magnitude*norm) / rMass;
+  _contact->otherRB.lock()->angularVel += glm::cross(torqueArmR, -magnitude*norm)*inverseInertiaR;
 }
 
 glm::mat3 ContactResolver::GetContactBasis(std::shared_ptr<Contact> _contact)

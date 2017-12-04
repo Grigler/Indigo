@@ -34,11 +34,12 @@ void RB::onCreation()
 
   //Setting up force and accel values
   linearVel = glm::vec3(0);
+  lastLinearAccel = glm::vec3(0);
   angularVel = glm::vec3(0);
   force = glm::vec3(0);
   torque = glm::vec3(0);
   mass = 5.0f;
-  drag = 1.0f;
+  drag = 0.5f;
   isGravityOn = true;
   inertiaTensor = glm::mat3(1);
   //TODO - CURRENTLY HARD CODED FOR SPHERE
@@ -96,6 +97,15 @@ void RB::ApplyTorque(glm::vec3 _torque)
   torque += _torque;
 }
 
+void RB::SetMass(float _to)
+{
+  mass = _to;
+
+  inertiaTensor[0][0] = (mass * 0.4f)*(collider->size*collider->size);
+  inertiaTensor[1][1] = (mass * 0.4f)*(collider->size*collider->size);
+  inertiaTensor[2][2] = (mass * 0.4f)*(collider->size*collider->size);
+}
+
 void RB::onUpdate()
 {
   //Do I even need this function?
@@ -112,6 +122,7 @@ void RB::Integrate()
   glm::vec3 linearAccel = (force / mass);
   if (isGravityOn) linearAccel += glm::vec3(0.0f, -9.81f, 0.0f);
   linearVel += linearAccel * dt;
+  lastLinearAccel = linearAccel;
 
   //Calculating Angular Velocity from torque and inverse ffffinertia tensor
   glm::mat3 inertiaTensorInv = GetInverseInertiaTensor();

@@ -96,7 +96,6 @@ bool Collider::SphereSphere(std::weak_ptr<Collider> _against)
     c->otherRB = _against.lock()->parent;
 
     parent.lock()->RegContact(c);
-
     return true;
   }
   else
@@ -127,9 +126,8 @@ bool Collider::SpherePlane(std::weak_ptr<Collider> _against)
 
   
   float d = glm::dot(spherePos - planePos, planeCol.lock()->_normal);
-
-
-  printf("D: %f\n", d);
+  
+  //printf("D: %f\n", d);
   if (d < sphereCol.lock()->size)
   {
     std::shared_ptr<Contact> c = std::make_shared<Contact>();

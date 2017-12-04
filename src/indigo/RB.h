@@ -46,13 +46,15 @@ namespace Indigo
     glm::vec3 GetAngularVel() { return angularVel; }
 
     void SetGravity(bool _to) { isGravityOn = _to; }
-    void SetMass(float _to) { mass = _to; }
+    void SetMass(float _to);
+    void SetInertiaTensor(glm::mat3 _to) { inertiaTensor = _to; }
   private:
     //Not sure if this function is entirely necessary
     void onUpdate();
 
     void Integrate();
     glm::vec3 linearVel;
+    glm::vec3 lastLinearAccel;
     glm::vec3 force;
 
     glm::vec3 angularVel;

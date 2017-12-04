@@ -12,6 +12,7 @@ using namespace Indigo;
 
 std::shared_ptr<Engine> Application::engineContext;
 float Application::deltaTime = 0.0f;
+float Application::fixedTime = 0.0f;
 
 void Application::Init(int _argc, char* _argv[])
 {
@@ -57,6 +58,7 @@ void Application::Run()
 {
   try
   {
+    engineContext->isRunning = true;
     glutMainLoop();
   }
   catch (std::exception e)
@@ -75,21 +77,33 @@ void Application::Idle()
   //Timer updating
   static float lastT = glutGet(GLUT_ELAPSED_TIME); //only run 1st time
   float t = glutGet(GLUT_ELAPSED_TIME);
-  deltaTime = (t - lastT) / 1000.0f;
+  deltaTime += (t - lastT) / 1000.0f;
+  fixedTime += (t - lastT) / 1000.0f;
   lastT = glutGet(GLUT_ELAPSED_TIME);
-  //Sleep for vSync here
+
+
+  if (fixedTime >= 0.008f)
+  {
+    engineContext->FixedUpdate();
+    fixedTime = 0.0f;
+  }
 
   //Update all objects
-  engineContext->Update();
+  if (deltaTime >= 0.016f)
+  {
+    engineContext->Update();
 
-  //DEBUG - QUITING ON ESCAPE KEY
-  if (Input::GetKeyDown(27)) ShutDown();
+    //DEBUG - QUITING ON ESCAPE KEY
+    if (Input::GetKeyDown(27)) ShutDown();
 
-  //Clearing upKeys buffer for next input polling
-  Input::upKeys.clear();
-  Input::downKeys.clear();
+    Input::upKeys.clear();
+    Input::downKeys.clear();
 
-  glutPostRedisplay();
+    glutPostRedisplay();
+  }
+
+  
+
 }
 void Application::Display()
 {

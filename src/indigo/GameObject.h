@@ -26,6 +26,7 @@ namespace Indigo
 
     virtual void onCreation() {}
     virtual void onUpdate() {}
+    virtual void onFixedUpdate() {}
     virtual void onLateUpdate() {}
 
     //Calls onCollision function of all components

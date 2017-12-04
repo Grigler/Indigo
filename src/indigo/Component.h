@@ -16,6 +16,7 @@ namespace Indigo
   public:
     virtual void onCreation() {}
     virtual void onUpdate() {}
+    virtual void onFixedUpdate() {}
     virtual void onLateUpdate() {}
 
     //TODO
