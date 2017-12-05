@@ -43,8 +43,8 @@ void ContactResolver::AdjPosition(std::shared_ptr<Contact> _contact)
   //printf("linear: %f\n", linear);
   float magL = invMassL * _contact->penetrationDepth * linear;
   float magR = invMassR * _contact->penetrationDepth * linear;
-  printf("RelVel: %f\n", glm::length(relVel));
-  if (glm::length(relVel) >= 2.0f)
+
+  if (glm::length(relVel) >= 1.5f)
   {
     magL *= (0.9f*Application::GetFixedDT());
     magR *= (0.9f*Application::GetFixedDT());

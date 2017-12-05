@@ -1,3 +1,5 @@
+#include "../example/config.h"
+
 #include "Engine.h"
 
 #include "Application.h"
@@ -27,10 +29,10 @@ Engine::Engine()
   }
   else
   {
-    printf("flkdsjfalk;dsajf\n");
+    printf("OpenAL Audio System Init\n");
   }
 #else
-  printf("No Audio Loading\n");
+  printf("No Audio System Init\n");
 #endif
 
   physicsHandler = std::make_unique<PhysicsHandler>();
@@ -42,6 +44,7 @@ Engine::~Engine()
   audioManager->Destroy();
   audioManager.reset();
 #endif
+  physicsHandler.reset();
 }
 
 void Engine::Update()

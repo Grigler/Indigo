@@ -1,7 +1,9 @@
 #ifndef __INDIGO__
 #define __INDIGO__
 
-#include "config.h"
+//#define IND_USE_AUDIO
+//  #define IND_AUDIO_OPENAL
+
 #include "indigo/AudioManager.h"
 
 #include "indigo/PhysicsHandler.h"

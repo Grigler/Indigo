@@ -6,6 +6,8 @@
 
 #include "message.h"
 
+//#include "../example/config.h"
+
 namespace Indigo
 {
 #ifdef IND_USE_AUDIO
@@ -26,8 +28,6 @@ namespace Indigo
     static bool isRunning;
 
   private:
-    
-
     void Update();
     void FixedUpdate();
     void Draw();

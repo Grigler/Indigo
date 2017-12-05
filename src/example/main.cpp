@@ -1,3 +1,4 @@
+#include "config.h"
 #include <indigo/indigo.h>
 
 class TestScript : public Indigo::Component
@@ -68,16 +69,15 @@ public:
       rb.lock()->SetMass(15.0f);
       rb.lock()->SetGravity(true);
     }
-    /*
-    sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
+    
+    //sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     if (p == false)
     {
-      sound.lock()->Play();
+      //sound.lock()->Play();
       p = true;
     }
-    */
     
-
+    
     ts = AddComponent<TestScript>();
   }
   void onUpdate()
