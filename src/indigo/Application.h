@@ -28,6 +28,7 @@ namespace Indigo
     static void Run();
 
     static float GetDT();
+    static float GetFixedDT();
 
     static void ErrPrint(std::exception _e);
     static void ErrPrint(std::string _msg);

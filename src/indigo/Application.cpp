@@ -71,6 +71,10 @@ float Application::GetDT()
 {
   return deltaTime;
 }
+float Application::GetFixedDT()
+{
+  return fixedTime;
+}
 
 void Application::Idle()
 {
@@ -98,6 +102,8 @@ void Application::Idle()
 
     Input::upKeys.clear();
     Input::downKeys.clear();
+
+    deltaTime = 0.0f;
 
     glutPostRedisplay();
   }

@@ -13,8 +13,13 @@ AABB::AABB()
 //Calculates from transformed vertices
 void AABB::Recalc(std::vector<glm::vec3> &_verts)
 {
-  glm::vec3 tMin = _verts.at(0);
-  glm::vec3 tMax = _verts.at(0);
+  glm::vec3 tMin = glm::vec3(0), tMax = glm::vec3(0);
+  if (_verts.size() > 0)
+  {
+    tMin = _verts.at(0);
+    tMax = _verts.at(0);
+  }
+  
 
   for (auto i = ++_verts.begin(); i != _verts.end(); i++)
   {

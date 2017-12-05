@@ -26,9 +26,9 @@ MeshRenderer::MeshRenderer()
     shader.lock()->Init("Basic");
     //std::dynamic_pointer_cast<MeshShader>(shader.lock())->LoadDefaultShaders();
     shader.lock()->LoadShader(GL_VERTEX_SHADER,
-      "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.vert");
+      "./data/Shaders/MeshRenderer/MeshRenderer.vert");
     shader.lock()->LoadShader(GL_FRAGMENT_SHADER,
-      "C:/Users/i7465070/Indigo/data/Shaders/MeshRenderer/MeshRenderer.frag");
+      "./data/Shaders/MeshRenderer/MeshRenderer.frag");
     shader.lock()->Link();
   }
   else

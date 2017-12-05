@@ -65,7 +65,7 @@ public:
     else
     {
       //transform->SetPosition(glm::vec3(0.0f, 2.5f, 10.0f));
-      rb.lock()->SetMass(20.0f);
+      rb.lock()->SetMass(15.0f);
       rb.lock()->SetGravity(true);
     }
     /*
@@ -124,7 +124,7 @@ public:
   }
   void onUpdate()
   {
-    printf("DT: %f\n", Indigo::Application::GetDT());
+    //printf("DT: %f\n", Indigo::Application::GetDT());
   }
 
   std::weak_ptr<Indigo::CharacterController> cc;
@@ -153,27 +153,11 @@ int main(int argc, char** argv)
     if (i != 0)
     {
       eoArr[i].lock()->transform->SetPosition(glm::vec3(1.0f, i * 1.5f, 10.0f));
-      eoArr[i].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(-1000000.0f, -1000000.0f, 0.0f),
-        glm::vec3(0));
+      //eoArr[i].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(-1000000.0f, -1000000.0f, 0.0f),
+      //  glm::vec3(0));
     }
     printf("Num: %i\n", i + 1);
   }
-
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 100.0f),
-  //  glm::vec3(0.0f, 5.0f, 0.0f));
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyTorque(glm::vec3(-500.0f, 0.0f, 0.0f));
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
-  //  glm::vec3(0.0f, 0.0f, 200000.0f),
-  //  glm::vec3(0.0f, 0.5f, 0.0f));
-
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->SetGravity(false);
-  //eoArr[0].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
-  //  glm::vec3(0.0f, 50000.0f, 0.0f),
-  //  glm::vec3(0.0f));
-  //eoArr[1].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
-  //  glm::vec3(-, -500000.0f, 0.0f),
-  //  glm::vec3(0.0f));
-
 
   //Application gameLoop is executed
   //glViewport(0, 0, 1280, 720);

@@ -32,6 +32,7 @@ void MeshResource::ReadFromFile(std::string _path)
 
   if (extension == "obj")
   {
+    path = _path;
     _LoadOBJ(_path);
   }
   else

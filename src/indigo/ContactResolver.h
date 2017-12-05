@@ -9,22 +9,35 @@
 namespace Indigo
 {
   struct Contact;
+  class RB;
 
+  //Helper class used to encapsulate the contact resolution process
+  //in  a single class
   class ContactResolver
   {
     //Everything private as only the PhysicsHandler should
     //have access to anything here
     friend class PhysicsHandler;
   private:
+    //Working single-contact solver
     static void ResolveContacts(std::vector< std::shared_ptr<Contact> > &_contacts);
 
-    static void CalcInternals(std::shared_ptr<Contact> _contact);
     static void AdjPosition(std::shared_ptr<Contact> _contact);
     static void AdjVelocity(std::shared_ptr<Contact> _contact);
 
-    //static void SolvePenetration(float _depth, glm::vec3 _dir, std::weak_ptr<RB> _rb);
+    static int lcpIterations;
+    static void ResolveContactsLCP(std::vector< std::shared_ptr<Contact> > &_contacts);
+    struct CImpulsePair
+    {
+      std::shared_ptr<Contact> c;
+      float impulse;
+      bool hasSwitched;
+      glm::vec3 dv;
+      glm::vec3 dav;
+    };
 
-    static glm::mat3 GetContactBasis(std::shared_ptr<Contact> _contact);
+    static float GetVelocityLCP(CImpulsePair &_p, float _mag);
+    static void ApplyImpulses(std::vector<CImpulsePair> &_pairs);
   };
 }
 

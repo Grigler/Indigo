@@ -46,7 +46,10 @@ std::weak_ptr<Shader> Resources::GetShaderProgram(std::string _name)
       return std::weak_ptr<Shader>((*i));
     }
   } 
-  Application::ErrPrint("Error: Shaders must be built before loaded");
+
+  if(_name != "Basic")
+    Application::ErrPrint("Error: Shaders must be built before loaded");
+
   return std::weak_ptr<Shader>();
 }
 

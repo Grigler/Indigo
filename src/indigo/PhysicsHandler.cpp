@@ -68,4 +68,5 @@ void PhysicsHandler::_RegisterContact(std::weak_ptr<Contact> _contact)
 void PhysicsHandler::ResolveContacts()
 {
   ContactResolver::ResolveContacts(contacts);
+  //ContactResolver::ResolveContactsLCP(contacts);
 }
