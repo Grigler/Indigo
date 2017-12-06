@@ -34,16 +34,16 @@ void Camera::onCreation()
 
   if (rb.get() == NULL)
   {
-    rb = std::make_shared<RenderBuffer>();
-    rb->GenBuffers(1280, 720);
+	  rb = std::make_shared<RenderBuffer>();
+	  rb->GenBuffers(1280, 720);
 
-    std::shared_ptr<Shader> postProcess = std::make_shared<Shader>();
-    postProcess->Init("postProcess");
-    postProcess->LoadShader(GL_VERTEX_SHADER, "./data/Shaders/Post-Process/Quad.vert");
-    postProcess->LoadShader(GL_FRAGMENT_SHADER, "./data/Shaders/Post-Process/Quad.frag");
-    postProcess->Link();
+	  std::shared_ptr<Shader> postProcess = std::make_shared<Shader>();
+	  postProcess->Init("postProcess");
+	  postProcess->LoadShader(GL_VERTEX_SHADER, "./data/Shaders/Post-Process/Quad.vert");
+	  postProcess->LoadShader(GL_FRAGMENT_SHADER, "./data/Shaders/Post-Process/Quad.frag");
+	  postProcess->Link();
 
-    rb->AttachShader(postProcess);
+	  rb->AttachShader(postProcess);
   }
 }
 
@@ -103,6 +103,7 @@ void Camera::Render()
   allObjsCopy.sort(LeftCloser);
 
   //Get and assign the framebuffer
+  rb->Bind();
 
   //Draw calls
   for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
@@ -119,7 +120,7 @@ void Camera::Render()
   }
 
   //Post processing effects here (hdr - gamma correction)
-
+  rb->DrawToQuad(1280, 720);
 }
 
 void Camera::MakeActive()

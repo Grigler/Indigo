@@ -1,11 +1,20 @@
-layout (location = 0) out vec4 outCol;
+#version 400
+
+out vec4 outCol;
 
 uniform sampler2D texColour;
 uniform sampler2D texDepth;
 
-in vec2 texCoord;
+in vec2 uv;
 
 void main()
 {
-  outCol = texture(texColour, uv);
+  const float gamma = 2.2f;
+  
+  vec3 hdr = texture(texColour, uv).rgb;
+  vec3 mapped = hdr / (hdr+vec3(1.0f));
+  
+  mapped = pow(mapped, vec3(1.0f / gamma));
+  
+  outCol = vec4(mapped, 1.0f);
 }

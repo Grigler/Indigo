@@ -50,8 +50,8 @@ void ContactResolver::AdjPosition(std::shared_ptr<Contact> _contact)
     magR *= (0.9f*Application::GetFixedDT());
   }
 
-  _contact->thisRB.lock()->transform.lock()->MoveDir(-norm, magL);
-  _contact->otherRB.lock()->transform.lock()->MoveDir(norm, magR);
+  _contact->thisRB.lock()->transform.lock()->MoveDir(-norm, magL*1.0001f);
+  _contact->otherRB.lock()->transform.lock()->MoveDir(norm, magR*1.0001f);
 
   _contact->contactPoint += (norm*magL) + (norm*magR);
 }

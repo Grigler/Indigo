@@ -62,6 +62,7 @@ add_library(Indigo
   src/Indigo/Mesh.cpp
 
   src/Indigo/Shader.cpp
+  src/Indigo/RenderBuffer.cpp
 
   src/Indigo/CharacterController.cpp
 )
