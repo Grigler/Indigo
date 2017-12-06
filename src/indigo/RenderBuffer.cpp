@@ -99,6 +99,8 @@ void RenderBuffer::Bind()
 
     GLuint texID = glGetUniformLocation(shader->programID, "texColour");
     GLuint depthID = glGetUniformLocation(shader->programID, "texDepth");
+
+
   }
 }
 
