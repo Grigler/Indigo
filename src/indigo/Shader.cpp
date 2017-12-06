@@ -6,6 +6,8 @@
 
 #include <fstream>
 
+#define ERR_ID GL_INVALID_VALUE
+
 using namespace Indigo;
 
 void Shader::Init(std::string _name)
@@ -107,6 +109,31 @@ std::shared_ptr<Shader> Shader::CreateShaderResource()
   return rtn;
 }
 
+void Shader::SetVec3(std::string _uniformName, glm::vec3 _val)
+{
+  GLuint id = GetUniformID(_uniformName);
+  if (id == ERR_ID) return;
+  glUniform3fv(id, 1, &_val[0]);
+}
+void Shader::SetVec4(std::string _uniformName, glm::vec3 _val)
+{
+  GLuint id = GetUniformID(_uniformName);
+  if (id == ERR_ID) return;
+  glUniform4fv(id, 1, &_val[0]);
+}
+void Shader::SetMat4(std::string _uniformName, glm::mat4 _val)
+{
+  GLuint id = GetUniformID(_uniformName);
+  if (id == ERR_ID) return;
+  glUniformMatrix4fv(id, 1, GL_FALSE, &_val[0][0]);
+}
+void Shader::SetInt(std::string _uniformName, int _val)
+{
+  GLuint id = GetUniformID(_uniformName);
+  if (id == ERR_ID) return;
+  glUniform1i(id, _val);
+}
+
 bool Shader::CheckCompile(GLuint _programID)
 {
   GLboolean hasCompiler;
@@ -129,4 +156,52 @@ bool Shader::CheckCompile(GLuint _programID)
     }
   }
   return true;
+}
+
+GLuint Shader::GetUniformID(std::string _name)
+{
+  GLuint id = FindUniform(_name);
+
+  //Uniform has not yet been cached
+  if (id == ERR_ID)
+  {
+    id = CacheUniform(_name);
+    //Uniform does not exist in shader
+    if (id == ERR_ID)
+    {
+      std::string err = "Attempted to find invalid uniform '" + _name +
+       "' in shader '" + name + '\'';
+      Application::ErrPrint(err);
+    }
+  }
+ 
+  return id;
+}
+GLuint Shader::FindUniform(std::string _name)
+{
+  for (auto c = uniforms.begin(); c != uniforms.end(); c++)
+  {
+    if (c->name == _name)
+    {
+      return c->id;
+    }
+  }
+  return ERR_ID;
+}
+GLuint Shader::CacheUniform(std::string _name)
+{
+  GLuint id = glGetUniformLocation(programID, _name.c_str());
+  if (id != ERR_ID && id != GL_INVALID_OPERATION && id != 0xFFFFFFFF)
+  {
+    CachedUniforms c;
+    c.name = _name;
+    c.id = id;
+    uniforms.push_back(c);
+  }
+  else
+  {
+    //In case of GL_INVALID_OPERATION
+    id = ERR_ID;
+  }
+  return id;
 }

@@ -2,31 +2,24 @@
 
 layout (location = 0) in vec3 pos;
 layout (location = 1) in vec3 norm;
-
 layout (location = 2) in vec2 texCoords;
 
 //Model-View-Projection
+uniform mat4 modelMat;
 uniform mat4 MVP;
 
-//Arbitrary value
-#define MAX_POINT_LIGHTS 16;
-
-uniform int numPointLights;
-uniform struct PointLight
-{
-  vec4 pos;
-  
-  
-}
 
 out vec4 vertPos;
+out vec3 vertNorm;
 out vec2 uv;
 
 void main()
 {
-  vertPos = MVP * vec4(pos, 1.0f);
+  vertPos = modelMat * vec4(pos, 1.0f);
+  vertNorm = norm;
+  
   uv = texCoords;
   
   
-  gl_Position = vertPos;
+  gl_Position = MVP * vec4(pos, 1.0f);
 }

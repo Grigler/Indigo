@@ -1,9 +1,12 @@
 #ifndef __IND_SHADER__
 #define __IND_SHADER__
 
+#include <glm/glm.hpp>
 #include <GL/glew.h>
+
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "resource.h"
 
@@ -28,6 +31,13 @@ namespace Indigo
     //avoids creating identical program
     static std::shared_ptr<Shader> CreateShaderResource();
 
+    //Helper functions for setting uniform values by name
+    void SetVec3(std::string _uniformName, glm::vec3 _val);
+    void SetVec4(std::string _uniformName, glm::vec3 _val);
+    void SetMat4(std::string _uniformName, glm::mat4 _val);
+    void SetInt(std::string _uniformName, int _val);
+
+
   protected:
     GLuint programID;
 
@@ -39,8 +49,23 @@ namespace Indigo
 
     virtual void LinkUniforms() {}
 
-    //Used foir resource management
+    //Used for resource management
     std::string name;
+
+  private:
+    struct CachedUniforms
+    {
+      GLuint id;
+      std::string name;
+    };
+    std::vector<CachedUniforms> uniforms;
+    //Returns the id of the given uniform name
+    GLuint GetUniformID(std::string _name);
+    //Attempts to find uniform location from CachedUniforms
+    GLuint FindUniform(std::string _name);
+    //Attempts to find uniform location from shader and caches
+    GLuint CacheUniform(std::string _name);
+
   };
 } 
 
