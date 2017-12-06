@@ -12,6 +12,7 @@ namespace Indigo
   class Shader
   {
     friend class Resources;
+    friend class RenderBuffer;
   public:
     //Must be called before any other shader functions
     void Init(std::string _name);
@@ -41,6 +42,6 @@ namespace Indigo
     //Used foir resource management
     std::string name;
   };
-}
+} 
 
 #endif

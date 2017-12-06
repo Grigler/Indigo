@@ -10,6 +10,7 @@
 namespace Indigo
 {
   class GameObject;
+  class RenderBuffer;
 
   class Camera : public Component
   {
@@ -34,6 +35,8 @@ namespace Indigo
 
     //AABB BV formed from camera's frustum
     AABB frustumBV;
+
+    static std::shared_ptr<RenderBuffer> rb;
   };
 }
 

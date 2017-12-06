@@ -9,6 +9,8 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 #include "Mesh.h"
+#include "RenderBuffer.h"
+#include "Shader.h"
 
 #include <vector>
 #include <list>
@@ -22,12 +24,27 @@
 using namespace Indigo;
 
 std::weak_ptr<Camera> Camera::currentActive;
+std::shared_ptr<RenderBuffer> Camera::rb;
 
 void Camera::onCreation()
 {
   fov = 1.5708f;
 
   CalcFrustumBV();
+
+  if (rb.get() == NULL)
+  {
+    rb = std::make_shared<RenderBuffer>();
+    rb->GenBuffers(1280, 720);
+
+    std::shared_ptr<Shader> postProcess = std::make_shared<Shader>();
+    postProcess->Init("postProcess");
+    postProcess->LoadShader(GL_VERTEX_SHADER, "./data/Shaders/Post-Process/Quad.vert");
+    postProcess->LoadShader(GL_FRAGMENT_SHADER, "./data/Shaders/Post-Process/Quad.frag");
+    postProcess->Link();
+
+    rb->AttachShader(postProcess);
+  }
 }
 
 void Camera::onLateUpdate()
@@ -76,28 +93,33 @@ void Camera::CalcFrustumBV()
 
 void Camera::Render()
 {
-  //Horrible hack to get around having to use shared_from_this
-  //currentActive = parent.lock()->GetComponent<Camera>();
-  //Converting to list due to constant removals
   std::list<std::shared_ptr<GameObject>> allObjsCopy;
   std::copy(Application::engineContext->gameObjects.begin(), Application::engineContext->gameObjects.end(),
     std::back_inserter(allObjsCopy));
 
-  allObjsCopy.sort(LeftCloser); //List version
+  //Sorting the objects by distance to the camera so that closer objects are drawn first
+  //this means that there should be less uneccessary fragment operations that will
+  //later fail depth testing
+  allObjsCopy.sort(LeftCloser);
+
+  //Get and assign the framebuffer
 
   //Draw calls
   for (auto i = allObjsCopy.begin(); i != allObjsCopy.end(); i++)
   {
-    //std::weak_ptr<RenderComponent> rc = (*i)->GetRenderComponent();
-    //TODO - change to switch on some enum or string in base then cast
-    //std::weak_ptr<MeshRenderer> mr = std::dynamic_pointer_cast<MeshRenderer>(rc.lock());
     std::weak_ptr<MeshRenderer> mr = (*i)->GetComponent<MeshRenderer>();
     if (mr.expired()) continue;
+
+    //Testing objects against the viewing frustum BV and then drawing if they pass
+    //this allows for simplistic frustum-culling
     if (AABB::Test(frustumBV, *mr.lock()->mesh->aabb.get()))
     {
       (*i)->Draw();
     }
   }
+
+  //Post processing effects here (hdr - gamma correction)
+
 }
 
 void Camera::MakeActive()
