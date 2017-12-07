@@ -115,7 +115,7 @@ void Shader::SetVec3(std::string _uniformName, glm::vec3 _val)
   if (id == ERR_ID) return;
   glUniform3fv(id, 1, &_val[0]);
 }
-void Shader::SetVec4(std::string _uniformName, glm::vec3 _val)
+void Shader::SetVec4(std::string _uniformName, glm::vec4 _val)
 {
   GLuint id = GetUniformID(_uniformName);
   if (id == ERR_ID) return;
@@ -152,6 +152,7 @@ bool Shader::CheckCompile(GLuint _programID)
       fprintf(stderr, "%s\n", log);
       Application::ErrPrint("Failed to compile shader - reasons above");
       delete[] log;
+      Application::ErrPrint(std::exception());
       return false;
     }
   }

@@ -25,7 +25,7 @@ namespace Indigo
 
     //TODO - add more virtual functions
     void ParentTo(std::weak_ptr<GameObject> _go);
-  protected:
+
     std::weak_ptr<GameObject> parent;
     std::weak_ptr<Transform> transform;
 

@@ -63,6 +63,8 @@ add_library(Indigo
 
   src/Indigo/Shader.cpp
   src/Indigo/RenderBuffer.cpp
+  src/Indigo/Light.cpp
+  src/Indigo/LightSources.cpp
 
   src/Indigo/CharacterController.cpp
 )

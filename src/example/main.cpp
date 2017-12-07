@@ -59,8 +59,8 @@ public:
       rb.lock()->AssignCollider(Indigo::ColliderType::Plane);
       rb.lock()->SetGravity(false);
       //Arbitrarily large mass and inertia for static object
-      rb.lock()->SetMass(std::numeric_limits<float>::max());
-      rb.lock()->SetInertiaTensor(glm::mat3(999999999.0f));
+      rb.lock()->SetMass(5000000.0f);
+      //rb.lock()->SetInertiaTensor(glm::mat3(1.0));
       p = true;
     }
     else
@@ -68,6 +68,9 @@ public:
       //transform->SetPosition(glm::vec3(0.0f, 2.5f, 10.0f));
       rb.lock()->SetMass(15.0f);
       rb.lock()->SetGravity(true);
+
+      l = AddComponent<Indigo::Light>();
+      l.lock()->SetColour(glm::vec3(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));
     }
     
     //sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
@@ -76,7 +79,6 @@ public:
       //sound.lock()->Play();
       p = true;
     }
-    
     
     ts = AddComponent<TestScript>();
   }
@@ -104,6 +106,8 @@ private:
   std::weak_ptr<Indigo::RB> rb;
   std::weak_ptr<TestScript> ts;
 
+  std::weak_ptr<Indigo::Light> l;
+
   static bool p;
 };
 bool ExampleObject::p = false;
@@ -121,6 +125,9 @@ public:
     cam = AddComponent<Indigo::Camera>();
     //cam.lock()->MakeActive();
     Indigo::Camera::currentActive = cam;
+
+    l = AddComponent<Indigo::Light>();
+    l.lock()->SetColour(glm::vec3(0.75f, 0.0f, 0.0f));
   }
   void onUpdate()
   {
@@ -128,6 +135,7 @@ public:
   }
 
   std::weak_ptr<Indigo::CharacterController> cc;
+  std::weak_ptr<Indigo::Light> l;
 };
 
 

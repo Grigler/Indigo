@@ -13,6 +13,7 @@ void main()
   
   vec3 hdr = texture(texColour, uv).rgb;
   vec3 mapped = hdr / (hdr+vec3(1.0f));
+  //vec3 mapped = hdr;
   
   mapped = pow(mapped, vec3(1.0f / gamma));
   

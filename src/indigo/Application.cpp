@@ -43,7 +43,8 @@ void Application::Init(int _argc, char* _argv[])
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
-  glClearColor(75.0f/255.0f, 0.0f, 130.0f/255.0f, 1.0f);
+  //glClearColor(75.0f/255.0f, 0.0f, 130.0f/255.0f, 1.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 void Application::Kill()
 {

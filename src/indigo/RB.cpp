@@ -134,7 +134,12 @@ void RB::Integrate()
 
   //Applying linearVel and angularVel to position and rotation
   transform.lock()->MoveDir(linearVel, dt);
-  transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
+
+  glm::vec3 r = glm::radians(angularVel);
+  glm::quat q = r;
+
+  //transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
+  transform.lock()->SetRotation(transform.lock()->GetRotation() * q);
 
   //Resetting force and torque as these are impulses
   force = glm::vec3(0.0f);

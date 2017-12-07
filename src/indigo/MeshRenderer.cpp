@@ -9,6 +9,8 @@
 
 #include "meshShader.h"
 
+#include "LightSources.h"
+
 #include <glm/gtx/transform.hpp>
 
 using namespace Indigo;
@@ -72,8 +74,10 @@ void MeshRenderer::Draw()
     shader.lock()->SetMat4("MVP", mvp);
     shader.lock()->SetMat4("modelMat", model);
     //shader.lock()->SetVec3("eyeDir", cam.lock()->transform.lock()->GetForward());
-    //shader.lock()->SetVec3("eyePos", cam.lock()->transform.lock()->GetPosition());
-    //shader.lock()->SetInt("numPointLights", 0);
+    shader.lock()->SetVec3("eyePos", cam.lock()->transform.lock()->GetPosition());
+    
+    LightSources::BufferLights(shader.lock(), "pointLights");
+
 
     glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertCount());
   }

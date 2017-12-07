@@ -16,7 +16,8 @@ void RenderBuffer::GenBuffers(GLsizei _x, GLsizei _y)
   glGenFramebuffers(1, &frameBufferID);
   glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
 
-  glClearColor(75.0f / 255.0f, 0.0f, 130.0f / 255.0f, 1.0f);
+  //glClearColor(75.0f / 255.0f, 0.0f, 130.0f / 255.0f, 1.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
   //Gen, bind texutre and define parameters
   glGenTextures(1, &textureID);
@@ -130,7 +131,7 @@ void RenderBuffer::DrawToQuad(GLsizei _x, GLsizei _y)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, _x, _y);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //glDisable(GL_DEPTH_TEST);
 

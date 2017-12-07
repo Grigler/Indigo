@@ -22,5 +22,8 @@
 #include "indigo/TextureResource.h"
 #include "indigo/Camera.h"
 #include "indigo/CharacterController.h"
+#include "indigo/RenderBuffer.h"
+#include "indigo/Light.h"
+#include "indigo/LightSources.h"
 
 #endif
