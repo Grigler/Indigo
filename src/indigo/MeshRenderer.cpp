@@ -39,11 +39,6 @@ MeshRenderer::MeshRenderer()
 
     shader.lock()->Link();
   }
-  else
-  {
-    printf("\tLoaded from pool\n");
-  }
-
 }
 
 void MeshRenderer::onUpdate()
@@ -73,7 +68,6 @@ void MeshRenderer::Draw()
     //  1, GL_FALSE, &mvp[0][0]);
     shader.lock()->SetMat4("MVP", mvp);
     shader.lock()->SetMat4("modelMat", model);
-    //shader.lock()->SetVec3("eyeDir", cam.lock()->transform.lock()->GetForward());
     shader.lock()->SetVec3("eyePos", cam.lock()->transform.lock()->GetPosition());
     
     LightSources::BufferLights(shader.lock(), "pointLights");

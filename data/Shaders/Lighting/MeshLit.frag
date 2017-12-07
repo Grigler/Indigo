@@ -3,9 +3,8 @@
  struct PointLight
 {
   vec4 pos;
-  
-  vec3 diffuseCol;
-  vec3 specularCol;
+  vec3 colour;
+  float attenuation;
 };
 
 in vec4 vertPos;
@@ -13,7 +12,6 @@ in vec3 vertNorm;
 in vec2 uv;
 
 //Uniforms defining posiiton and direction of eye
-uniform vec3 eyeDir;
 uniform vec3 eyePos;
 
 uniform sampler2D mainTexture;
@@ -29,20 +27,26 @@ out vec3 outCol;
 vec3 CalcPointLight(PointLight _l)
 {
   //Calculating diffuse
-  vec3 lightDir = normalize(_l.pos- vertPos).xyz;
+  vec3 toLight = (_l.pos - vertPos).xyz;
+  vec3 lightDir = normalize(toLight);
   float diffuseScale = max(dot(vertNorm, lightDir), 0.0f);
   
-  vec3 diffCol = _l.diffuseCol * diffuseScale;
+  vec3 diffCol = _l.colour * diffuseScale;
   
   //Calculating Specular
   float specStrength = 0.5f;
   
   vec3 viewDir = normalize(eyePos - vertPos.xyz);
-  vec3 reflectDir = reflect(-lightDir, vertNorm);
-  float specScale = pow(max(dot(viewDir, reflectDir), 0.0f), 32.0f);
-  vec3 specCol = specStrength * specScale * _l.specularCol;
+  vec3 halfVec = normalize(lightDir + viewDir);
   
-  return specCol + diffCol;
+  float specScale = pow(max(dot(vertNorm, halfVec), 0.0f), 32.0f);
+  vec3 specCol = specStrength * specScale * _l.colour;
+  
+  float dist = length(toLight);
+  //Linear attenuation
+  float att = (1.0f/dist) * _l.attenuation;
+  
+  return (specCol + diffCol) * att;
   
 }
 

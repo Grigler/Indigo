@@ -33,8 +33,8 @@ void LightSources::BufferLights(std::shared_ptr<Shader> _to, std::string _unifor
       {
         std::string uniformFull = uniformOpenName + std::to_string(pointLights) + ']';
         _to->SetVec4(std::string(uniformFull + ".pos"), glm::vec4(l->lock()->transform.lock()->GetPosition(), 1.0f));
-        _to->SetVec3(std::string(uniformFull + ".diffuseCol"), l->lock()->GetColour());
-        _to->SetVec3(std::string(uniformFull + ".specularCol"), l->lock()->GetColour()*1.1f);
+        _to->SetVec3(std::string(uniformFull + ".colour"), l->lock()->GetColour());
+        _to->SetFloat(std::string(uniformFull + ".attenuation"), l->lock()->GetAttenuatation());
         pointLights++;
         break;
       }

@@ -5,6 +5,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/norm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 using namespace Indigo;
 
@@ -21,16 +22,16 @@ Transform::Transform( glm::vec3 _pos, glm::vec3 _rot, glm::vec3 _scale)
 glm::vec3 Transform::GetForward()
 {
   glm::vec4 forward(0, 0, 1, 1);
-  return glm::normalize((glm::vec3)(_RotVecToMat() * forward));
+  return glm::normalize((glm::vec3)(GetRotationMat() * forward));
 }
 glm::vec3 Transform::GetUp()
 {
   glm::vec4 up(0, 1, 0, 1);
-  return glm::normalize((glm::vec3)(_RotVecToMat() * up));
+  return glm::normalize((glm::vec3)(GetRotationMat() * up));
 }
 glm::vec3 Transform::GetRight()
 {
-  return glm::cross(GetUp(), GetForward());
+  return -glm::cross(GetUp(), GetForward());
 }
 
 glm::mat3 Transform::GetRotationMat()
@@ -113,7 +114,16 @@ void Transform::MoveDir(glm::vec3 _dir, float _alpha)
 
 void Transform::Rotate(glm::vec3 _eulerAngles)
 {
-  rot += _eulerAngles;
+  //rot += _eulerAngles;
+
+  printf("Degr: %f, %f, %f\n", _eulerAngles.x, _eulerAngles.y, _eulerAngles.z);
+
+  glm::vec3 rad = glm::radians(_eulerAngles);
+  glm::quat q = rad;
+  rot = rot * q;
+  
+  printf("NewROT: %f, %f, %f\n\n", rot.x, rot.y, rot.z);
+
   SET_AABB_RECALC_FLAG
 }
 void Transform::Scale(glm::vec3 _scaleBy)

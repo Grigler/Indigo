@@ -26,8 +26,12 @@ namespace Indigo
     glm::vec3 GetColour() { return colour; }
     void SetColour(glm::vec3 _rgb) { colour = _rgb; }
 
+    float GetAttenuatation() { return attenuation; }
+    void SetAttenuation(float _to) { attenuation = _to; }
+
   private:
     glm::vec3 colour;
+    float attenuation;
 
   };
 

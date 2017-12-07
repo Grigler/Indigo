@@ -15,7 +15,7 @@ using namespace Indigo;
 
 void CharacterController::onCreation()
 {
-
+  mouseSens = glm::vec2(1.0f);
 
   //Manually calling cam component creation event
   //cam.onCreation();
@@ -23,7 +23,7 @@ void CharacterController::onCreation()
 
 void CharacterController::onUpdate()
 {
-  //UpdateRotFromMouse();
+  UpdateRotFromMouse();
 
   UpdatePosFromKeys();
 }
@@ -32,19 +32,26 @@ void CharacterController::UpdateRotFromMouse()
 {
   std::weak_ptr<Transform> t = parent.lock()->transform;
 
-  glm::vec2 mouseDelta = Input::GetMouseDelta() * 10.0f;
+  glm::vec2 mouseDelta = Input::GetMouseDeltaRaw();
+  //printf("MouseDelta: %f, %f\n", mouseDelta.x, mouseDelta.y);
 
-  float angleRotY = glm::sign(mouseDelta.x) * glm::degrees(glm::angle(glm::vec2(0, 1),
-    glm::normalize(glm::vec2(mouseDelta.x, 1)))) * Application::GetDT() * mouseSens.y;
-  float angleRotX = glm::sign(mouseDelta.y) * glm::degrees(glm::angle(glm::vec2(0, 1),
-    glm::normalize(glm::vec2(mouseDelta.y, 1)))) * Application::GetDT() * mouseSens.x;
+  glm::vec3 r = transform.lock()->GetRotation();
+  //printf("R before: %f, %f, %f\n", r.x, r.y, r.z);
 
-  angleRotX /= 10.0f;
-  angleRotY /= 10.0f;
+  r.y -= mouseSens.x * mouseDelta.x * Application::GetDT();
+  r.x += mouseSens.y * mouseDelta.y * Application::GetDT();
 
-  t.lock()->Rotate(glm::vec3(angleRotX, angleRotY, 0.0f));
+  //Clamping to stop camera tumbling
+  if (r.x > glm::radians(180.0f))
+    r.x = glm::radians(180.0f);
+  if (r.x < glm::radians(-180.0f))
+    r.x = glm::radians(-180.0f);
 
-  lastMouseDelta = mouseDelta;
+  //printf("R after: %f, %f, %f\n\n", r.x, r.y, r.z);
+
+  transform.lock()->SetRotation(r);
+
+
 }
 void CharacterController::UpdatePosFromKeys()
 {

@@ -32,6 +32,7 @@ namespace Indigo
     static std::shared_ptr<Shader> CreateShaderResource();
 
     //Helper functions for setting uniform values by name
+    void SetFloat(std::string _uniformName, float _val);
     void SetVec3(std::string _uniformName, glm::vec3 _val);
     void SetVec4(std::string _uniformName, glm::vec4 _val);
     void SetMat4(std::string _uniformName, glm::mat4 _val);

@@ -109,6 +109,12 @@ std::shared_ptr<Shader> Shader::CreateShaderResource()
   return rtn;
 }
 
+void Shader::SetFloat(std::string _uniformName, float _val)
+{
+  GLuint id = GetUniformID(_uniformName);
+  if (id == ERR_ID) return;
+  glUniform1f(id, _val);
+}
 void Shader::SetVec3(std::string _uniformName, glm::vec3 _val)
 {
   GLuint id = GetUniformID(_uniformName);

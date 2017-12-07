@@ -137,6 +137,7 @@ void RB::Integrate()
 
   glm::vec3 r = glm::radians(angularVel);
   glm::quat q = r;
+  q = glm::normalize(q);
 
   //transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
   transform.lock()->SetRotation(transform.lock()->GetRotation() * q);

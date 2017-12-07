@@ -65,24 +65,23 @@ void Camera::CalcFrustumBV()
   *  (assuming an LOD system is used) to use a collection of AABBs using
   *  varying sizes down the frustum, a single one has been used for simplicity
   */
-  float heightFar = 2.0f * glm::tan(fov / 2) * -1000.0f;
+  float heightFar = 2.0f * glm::tan(fov / 2) * 1000.0f;
   float widthFar = heightFar * (1280.0f / 720.0f);
 
   std::shared_ptr<Transform> trans = parent.lock()->transform;
-  glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * -1000.0f;
-  glm::vec3 ftr = glm::vec3(farCenter.x, farCenter.y, -1000.0f) + (trans->GetUp() * heightFar / 2.0f) +
-    (trans->GetRight() * widthFar / 2.0f);
-
-  frustumBV.max = ftr;
-  frustumBV.origMax = frustumBV.max;
+  glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * 1000.0f;
+  glm::vec3 ftr = farCenter + (trans->GetUp() * heightFar / 2.0f) +
+    (-trans->GetRight() * widthFar / 2.0f);
 
   //float heightNear = 2.0f * glm::tan(fov / 2) * 0.3f;
   //float widthNear = heightNear * (1280.0f / 720.0f);
 
-  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * -0.3f;
-  glm::vec3 fbr = farCenter + (trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
+  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * 0.01f;
+  glm::vec3 fbr = farCenter + (-trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
 
-  frustumBV.min = glm::vec3((ftr - trans->GetRight()*widthFar).x, fbr.y, nearCenter.z);
+  frustumBV.max = ftr;
+  frustumBV.origMax = frustumBV.max;
+  frustumBV.min = glm::vec3((ftr - -trans->GetRight()*widthFar).x, fbr.y, nearCenter.z);
   frustumBV.origMin = frustumBV.min;
 
   printf("Min: %f %f %f\n", frustumBV.min.x, frustumBV.min.y, frustumBV.min.z);
@@ -130,7 +129,10 @@ void Camera::MakeActive()
 
 glm::mat4 Camera::GetViewProj()
 {
-  glm::mat4 view = glm::inverse(parent.lock()->transform->GetModelMat());
+  //glm::mat4 view = glm::inverse(parent.lock()->transform->GetModelMat());
+  glm::mat4 view = glm::lookAt(transform.lock()->GetPosition(),
+    transform.lock()->GetPosition() + transform.lock()->GetForward(),
+    transform.lock()->GetUp());
   //TODO - Change to have better customisability
   glm::mat4 proj = glm::perspective(fov, 1280.0f / 720.0f, 0.01f, 1000.0f);
   return proj * view;

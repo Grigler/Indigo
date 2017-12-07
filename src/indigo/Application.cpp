@@ -13,6 +13,7 @@ using namespace Indigo;
 std::shared_ptr<Engine> Application::engineContext;
 float Application::deltaTime = 0.0f;
 float Application::fixedTime = 0.0f;
+bool Application::isWarpingMouse = false;
 
 void Application::Init(int _argc, char* _argv[])
 {
@@ -86,7 +87,6 @@ void Application::Idle()
   fixedTime += (t - lastT) / 1000.0f;
   lastT = glutGet(GLUT_ELAPSED_TIME);
 
-
   if (fixedTime >= 0.008f)
   {
     engineContext->FixedUpdate();
@@ -109,13 +109,19 @@ void Application::Idle()
     glutPostRedisplay();
   }
 
-  
-
 }
 void Application::Display()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   engineContext->Draw();
+
+  //It doesn't make sense to warp the mouse in Display()
+  //but it makes even less sense that it only works properly
+  //to do it here - thanks GLUT
+  isWarpingMouse = true;
+  RecenterMouse();
+  isWarpingMouse = false;
+
   glutSwapBuffers();
 }
 void Application::Keyboard(unsigned char _k, int _x, int _y)
@@ -128,7 +134,14 @@ void Application::KeyboardUp(unsigned char _k, int _x, int _y)
 }
 void Application::MouseMotionPassive(int _x, int _y)
 {
-  Input::UpdateMouseDelta(_x, _y);
+  if (!isWarpingMouse)
+  {
+    //Update current mouse pos
+    Input::mouseX = _x;
+    Input::mouseY = _y;
+    //Get delta from center for this frame
+    Input::UpdateMouseDelta(_x, _y);
+  }
 }
 
 void Application::ErrPrint(std::exception _e)

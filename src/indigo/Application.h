@@ -44,6 +44,7 @@ namespace Indigo
     static void Keyboard(unsigned char _k, int _x, int _y);
     static void KeyboardUp(unsigned char _k, int _x, int _y);
     static void MouseMotionPassive(int _x, int _y);
+    static bool isWarpingMouse;
 
     static float deltaTime;
     static float fixedTime;
