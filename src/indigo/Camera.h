@@ -28,13 +28,15 @@ namespace Indigo
     glm::mat4 GetViewProj();
   private:
     static bool LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r);
-    
-    void CalcFrustumBV();
+
+    void CalcFrustumBVPartitions(int _bvNum);
 
     float fov;
+    float near, far;
 
-    //AABB BV formed from camera's frustum
-    AABB frustumBV;
+    std::vector<AABB> frustumBVs;
+    //Returns true on first frustumBVs collision and false if in none
+    bool InFrustum(std::weak_ptr<AABB> _bv);
 
     static std::shared_ptr<RenderBuffer> rb;
   };

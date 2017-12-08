@@ -95,3 +95,12 @@ bool AABB::Test(std::weak_ptr<AABB> _a, std::weak_ptr<AABB> _b)
 
   return true;
 }
+bool AABB::Against(AABB _b)
+{
+  //Re-ordered to use x and z test first
+  if (max.z < _b.min.z || min.z > _b.max.z) return false;
+  if (max.x < _b.min.x || min.x > _b.max.x) return false;
+  if (max.y < _b.min.y || min.y > _b.max.y) return false;
+
+  return true;
+}

@@ -32,6 +32,7 @@ namespace Indigo
 
     glm::vec3 GetForward();
     glm::vec3 GetUp();
+	glm::vec3 GetLeft();
     glm::vec3 GetRight();
 
     //Returns model matrix with translation and rotation applied

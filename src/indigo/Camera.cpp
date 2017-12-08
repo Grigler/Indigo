@@ -20,6 +20,7 @@
 
 //DEBUG
 #include <iostream>
+#include "Input.h"
 
 using namespace Indigo;
 
@@ -28,9 +29,14 @@ std::shared_ptr<RenderBuffer> Camera::rb;
 
 void Camera::onCreation()
 {
-  fov = 1.5708f;
+  
+  fov = glm::radians(90.0f);
+  near = 0.01f;
+  far = 1000.0f;
 
-  CalcFrustumBV();
+  //Partitions the frustum into 32 AABB segments
+  //used for frustum culling
+  CalcFrustumBVPartitions(32);
 
   if (rb.get() == NULL)
   {
@@ -51,43 +57,62 @@ void Camera::onLateUpdate()
 {
   if (parent.lock()->transform->_CheckForAABBRecalc())
   {
-    frustumBV.Update(parent.lock()->transform->GetModelMat());
+    //frustumBV.Update(parent.lock()->transform->GetModelMat());
+    for (auto i = frustumBVs.begin(); i != frustumBVs.end(); i++)
+    {
+      i->Update(transform.lock()->GetModelMat());
+    }
     parent.lock()->transform->_aabbNeedRecalc = false;
   }
 }
 
-void Camera::CalcFrustumBV()
+void Camera::CalcFrustumBVPartitions(int _bvNum)
 {
-  /* Calculating AABB to encompass camera frustum
-  *
-  *  This uses the far plane's dimensions for the xzy sizes
-  *  although it would be more effective at culling nearby complex geometry
-  *  (assuming an LOD system is used) to use a collection of AABBs using
-  *  varying sizes down the frustum, a single one has been used for simplicity
-  */
-  float heightFar = 2.0f * glm::tan(fov / 2) * 1000.0f;
-  float widthFar = heightFar * (1280.0f / 720.0f);
+  //Clearing it if frustumBVs need to be re-calculated at run-time
+  frustumBVs.clear();
 
-  std::shared_ptr<Transform> trans = parent.lock()->transform;
-  glm::vec3 farCenter = trans->GetPosition() + trans->GetForward() * 1000.0f;
-  glm::vec3 ftr = farCenter + (trans->GetUp() * heightFar / 2.0f) +
-    (-trans->GetRight() * widthFar / 2.0f);
+  std::shared_ptr<Transform> t = transform.lock();
 
-  //float heightNear = 2.0f * glm::tan(fov / 2) * 0.3f;
-  //float widthNear = heightNear * (1280.0f / 720.0f);
+  glm::vec3 posForward = t->GetPosition() + t->GetForward();
 
-  glm::vec3 nearCenter = trans->GetPosition() + trans->GetForward() * 0.01f;
-  glm::vec3 fbr = farCenter + (-trans->GetRight()*widthFar / 2.0f) - (trans->GetUp()*heightFar / 2.0f);
+  float dist = far - near;
+  float segSize = dist / _bvNum;
 
-  frustumBV.max = ftr;
-  frustumBV.origMax = frustumBV.max;
-  frustumBV.min = glm::vec3((ftr - -trans->GetRight()*widthFar).x, fbr.y, nearCenter.z);
-  frustumBV.origMin = frustumBV.min;
+  for (int i = 0; i < _bvNum; i++)
+  {
+    float distFar = (dist - (segSize*i));
+    float distNear = distFar - segSize;
 
-  printf("Min: %f %f %f\n", frustumBV.min.x, frustumBV.min.y, frustumBV.min.z);
-  printf("Max: %f %f %f\n\n", frustumBV.max.x, frustumBV.max.y, frustumBV.max.z);
+    float hFar = 2.0f * glm::tan(fov / 2.0f) * distFar;
+    float wFar = hFar * (1280.0f / 720.0f);
 
-  parent.lock()->transform->_aabbNeedRecalc = false;
+    glm::vec3 farCent = posForward + distFar;
+    glm::vec3 nearCent = posForward + distNear;
+
+    //Top-Right of far plane
+    glm::vec3 max = farCent + (t->GetRight()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
+    //Bottom-right of far plane with width and height of far plane
+    glm::vec3 min = nearCent - (t->GetRight()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+
+    AABB bv;
+    bv.min = min;
+    bv.max = max;
+    bv.origMin = min;
+    bv.origMax = max;
+    frustumBVs.push_back(bv);
+  }
+}
+bool Camera::InFrustum(std::weak_ptr<AABB> _bv)
+{
+  AABB bv = *_bv.lock().get();
+  for (auto i = frustumBVs.begin(); i != frustumBVs.end(); i++)
+  {
+    if (i->Against(bv))
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 void Camera::Render()
@@ -112,7 +137,7 @@ void Camera::Render()
 
     //Testing objects against the viewing frustum BV and then drawing if they pass
     //this allows for simplistic frustum-culling
-    if (AABB::Test(frustumBV, *mr.lock()->mesh->aabb.get()))
+    if (InFrustum(mr.lock()->mesh->aabb))
     {
       (*i)->Draw();
     }
@@ -130,9 +155,13 @@ void Camera::MakeActive()
 glm::mat4 Camera::GetViewProj()
 {
   //glm::mat4 view = glm::inverse(parent.lock()->transform->GetModelMat());
-  glm::mat4 view = glm::lookAt(transform.lock()->GetPosition(),
-    transform.lock()->GetPosition() + transform.lock()->GetForward(),
-    transform.lock()->GetUp());
+  //glm::mat4 view = glm::lookAt(transform.lock()->GetPosition(),
+  //  transform.lock()->GetPosition() + transform.lock()->GetForward(),
+  // transform.lock()->GetUp());
+  glm::mat4 view = glm::lookAtRH(transform.lock()->GetPosition(),
+	  transform.lock()->GetPosition()+transform.lock()->GetForward(),
+	  transform.lock()->GetUp());
+
   //TODO - Change to have better customisability
   glm::mat4 proj = glm::perspective(fov, 1280.0f / 720.0f, 0.01f, 1000.0f);
   return proj * view;

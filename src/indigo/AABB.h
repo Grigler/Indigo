@@ -19,6 +19,9 @@ namespace Indigo
     //update pre-existing AABB
     void Update(glm::mat4 _modelMat);
 
+    //Member function to test against _b
+    bool AABB::Against(AABB _b);
+
     //Dereferences this and calls static test
     static bool Test(AABB _a, AABB _b);
     static bool Test(std::weak_ptr<AABB> _a, std::weak_ptr<AABB> _b);

@@ -24,7 +24,7 @@ public:
       {
         printf("Force Applied\n");
         rb.lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 1000.0f),
-          glm::vec3(0.0f, 1.0f, 0.0f));
+          glm::vec3(0.0f, 0.0f, 0.0f));
       }
     }
 
@@ -167,14 +167,14 @@ int main(int argc, char** argv)
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   std::weak_ptr<Floor> f = Indigo::GameObject::CreateGameObject<Floor>();
 
-  const int amnt = 25;
+  const int amnt = 200;
   std::weak_ptr<ExampleObject> eoArr[amnt];
 
   for (int i = 0; i < amnt; i++)
   {
     eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
 
-    eoArr[i].lock()->transform->SetPosition(glm::vec3(rand()%20 - 10, i * 10.0f, 0.0f));
+    eoArr[i].lock()->transform->SetPosition(glm::vec3((rand()%20 - 10)/10.0f, i * 10.0f, 0.0f));
     //eoArr[i].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(-1000000.0f, -1000000.0f, 0.0f),
     //  glm::vec3(0));
     //printf("Num: %i\n", i + 1);

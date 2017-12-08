@@ -16,9 +16,6 @@ using namespace Indigo;
 void CharacterController::onCreation()
 {
   mouseSens = glm::vec2(1.0f);
-
-  //Manually calling cam component creation event
-  //cam.onCreation();
 }
 
 void CharacterController::onUpdate()
@@ -50,7 +47,6 @@ void CharacterController::UpdateRotFromMouse()
   //printf("R after: %f, %f, %f\n\n", r.x, r.y, r.z);
 
   transform.lock()->SetRotation(r);
-
 
 }
 void CharacterController::UpdatePosFromKeys()
