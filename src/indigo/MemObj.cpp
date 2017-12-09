@@ -7,50 +7,32 @@
 
 using namespace Indigo;
 
-MemObj::MemObj()
-{
-  readyToDestroy = true;
-  Application::engineContext->RegisterMemObj(this);
-}
+std::map<std::string, std::weak_ptr<MemObj>> MemObj::listeners;
 
-void MemObj::MarkToKill()
+void MemObj::BroadCastMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
 {
-  readyToDestroy = true;
-}
-
-void MemObj::SendMessage(MemObj *_to, std::string _msg)
-{
-  Message m;
-  m.from = Application::engineContext->GetMemObjRef(this);
-  m.to = Application::engineContext->GetMemObjRef(_to);
-  m.msg = _msg;
-  Application::engineContext->RegisterMsg(m);
-}
-void MemObj::RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _from)
-{
-  for (auto i = messageRegister.begin(); i != messageRegister.end(); i++)
+  for (auto i = listeners.begin(); i != listeners.end(); i++)
   {
-    if ((*i).msg == _msg)
+    if (i->first == _msg)
     {
-      (*i).callback(_from.lock().get());
-      return;
+      i->second.lock()->RecieveMessage(_msg, _sender);
     }
   }
-  Application::ErrPrint("No message registered for " + _msg);
 }
-void MemObj::RegisterMessage(std::string _msg, void(call)(MemObj *from))
+
+void MemObj::ListenForMessage(std::string _msg, std::weak_ptr<MemObj> _this)
 {
-  for (auto i = messageRegister.begin(); i != messageRegister.end(); i++)
+  std::pair<std::string, std::weak_ptr<MemObj>> p(_msg, _this);
+  listeners.insert(listeners.end(), p);
+}
+void MemObj::StopListeningFor(std::string _msg, std::weak_ptr<MemObj> _this)
+{
+  for (auto i = listeners.begin(); i != listeners.end(); i++)
   {
-    if ((*i).msg == _msg)
+    if (i->second.lock().get() == _this.lock().get())
     {
-      Application::ErrPrint("Multiple message instance for " + _msg);
-      return;
+      if(i->first == _msg)
+        listeners.erase(i);
     }
   }
-  MessageReg mr;
-  mr.msg = _msg;
-  mr.callback = call;
-
-  messageRegister.push_back(mr);
 }

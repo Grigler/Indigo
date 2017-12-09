@@ -1,11 +1,13 @@
 #ifndef __IND_MEM_OBJ__
 #define __IND_MEM_OBJ__
 
+#define STRINGIFY(A) #A
+
 #include <memory>
 #include <string>
 #include <vector>
-
-
+#include <map>
+/*
 namespace Indigo
 {
   class MemObj;
@@ -37,6 +39,31 @@ namespace Indigo
     std::vector<MessageReg> messageRegister;
 
   };
+}
+*/
+
+
+namespace Indigo
+{
+
+  //Used for handling messages
+  class MemObj
+  {
+    friend class Engine;
+    friend class GameObject;
+  public:
+
+    void BroadCastMessage(std::string _msg, std::weak_ptr<MemObj> _sender);
+    virtual void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _sender) {}
+
+    void ListenForMessage(std::string _msg, std::weak_ptr<MemObj> _this);
+    void StopListeningFor(std::string _msg, std::weak_ptr<MemObj> _this);
+
+    static std::map<std::string, std::weak_ptr<MemObj>> listeners;
+
+
+  };
+
 }
 
 #endif

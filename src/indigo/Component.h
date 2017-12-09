@@ -3,13 +3,15 @@
 
 #include <memory>
 
+#include "MemObj.h"
+
 namespace Indigo
 {
   class GameObject;
   class Transform;
   struct Collision;
 
-  class Component
+  class Component : public MemObj
   {
     friend class Camera;
     friend class GameObject;

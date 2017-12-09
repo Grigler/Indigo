@@ -67,12 +67,14 @@ void Engine::Update()
     }
   }
 
+  /*
   //Calling callback funcs for all Messages
   for (auto i = messageQueue.begin(); i != messageQueue.end(); i++)
   {
     (*i).to.lock()->RecieveMessage((*i).msg, (*i).from);
   }
   messageQueue.clear();
+  */
 
   //Calling LateUpdate after everything else
   for (auto i = gameObjects.begin(); i != gameObjects.end(); i++)
@@ -134,6 +136,8 @@ void Engine::RegisterMemObj(MemObj *_obj)
   }
   allMemObjs.push_back(std::shared_ptr<MemObj>(_obj));
 }
+
+/*
 void Engine::SweepDestroy()
 {
   for (auto i = allMemObjs.begin(); i != allMemObjs.end(); i++)
@@ -144,6 +148,8 @@ void Engine::SweepDestroy()
     }
   }
 }
+*/
+
 std::weak_ptr<MemObj> Engine::GetMemObjRef(MemObj *_obj)
 {
   for (auto i = allMemObjs.begin(); i != allMemObjs.end(); i++)
@@ -175,8 +181,9 @@ void Engine::RegisterGameObject(std::shared_ptr<GameObject> _obj)
   else
     gameObjects.push_back(_obj);
 }
-
+/*
 void Engine::RegisterMsg(Message _msg)
 {
   messageQueue.push_back(_msg);
 }
+*/

@@ -4,16 +4,22 @@
 class TestScript : public Indigo::Component
 {
 public:
-  /*
-  void onCollision(std::weak_ptr<Indigo::Collision> _col)
+
+  void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
   {
-    printf("I collided!\n");
+    printf("Callback: %s called, from %i on %i\n", _msg.c_str(), _sender.lock().get(), this);
   }
-  */
+
   void onCreation()
   {
     rb = parent.lock()->GetComponent<Indigo::RB>();
-    //rb.lock()->SetGravity(false);
+    
+    std::weak_ptr<TestScript> ts = parent.lock()->GetComponent<TestScript>();
+    
+    std::weak_ptr<TestScript> t = parent.lock()->GetComponent<TestScript>();
+
+    ListenForMessage("Space", t);
+
   }
 
   void onUpdate()
@@ -22,7 +28,6 @@ public:
     {
       if (rb.lock()->GetLinearVel() != glm::vec3(0.0f))
       {
-        //printf("Force Applied\n");
         rb.lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 1000.0f),
           glm::vec3(0.0f, 0.0f, 0.0f));
       }
@@ -157,6 +162,12 @@ public:
         transform->GetRight().y,
         transform->GetRight().z);
     } 
+
+    if (Indigo::Input::GetKeyUp(' '))
+    {
+      std::weak_ptr<Indigo::Camera> cam = Indigo::Camera::currentActive;
+      BroadCastMessage("Space", cam);
+    }
   }
 
   std::weak_ptr<Indigo::CharacterController> cc;
