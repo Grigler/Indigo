@@ -44,7 +44,7 @@ void Camera::onCreation()
 	  rb->GenBuffers(1280, 720);
 
 	  std::shared_ptr<Shader> postProcess = std::make_shared<Shader>();
-	  postProcess->Init("postProcess");
+	  postProcess->Init("HDR-Gamma");
 	  postProcess->LoadShader(GL_VERTEX_SHADER, "./data/Shaders/Post-Process/Quad.vert");
 	  postProcess->LoadShader(GL_FRAGMENT_SHADER, "./data/Shaders/Post-Process/Quad.frag");
 	  postProcess->Link();
@@ -58,10 +58,13 @@ void Camera::onLateUpdate()
   if (parent.lock()->transform->_CheckForAABBRecalc())
   {
     //frustumBV.Update(parent.lock()->transform->GetModelMat());
+    
     for (auto i = frustumBVs.begin(); i != frustumBVs.end(); i++)
     {
       i->Update(transform.lock()->GetModelMat());
     }
+    
+    //CalcFrustumBVPartitions(32);
     parent.lock()->transform->_aabbNeedRecalc = false;
   }
 }
@@ -91,7 +94,7 @@ void Camera::CalcFrustumBVPartitions(int _bvNum)
 
     //Top-Right of far plane
     glm::vec3 max = farCent + (t->GetRight()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
-    //Bottom-right of far plane with width and height of far plane
+    //Bottom-left of far plane with width and height of far plane
     glm::vec3 min = nearCent - (t->GetRight()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
 
     AABB bv;

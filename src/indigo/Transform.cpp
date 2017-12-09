@@ -31,7 +31,7 @@ glm::vec3 Transform::GetUp()
 }
 glm::vec3 Transform::GetLeft()
 {
-  return glm::cross(GetForward(), GetUp());
+  return glm::cross(GetUp(), GetForward());
 }
 glm::vec3 Transform::GetRight()
 {

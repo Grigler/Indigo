@@ -68,7 +68,7 @@ void CharacterController::UpdatePosFromKeys()
   }
   if (Input::GetKey('q') || Input::GetKey('Q'))
   {
-    moveVec += t.lock()->GetRight() * -moveSpeed;
+    moveVec += t.lock()->GetLeft() * moveSpeed;
   }
 
   t.lock()->SetPosition(t.lock()->GetPosition() + moveVec * Application::GetDT());

@@ -6,6 +6,7 @@
 
 #include <fstream>
 
+//Just for me to not have to write the whole thing every time
 #define ERR_ID GL_INVALID_VALUE
 
 using namespace Indigo;
@@ -23,6 +24,11 @@ void Shader::Init(std::string _name)
 void Shader::Activate()
 {
   glUseProgram(programID);
+}
+
+std::weak_ptr<Shader> Shader::FindShader(std::string _name)
+{
+  return Resources::GetShaderProgram(_name);
 }
 
 bool Shader::LoadShader(GLenum _type, std::string _path)
@@ -198,6 +204,8 @@ GLuint Shader::FindUniform(std::string _name)
 GLuint Shader::CacheUniform(std::string _name)
 {
   GLuint id = glGetUniformLocation(programID, _name.c_str());
+  //glGetUniformLocation can return -1, which causes GLuint to wrap over
+  //to 0xFFFFFFFF, so that is being checked for here
   if (id != ERR_ID && id != GL_INVALID_OPERATION && id != 0xFFFFFFFF)
   {
     CachedUniforms c;

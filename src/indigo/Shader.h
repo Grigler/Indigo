@@ -21,6 +21,11 @@ namespace Indigo
     void Init(std::string _name);
     //Activates this shader for drawing
     void Activate();
+    
+    //Returns a weak_ptr to a shader created with _name
+    //or an empty weak_ptr if it has yet to be created
+    std::weak_ptr<Shader> FindShader(std::string _name);
+
     //Attatches Each shader to shader program after loading
     bool LoadShader(GLenum _type, std::string _path);
     //bool LoadShader(GLenum _type, GLchar *_src);

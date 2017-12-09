@@ -22,7 +22,7 @@ public:
     {
       if (rb.lock()->GetLinearVel() != glm::vec3(0.0f))
       {
-        printf("Force Applied\n");
+        //printf("Force Applied\n");
         rb.lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 1000.0f),
           glm::vec3(0.0f, 0.0f, 0.0f));
       }
@@ -140,6 +140,10 @@ public:
     //printf("DT: %f\n", Indigo::Application::GetDT());
     if (Indigo::Input::GetKeyDown('p'))
     {
+      printf("Position: %f, %f, %f\n",
+        transform->GetPosition().x,
+        transform->GetPosition().y,
+        transform->GetPosition().z);
       printf("Forward: %f, %f, %f\n",
         transform->GetForward().x,
         transform->GetForward().y,
