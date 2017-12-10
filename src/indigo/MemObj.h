@@ -1,42 +1,34 @@
 #ifndef __IND_MEM_OBJ__
 #define __IND_MEM_OBJ__
 
+#define STRINGIFY(A) #A
+
 #include <memory>
 #include <string>
 #include <vector>
 
-
 namespace Indigo
 {
-  class MemObj;
-  struct message;
 
-  struct MessageReg
-  {
-    std::string msg;
-    void (*callback)(MemObj *from);
-  };
-
+  //Used for handling messages
   class MemObj
   {
     friend class Engine;
+    friend class GameObject;
   public:
-    MemObj();
 
-    void MarkToKill();
+    void BroadCastMessage(std::string _msg, std::weak_ptr<MemObj> _sender);
+    virtual void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _sender) {}
 
-    void SendMessage(MemObj *_to, std::string _msg);
-    void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _from);
-  protected:
-    std::vector<std::string> registeredMessages;
-    //Used to register a message string to a function
-    //this function will be ran with the msg sender as an argument
-    void RegisterMessage(std::string _msg, void(call)(MemObj *from));
-  private:
-    bool readyToDestroy;
-    std::vector<MessageReg> messageRegister;
+    void ListenForMessage(std::string _msg, std::weak_ptr<MemObj> _this);
+    void StopListeningFor(std::string _msg, std::weak_ptr<MemObj> _this);
+
+    //Format of listener is [msg key | ptr to listener] as a pair
+    static std::vector<std::pair<std::string, std::weak_ptr<MemObj>>> listeners;
+
 
   };
+
 }
 
 #endif

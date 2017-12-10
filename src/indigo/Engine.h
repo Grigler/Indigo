@@ -47,9 +47,9 @@ namespace Indigo
     void RegisterGameObject(std::shared_ptr<GameObject> _obj);
 
     //Message queue
-    std::vector<Message> messageQueue;
+    //std::vector<Message> messageQueue;
     //MemObjs register messages that are then sent at the end of update
-    void RegisterMsg(Message _msg);
+    //void RegisterMsg(Message _msg);
 
     //PhysicsHandler
     std::unique_ptr<PhysicsHandler> physicsHandler;

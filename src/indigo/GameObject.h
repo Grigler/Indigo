@@ -16,7 +16,7 @@ namespace Indigo
 
   struct Contact;
 
-  class GameObject
+  class GameObject : public MemObj
   {
     friend class Engine;
     friend class Camera;
