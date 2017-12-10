@@ -41,9 +41,9 @@ glm::vec3 Transform::GetRight()
 glm::mat3 Transform::GetRotationMat()
 {
   glm::mat4 from = glm::mat4(1);
-  if (!parent.expired())
+  if (parent.get() != nullptr)
   {
-    from = parent.lock()->transform->GetRotationMat();
+    from = parent->transform->GetRotationMat();
   }
   glm::mat4 rotationMat = glm::rotate(from, rot.y, glm::vec3(0, 1, 0));
   rotationMat = glm::rotate(rotationMat, rot.z, glm::vec3(0, 0, 1));
@@ -62,9 +62,9 @@ glm::mat4 Transform::GetModelMat()
   //Starting from either an identity matrix if it has no parent
   //or from the model matrix of its parent
   glm::mat4 from = glm::mat4(1);
-  if (!parent.expired())
+  if (parent.get() != nullptr)
   {
-    from = parent.lock()->transform->GetModelMat();
+    from = parent->transform->GetModelMat();
   }
   //Converting translation, rotation and scale to matricies
   glm::mat4 translationMat = glm::translate(from, glm::vec3(pos.x, pos.y, pos.z));
@@ -82,9 +82,9 @@ glm::mat4 Transform::GetModelMatWithOffset(glm::vec3 _offset)
   //Starting from either an identity matrix if it has no parent
   //or from the model matrix of its parent
   glm::mat4 from = glm::mat4(1);
-  if (!parent.expired())
+  if (parent.get() != nullptr)
   {
-    from = parent.lock()->transform->GetModelMat();
+    from = parent->transform->GetModelMat();
   }
   //Converting translation, rotation and scale to matricies
   glm::mat4 translationMat = glm::translate(from, glm::vec3(pos.x, pos.y, pos.z)+_offset);
