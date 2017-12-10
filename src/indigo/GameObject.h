@@ -23,6 +23,7 @@ namespace Indigo
   public:
     template <class T>
     static std::weak_ptr<T> CreateGameObject();
+    std::weak_ptr<GameObject> refToThisGO;
 
     virtual void onCreation() {}
     virtual void onUpdate() {}
@@ -73,10 +74,9 @@ namespace Indigo
       "Cannot add multiple transforms to same GameObject");
 
     std::shared_ptr<T> rtn = std::make_shared<T>();
-    rtn->ParentTo(Application::engineContext->GetGameObjRef(this));
+    rtn->ParentTo(refToThisGO);
 
     components.push_back(rtn);
-    //std::dynamic_pointer_cast<T>(rtn)->onCreation();
     rtn->onCreation();
     
     return std::weak_ptr<T>(rtn);
@@ -129,8 +129,11 @@ namespace Indigo
     
     std::shared_ptr<T> rtn = std::make_shared<T>();
     rtn->transform = std::make_shared<Transform>();
+    
+    std::shared_ptr<GameObject> rtnGO = std::dynamic_pointer_cast<GameObject>(rtn);
+    rtnGO->refToThisGO = rtnGO;
 
-    Application::engineContext->RegisterGameObject(std::dynamic_pointer_cast<GameObject>(rtn));
+    Application::engineContext->RegisterGameObject(rtnGO);
     //Calling onCreation for GO
     rtn->onCreation();
 
