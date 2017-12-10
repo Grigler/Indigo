@@ -32,16 +32,18 @@ namespace Indigo
     std::shared_ptr<Transform> transform;
 
     template<class T>
-    std::weak_ptr<T> GetUpCastedSelfRef();
+    std::weak_ptr<T> GetCastedSelfRef();
+
+    std::weak_ptr<Component> GetBaseComponentRef() { return refToThisComponent; }
 
   private:
     std::weak_ptr<Component> refToThisComponent;
   };
 
   template<class T>
-  std::weak_ptr<T> Component::GetUpCastedSelfRef()
+  std::weak_ptr<T> Component::GetCastedSelfRef()
   {
-    static_assert(std::is_convertible<T, Component>(),
+    static_assert(std::is_convertible<Component, T>(),
       "Type T must be derived or base of Component to be UpCasted");
 
     std::weak_ptr<T> rtn = std::dynamic_pointer_cast<T>(refToThisComponent);

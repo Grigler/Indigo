@@ -7,12 +7,14 @@ public:
 
   void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
   {
-    printf("Callback: %s called, from %i on %i\n", _msg.c_str(), _sender.lock().get(), this);
+    printf("Callback: %s called, from %p on %p\n", _msg.c_str(), _sender.lock().get(), this);
   }
 
   void onCreation()
   {
     rb = parent->GetComponent<Indigo::RB>();
+    ListenForMessage("Space", GetBaseComponentRef());
+
   }
 
   void onUpdate()
@@ -118,7 +120,6 @@ private:
 class CamObject : public Indigo::GameObject
 {
 public:
-  std::weak_ptr<Indigo::Camera> cam;
   void onCreation()
   {
     transform->SetPosition(glm::vec3(0.0f, 0.0f, -20.0f));
@@ -158,11 +159,11 @@ public:
 
     if (Indigo::Input::GetKeyUp(' '))
     {
-      std::weak_ptr<Indigo::Camera> cam = Indigo::Camera::currentActive;
       BroadCastMessage("Space", cam);
     }
   }
 
+  std::weak_ptr<Indigo::Camera> cam;
   std::weak_ptr<Indigo::CharacterController> cc;
   std::weak_ptr<Indigo::Light> l;
 };
