@@ -12,14 +12,7 @@ public:
 
   void onCreation()
   {
-    rb = parent.lock()->GetComponent<Indigo::RB>();
-    
-    std::weak_ptr<TestScript> ts = parent.lock()->GetComponent<TestScript>();
-    
-    std::weak_ptr<TestScript> t = parent.lock()->GetComponent<TestScript>();
-
-    ListenForMessage("Space", t);
-
+    rb = parent->GetComponent<Indigo::RB>();
   }
 
   void onUpdate()

@@ -43,9 +43,9 @@ MeshRenderer::MeshRenderer()
 
 void MeshRenderer::onUpdate()
 {
-  if (parent.lock()->transform->_CheckForAABBRecalc())
+  if (parent->transform->_CheckForAABBRecalc())
   {
-    glm::mat4 modelMat = parent.lock()->transform->GetModelMat();
+    glm::mat4 modelMat = parent->transform->GetModelMat();
     mesh->_updateAABB(modelMat);
   }
 }
@@ -59,7 +59,7 @@ void MeshRenderer::Draw()
     //Uniforms and such here
     std::weak_ptr<Camera> cam = Camera::currentActive;
     //TODO - other stuff
-    glm::mat4 model = parent.lock()->transform->GetModelMat();
+    glm::mat4 model = parent->transform->GetModelMat();
     glm::mat4 vp = cam.lock()->GetViewProj();
     
     glm::mat4 mvp = vp*model;
@@ -68,7 +68,7 @@ void MeshRenderer::Draw()
     //  1, GL_FALSE, &mvp[0][0]);
     shader.lock()->SetMat4("MVP", mvp);
     shader.lock()->SetMat4("modelMat", model);
-    shader.lock()->SetVec3("eyePos", cam.lock()->transform.lock()->GetPosition());
+    shader.lock()->SetVec3("eyePos", cam.lock()->transform->GetPosition());
     
     LightSources::BufferLights(shader.lock(), "pointLights");
 

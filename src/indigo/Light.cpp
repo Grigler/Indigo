@@ -16,5 +16,5 @@ void Light::onCreation()
   attenuation = 5.0f;
 
   //Registering Light
-  LightSources::RegisterLight(parent.lock()->GetComponent<Light>());
+  LightSources::RegisterLight(parent->GetComponent<Light>());
 }

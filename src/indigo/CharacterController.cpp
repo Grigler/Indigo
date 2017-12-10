@@ -27,12 +27,12 @@ void CharacterController::onUpdate()
 
 void CharacterController::UpdateRotFromMouse()
 {
-  std::weak_ptr<Transform> t = parent.lock()->transform;
+  std::weak_ptr<Transform> t = parent->transform;
 
   glm::vec2 mouseDelta = Input::GetMouseDeltaRaw();
   //printf("MouseDelta: %f, %f\n", mouseDelta.x, mouseDelta.y);
 
-  glm::vec3 r = transform.lock()->GetRotation();
+  glm::vec3 r = transform->GetRotation();
   //printf("R before: %f, %f, %f\n", r.x, r.y, r.z);
 
   r.y -= mouseSens.x * mouseDelta.x * Application::GetDT();
@@ -46,13 +46,13 @@ void CharacterController::UpdateRotFromMouse()
 
   //printf("R after: %f, %f, %f\n\n", r.x, r.y, r.z);
 
-  transform.lock()->SetRotation(r);
+  transform->SetRotation(r);
 
 }
 void CharacterController::UpdatePosFromKeys()
 {
   glm::vec3 moveVec = glm::vec3(0);
-  std::weak_ptr<Transform> t = parent.lock()->transform;
+  std::weak_ptr<Transform> t = parent->transform;
   if (Input::GetKey('w') || Input::GetKey('W'))
   {
     moveVec += t.lock()->GetForward() * moveSpeed;
