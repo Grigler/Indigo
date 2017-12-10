@@ -7,7 +7,7 @@
 
 using namespace Indigo;
 
-std::map<std::string, std::weak_ptr<MemObj>> MemObj::listeners;
+std::vector<std::pair<std::string, std::weak_ptr<MemObj>>> MemObj::listeners;
 
 void MemObj::BroadCastMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
 {
@@ -23,7 +23,7 @@ void MemObj::BroadCastMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
 void MemObj::ListenForMessage(std::string _msg, std::weak_ptr<MemObj> _this)
 {
   std::pair<std::string, std::weak_ptr<MemObj>> p(_msg, _this);
-  listeners.insert(listeners.end(), p);
+  listeners.push_back(p);
 }
 void MemObj::StopListeningFor(std::string _msg, std::weak_ptr<MemObj> _this)
 {
