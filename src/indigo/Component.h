@@ -29,7 +29,24 @@ namespace Indigo
     std::shared_ptr<GameObject> parent;
     std::shared_ptr<Transform> transform;
 
+    template<class T>
+    std::weak_ptr<T> GetUpCastedSelfRef();
+
+  private:
+    std::weak_ptr<Component> refToThisComponent;
   };
+
+  template<class T>
+  std::weak_ptr<T> Component::GetUpCastedSelfRef()
+  {
+    static_assert(std::is_convertible<T, Component>(),
+      "Type T must be derived or base of Component to be UpCasted");
+
+    std::weak_ptr<T> rtn = std::dynamic_pointer_cast<T>(refToThisComponent);
+    return rtn;
+  }
+
+
 }
 
 #endif

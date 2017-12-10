@@ -75,6 +75,7 @@ namespace Indigo
 
     std::shared_ptr<T> rtn = std::make_shared<T>();
     rtn->ParentTo(refToThisGO);
+    rtn->refToThisComponent = std::dynamic_pointer_cast<Component>(rtn);
 
     components.push_back(rtn);
     rtn->onCreation();
