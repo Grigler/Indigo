@@ -12,7 +12,7 @@ public:
   */
   void onCreation()
   {
-    rb = parent.lock()->GetComponent<Indigo::RB>();
+    rb = parent->GetComponent<Indigo::RB>();
     //rb.lock()->SetGravity(false);
   }
 

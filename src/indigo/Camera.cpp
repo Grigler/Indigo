@@ -55,17 +55,17 @@ void Camera::onCreation()
 
 void Camera::onLateUpdate()
 {
-  if (parent.lock()->transform->_CheckForAABBRecalc())
+  if (parent->transform->_CheckForAABBRecalc())
   {
     //frustumBV.Update(parent.lock()->transform->GetModelMat());
     
     for (auto i = frustumBVs.begin(); i != frustumBVs.end(); i++)
     {
-      i->Update(transform.lock()->GetModelMat());
+      i->Update(transform->GetModelMat());
     }
     
     //CalcFrustumBVPartitions(32);
-    parent.lock()->transform->_aabbNeedRecalc = false;
+    parent->transform->_aabbNeedRecalc = false;
   }
 }
 
@@ -74,7 +74,7 @@ void Camera::CalcFrustumBVPartitions(int _bvNum)
   //Clearing it if frustumBVs need to be re-calculated at run-time
   frustumBVs.clear();
 
-  std::shared_ptr<Transform> t = transform.lock();
+  std::shared_ptr<Transform> t = transform;
 
   glm::vec3 posForward = t->GetPosition() + t->GetForward();
 
@@ -152,7 +152,7 @@ void Camera::Render()
 
 void Camera::MakeActive()
 {
-  currentActive = parent.lock()->GetComponent<Camera>();
+  currentActive = parent->GetComponent<Camera>();
 }
 
 glm::mat4 Camera::GetViewProj()
@@ -161,9 +161,9 @@ glm::mat4 Camera::GetViewProj()
   //glm::mat4 view = glm::lookAt(transform.lock()->GetPosition(),
   //  transform.lock()->GetPosition() + transform.lock()->GetForward(),
   // transform.lock()->GetUp());
-  glm::mat4 view = glm::lookAtRH(transform.lock()->GetPosition(),
-	  transform.lock()->GetPosition()+transform.lock()->GetForward(),
-	  transform.lock()->GetUp());
+  glm::mat4 view = glm::lookAtRH(transform->GetPosition(),
+	  transform->GetPosition()+transform->GetForward(),
+	  transform->GetUp());
 
   //TODO - Change to have better customisability
   glm::mat4 proj = glm::perspective(fov, 1280.0f / 720.0f, 0.01f, 1000.0f);
@@ -173,8 +173,8 @@ glm::mat4 Camera::GetViewProj()
 bool Camera::LeftCloser(std::shared_ptr<GameObject> l, std::shared_ptr<GameObject> r)
 {
   return (glm::distance(l->transform->GetPosition(),
-    currentActive.lock()->parent.lock()->transform->GetPosition())
+    currentActive.lock()->parent->transform->GetPosition())
     <
     glm::distance(r->transform->GetPosition(),
-      currentActive.lock()->parent.lock()->transform->GetPosition()));
+      currentActive.lock()->parent->transform->GetPosition()));
 }

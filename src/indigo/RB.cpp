@@ -17,11 +17,11 @@ using namespace Indigo;
 void RB::onCreation()
 {
   //Register to physics handler here
-  PhysicsHandler::RegisterRB(parent.lock()->GetComponent<RB>());
+  PhysicsHandler::RegisterRB(parent->GetComponent<RB>());
 
   //Creating a default collider box
   collider = std::make_shared<Collider>();
-  collider->parent = parent.lock()->GetComponent<RB>();
+  collider->parent = parent->GetComponent<RB>();
   collider->transform = transform;
 
   collider->type = ColliderType::Sphere;
@@ -30,7 +30,7 @@ void RB::onCreation()
   collider->_normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
   //Getting a local shared_ptr to aabb defined and updated in mesh
-  aabb = parent.lock()->GetComponent<MeshRenderer>().lock()->mesh->aabb;
+  aabb = parent->GetComponent<MeshRenderer>().lock()->mesh->aabb;
 
   //Setting up force and accel values
   linearVel = glm::vec3(0);
@@ -133,14 +133,14 @@ void RB::Integrate()
   angularVel *= (1 - dt * drag);
 
   //Applying linearVel and angularVel to position and rotation
-  transform.lock()->MoveDir(linearVel, dt);
+  transform->MoveDir(linearVel, dt);
 
   glm::vec3 r = glm::radians(angularVel);
   glm::quat q = r;
   q = glm::normalize(q);
 
   //transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
-  transform.lock()->SetRotation(transform.lock()->GetRotation() * q);
+  transform->SetRotation(transform->GetRotation() * q);
 
   //Resetting force and torque as these are impulses
   force = glm::vec3(0.0f);
@@ -149,14 +149,14 @@ void RB::Integrate()
 
 glm::mat3 RB::GetInverseInertiaTensor()
 {
-  glm::mat3 R = transform.lock()->GetRotationMat();
+  glm::mat3 R = transform->GetRotationMat();
   return R*glm::inverse(inertiaTensor)*glm::transpose(R);
 }
 
 void RB::RegContact(std::weak_ptr<Contact> _contact)
 {
   //Registering this component for onCollision func
-  _contact.lock()->thisRB = parent.lock()->GetComponent<RB>();
+  _contact.lock()->thisRB = parent->GetComponent<RB>();
 
   PhysicsHandler::_RegisterContact(_contact);
 

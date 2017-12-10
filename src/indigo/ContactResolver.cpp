@@ -50,8 +50,8 @@ void ContactResolver::AdjPosition(std::shared_ptr<Contact> _contact)
     magR *= (0.9f*Application::GetFixedDT());
   }
 
-  _contact->thisRB.lock()->transform.lock()->MoveDir(-norm, magL*1.0001f);
-  _contact->otherRB.lock()->transform.lock()->MoveDir(norm, magR*1.0001f);
+  _contact->thisRB.lock()->transform->MoveDir(-norm, magL*1.0001f);
+  _contact->otherRB.lock()->transform->MoveDir(norm, magR*1.0001f);
 
   _contact->contactPoint += (norm*magL) + (norm*magR);
 }
@@ -81,9 +81,9 @@ void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
   glm::mat3 inverseInertiaL = _contact->thisRB.lock()->GetInverseInertiaTensor();
   glm::mat3 inverseInertiaR = _contact->otherRB.lock()->GetInverseInertiaTensor();
   glm::vec3 torqueArmL = _contact->contactPoint -
-    _contact->thisRB.lock()->transform.lock()->GetPosition();
+    _contact->thisRB.lock()->transform->GetPosition();
   glm::vec3 torqueArmR = _contact->contactPoint -
-    _contact->otherRB.lock()->transform.lock()->GetPosition();
+    _contact->otherRB.lock()->transform->GetPosition();
 
   float angular = relVelProj;
   angular *= glm::dot(norm, glm::cross(glm::cross(torqueArmL, norm)*inverseInertiaL, torqueArmL)) +
@@ -184,9 +184,9 @@ float ContactResolver::GetVelocityLCP(CImpulsePair &_p, float _mag)
   glm::mat3 inverseInertiaL = _contact->thisRB.lock()->GetInverseInertiaTensor();
   glm::mat3 inverseInertiaR = _contact->otherRB.lock()->GetInverseInertiaTensor();
   glm::vec3 torqueArmL = _contact->contactPoint -
-    _contact->thisRB.lock()->transform.lock()->GetPosition();
+    _contact->thisRB.lock()->transform->GetPosition();
   glm::vec3 torqueArmR = _contact->contactPoint -
-    _contact->otherRB.lock()->transform.lock()->GetPosition();
+    _contact->otherRB.lock()->transform->GetPosition();
 
   float angular = relVelProj;
   angular *= glm::dot(norm, glm::cross(glm::cross(torqueArmL, norm)*inverseInertiaL, torqueArmL)) +
@@ -228,9 +228,9 @@ void ContactResolver::ApplyImpulses(std::vector<CImpulsePair> &_pairs)
     glm::vec3 norm = c->contactNorm;
 
     glm::vec3 torqueArmL = c->contactPoint -
-      c->thisRB.lock()->transform.lock()->GetPosition();
+      c->thisRB.lock()->transform->GetPosition();
     glm::vec3 torqueArmR = c->contactPoint -
-      c->otherRB.lock()->transform.lock()->GetPosition();
+      c->otherRB.lock()->transform->GetPosition();
 
     glm::mat3 inverseInertiaL = c->thisRB.lock()->GetInverseInertiaTensor();
     glm::mat3 inverseInertiaR = c->otherRB.lock()->GetInverseInertiaTensor();
