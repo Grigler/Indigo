@@ -60,6 +60,7 @@ add_library(Indigo
   src/Indigo/MeshRenderer.cpp
   src/Indigo/MeshResource.cpp
   src/Indigo/Mesh.cpp
+  src/indigo/tiny_obj_loader.cc
 
   src/Indigo/Shader.cpp
   src/Indigo/RenderBuffer.cpp
