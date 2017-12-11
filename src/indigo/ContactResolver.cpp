@@ -94,16 +94,21 @@ void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
 
   float magnitude = linear + angular;
 
+  _contact->thisRB.lock()->linearVel += (magnitude*norm) / lMass;
+ 
+  _contact->otherRB.lock()->linearVel += (-magnitude*norm) / rMass;
+  
   //There is something extremely unstable with the angular component in this
   //when there is a sphere-plane collision that results in the sphere spinning uncontrollably in
   //spot it rests on the plane, it is definitely routed in the angular impulse calculations here,
   //however I can not find a the cause at all
 
-  _contact->thisRB.lock()->linearVel += (magnitude*norm) / lMass;
-  //_contact->thisRB.lock()->angularVel += glm::cross(torqueArmL, magnitude*norm)*inverseInertiaL;
-
-  _contact->otherRB.lock()->linearVel += (-magnitude*norm) / rMass;
-  //_contact->otherRB.lock()->angularVel += glm::cross(torqueArmR, -magnitude*norm)*inverseInertiaR;
+  //I'm still applying angular force for sphere-sphere collision as that does not present any issues
+  if (!(_contact->thisRB.lock()->collider->type == COL_TYPE_PLANE || _contact->otherRB.lock()->collider->type == COL_TYPE_PLANE))
+  {
+    _contact->thisRB.lock()->angularVel += glm::cross(torqueArmL, magnitude*norm)*inverseInertiaL;
+    _contact->otherRB.lock()->angularVel += glm::cross(torqueArmR, -magnitude*norm)*inverseInertiaR;
+  }
 }
 
 void ContactResolver::ResolveContactsLCP(std::vector< std::shared_ptr<Contact> > &_contacts)
