@@ -129,10 +129,6 @@ public:
 
     cam = AddComponent<Indigo::Camera>();
     Indigo::Camera::currentActive = cam;
-
-    l = AddComponent<Indigo::Light>();
-    l.lock()->SetColour(glm::vec3(0.75f, 0.0f, 0.0f));
-    l.lock()->SetAttenuation(5.0f);
   }
   void onUpdate()
   {
@@ -165,14 +161,75 @@ public:
 
   std::weak_ptr<Indigo::Camera> cam;
   std::weak_ptr<Indigo::CharacterController> cc;
-  std::weak_ptr<Indigo::Light> l;
 };
 
+class VoidSphere : public Indigo::GameObject
+{
+public:
+  void onCreation()
+  {
+    mr = AddComponent<Indigo::MeshRenderer>();
+    mr.lock()->LoadMesh("./data/Models/sphere.obj");
+    
+  }
+
+  void onLateUpdate()
+  {
+    drawnVoidSpheres = 0;
+  }
+
+  void Draw()
+  {
+    drawnVoidSpheres++;
+    mr.lock()->Draw();
+  }
+
+  static int drawnVoidSpheres;
+
+  std::weak_ptr<Indigo::MeshRenderer> mr;
+};
+int VoidSphere::drawnVoidSpheres = 0;
+
+class VoidScene : public Indigo::GameObject
+{
+
+public:
+  void onCreation()
+  {
+    const int size = 50;
+    spheres.reserve(size*size*size);
+
+    for (int x = -size; x < size; x+=5)
+    {
+      for (int y = -size; y < size; y += 5)
+      {
+        for (int z = -size; z < size; z += 5)
+        {
+          printf("%i, %i, %i\n", x, y, z);
+          spheres.push_back(CreateGameObject<VoidSphere>());
+          spheres.back().lock()->transform->SetPosition(glm::vec3(x, y, z));
+        }
+      }
+    }
+
+    co = Indigo::GameObject::CreateGameObject<CamObject>();
+    co.lock()->transform->SetPosition(glm::vec3(0));
+  }
+
+  void onUpdate()
+  {
+    //printf("Spheres drawn:\t%i\n", VoidSphere::drawnVoidSpheres);
+  }
+
+  std::vector<std::weak_ptr<Indigo::GameObject>> spheres;
+  std::weak_ptr<CamObject> co;
+};
 
 int main(int argc, char** argv)
 {
   Indigo::Application::Init(argc, argv);
 
+  /*
   std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
   std::weak_ptr<Floor> f = Indigo::GameObject::CreateGameObject<Floor>();
 
@@ -188,6 +245,10 @@ int main(int argc, char** argv)
     //  glm::vec3(0));
     //printf("Num: %i\n", i + 1);
   }
+
+  */
+
+  std::weak_ptr<VoidScene> scene = Indigo::GameObject::CreateGameObject<VoidScene>();
 
   //Application gameLoop is executed
   //glViewport(0, 0, 1280, 720);
