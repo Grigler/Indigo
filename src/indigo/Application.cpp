@@ -37,6 +37,7 @@ void Application::Init(int _argc, char* _argv[])
   glutKeyboardUpFunc(KeyboardUp);
   glutPassiveMotionFunc(MouseMotionPassive);
   glutMotionFunc(MouseMotionPassive);
+  glutSetCursor(GLUT_CURSOR_NONE);
 
   //Init glew
   glewExperimental = GL_TRUE;
