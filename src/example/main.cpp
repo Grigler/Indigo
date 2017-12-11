@@ -1,37 +1,6 @@
 #include "config.h"
 #include <indigo/indigo.h>
 
-class TestScript : public Indigo::Component
-{
-public:
-
-  void RecieveMessage(std::string _msg, std::weak_ptr<MemObj> _sender)
-  {
-    printf("Callback: %s called, from %p on %p\n", _msg.c_str(), _sender.lock().get(), this);
-  }
-
-  void onCreation()
-  {
-    rb = parent->GetComponent<Indigo::RB>();
-    ListenForMessage("Space", GetBaseComponentRef());
-
-  }
-
-  void onUpdate()
-  {
-    if (Indigo::Input::GetKeyDown('f'))
-    {
-      if (rb.lock()->GetLinearVel() != glm::vec3(0.0f))
-      {
-        rb.lock()->ApplyForceAtLocation(glm::vec3(0.0f, 0.0f, 1000.0f),
-          glm::vec3(0.0f, 0.0f, 0.0f));
-      }
-    }
-
-  }
-  std::weak_ptr<Indigo::RB> rb;
-};
-
 class ExampleObject : public Indigo::GameObject
 {
 public:
@@ -41,12 +10,12 @@ public:
     mr = AddComponent<Indigo::MeshRenderer>();
 
     mr.lock()->LoadMesh("./data/Models/sphere.obj");
+    mr.lock()->LoadTexture("./data/Textures/brick.png");
     transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 
     rb = AddComponent<Indigo::RB>();
 
-    //transform->SetPosition(glm::vec3(0.0f, 2.5f, 10.0f));
-    rb.lock()->SetMass(15.0f);
+    rb.lock()->SetMass(5.0f);
     rb.lock()->SetGravity(true);
 
     l = AddComponent<Indigo::Light>();
@@ -56,9 +25,6 @@ public:
     
     //sound = Indigo::AudioManager::Load("C:\\Users\\i7465070\\Indigo\\data\\Sounds\\Test Sound.ogg");
     //sound.lock()->Play();
-
-    
-    ts = AddComponent<TestScript>();
   }
   void Draw()
   {
@@ -71,7 +37,6 @@ private:
   //std::weak_ptr<Indigo::Sound> sound;
 
   std::weak_ptr<Indigo::RB> rb;
-  std::weak_ptr<TestScript> ts;
 
   std::weak_ptr<Indigo::Light> l;
 };
@@ -91,7 +56,7 @@ public:
     rb.lock()->AssignCollider(Indigo::ColliderType::Plane);
     rb.lock()->SetGravity(false);
     //Arbitrarily large mass and inertia for static object
-    rb.lock()->SetMass(5000000.0f);
+    rb.lock()->SetMass(1500.0f);
   }
   
   void onUpdate()
@@ -129,6 +94,9 @@ public:
 
     cam = AddComponent<Indigo::Camera>();
     Indigo::Camera::currentActive = cam;
+
+    std::shared_ptr<Indigo::Light> l = AddComponent<Indigo::Light>().lock();
+    l->SetColour(glm::vec3(0.4f, 0.4f, 0.4f));
   }
   void onUpdate()
   {
@@ -139,6 +107,10 @@ public:
         transform->GetPosition().x,
         transform->GetPosition().y,
         transform->GetPosition().z);
+      printf("Rotation: %f, %f, %f\n",
+        transform->GetRotation().x,
+        transform->GetRotation().y,
+        transform->GetRotation().z);
       printf("Forward: %f, %f, %f\n",
         transform->GetForward().x,
         transform->GetForward().y,
@@ -158,7 +130,6 @@ public:
       BroadCastMessage("Space", cam);
     }
   }
-
   std::weak_ptr<Indigo::Camera> cam;
   std::weak_ptr<Indigo::CharacterController> cc;
 };
@@ -170,7 +141,7 @@ public:
   {
     mr = AddComponent<Indigo::MeshRenderer>();
     mr.lock()->LoadMesh("./data/Models/sphere.obj");
-    
+    mr.lock()->LoadTexture("./data/Textures/brick.png");
   }
 
   void onLateUpdate()
@@ -189,23 +160,22 @@ public:
   std::weak_ptr<Indigo::MeshRenderer> mr;
 };
 int VoidSphere::drawnVoidSpheres = 0;
-
 class VoidScene : public Indigo::GameObject
 {
 
 public:
   void onCreation()
   {
-    const int size = 50;
+    const int size = 150;
     spheres.reserve(size*size*size);
 
-    for (int x = -size; x < size; x+=5)
+    for (int x = -size; x < size; x += 10)
     {
-      for (int y = -size; y < size; y += 5)
+      printf("%i\n", x);
+      for (int y = -size; y < size; y += 10)
       {
-        for (int z = -size; z < size; z += 5)
-        {
-          printf("%i, %i, %i\n", x, y, z);
+        for (int z = -size; z < size; z += 10)
+        { 
           spheres.push_back(CreateGameObject<VoidSphere>());
           spheres.back().lock()->transform->SetPosition(glm::vec3(x, y, z));
         }
@@ -216,42 +186,92 @@ public:
     co.lock()->transform->SetPosition(glm::vec3(0));
   }
 
-  void onUpdate()
-  {
-    //printf("Spheres drawn:\t%i\n", VoidSphere::drawnVoidSpheres);
-  }
-
   std::vector<std::weak_ptr<Indigo::GameObject>> spheres;
   std::weak_ptr<CamObject> co;
+};
+
+class PlaneWall : public Indigo::GameObject
+{
+public:
+  void onCreation()
+  {
+    mr = AddComponent<Indigo::MeshRenderer>();
+    mr.lock()->LoadMesh("./data/Models/plane.obj");
+    mr.lock()->LoadTexture("./data/Textures/brick.png");
+    transform->SetScale(glm::vec3(25.0f, 25.0f, 25.0f));
+
+    std::weak_ptr<Indigo::RB> rb = AddComponent<Indigo::RB>();
+    rb.lock()->AssignCollider(Indigo::ColliderType::Plane);
+    rb.lock()->SetGravity(false);
+    //Arbitrarily large mass and inertia for static object
+    rb.lock()->SetMass(5000000.0f);
+
+    
+  }
+
+  void Draw()
+  {
+    mr.lock()->Draw();
+  }
+  std::weak_ptr<Indigo::MeshRenderer> mr;
+};
+class FireScript : public Indigo::Component
+{
+public:
+  void onUpdate()
+  {
+    if (Indigo::Input::GetKeyDown('f') || Indigo::Input::GetKeyDown('F'))
+    {
+      Fire();
+    }
+  }
+  void Fire()
+  {
+    std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
+    eo.lock()->transform->SetPosition(transform->GetPosition()+transform->GetForward()*0.5f);
+    eo.lock()->transform->SetRotation(transform->GetRotation());
+    eo.lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(
+      transform->GetForward() * 10000.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+  }
+};
+class DemoScene : public Indigo::GameObject
+{
+public:
+  void onCreation()
+  {
+    std::weak_ptr<CamObject> camObj = CreateGameObject<CamObject>();
+    camObj.lock()->transform->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    camObj.lock()->AddComponent<FireScript>();
+
+    std::weak_ptr<PlaneWall> pwFloor = CreateGameObject<PlaneWall>();
+    pwFloor.lock()->transform->SetPosition(glm::vec3(0.0f, -2.5f, 0.0f));
+
+    
+  }
+
+  void onUpdate()
+  {
+    timer -= Indigo::Application::GetDT();
+    if (timer <= 0.0f)
+    {
+      std::weak_ptr<ExampleObject> eo = Indigo::GameObject::CreateGameObject<ExampleObject>();
+      eo.lock()->transform->SetPosition(glm::vec3((rand() % 20 - 10) / 10.0f, 5.0f, (rand() % 20 - 10) / 10.0f));
+      timer = 2.5f;
+    }
+  }
+
+  float timer = 2.5f;
 };
 
 int main(int argc, char** argv)
 {
   Indigo::Application::Init(argc, argv);
 
-  /*
-  std::weak_ptr<CamObject> co = Indigo::GameObject::CreateGameObject<CamObject>();
-  std::weak_ptr<Floor> f = Indigo::GameObject::CreateGameObject<Floor>();
+  //std::weak_ptr<VoidScene> scene = Indigo::GameObject::CreateGameObject<VoidScene>();
 
-  const int amnt = 200;
-  std::weak_ptr<ExampleObject> eoArr[amnt];
-
-  for (int i = 0; i < amnt; i++)
-  {
-    eoArr[i] = Indigo::GameObject::CreateGameObject<ExampleObject>();
-
-    eoArr[i].lock()->transform->SetPosition(glm::vec3((rand()%20 - 10)/10.0f, i * 10.0f, 0.0f));
-    //eoArr[i].lock()->GetComponent<Indigo::RB>().lock()->ApplyForceAtLocation(glm::vec3(-1000000.0f, -1000000.0f, 0.0f),
-    //  glm::vec3(0));
-    //printf("Num: %i\n", i + 1);
-  }
-
-  */
-
-  std::weak_ptr<VoidScene> scene = Indigo::GameObject::CreateGameObject<VoidScene>();
+  std::weak_ptr<DemoScene> scene = Indigo::GameObject::CreateGameObject<DemoScene>();
 
   //Application gameLoop is executed
-  //glViewport(0, 0, 1280, 720);
   Indigo::Application::Run();
   //Kill is then called for memory cleanup
   Indigo::Application::Kill();

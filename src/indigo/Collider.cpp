@@ -43,6 +43,9 @@ bool Collider::CheckCol(std::weak_ptr<Collider> _against)
   case (COL_TYPE_CAPSULE | COL_TYPE_CAPSULE):
     //TODO
     break;
+  case (COL_TYPE_PLANE | COL_TYPE_PLANE): 
+
+    break;
   default:
     //COLLIDER TYPE DOES NOT EXIST
     Application::ErrPrint(std::exception("Collider type does not exist"));
@@ -124,17 +127,18 @@ bool Collider::SpherePlane(std::weak_ptr<Collider> _against)
   spherePos = sphereCol.lock()->transform.lock()->GetPosition();
   planePos = planeCol.lock()->transform.lock()->GetPosition();
 
-  
-  float d = glm::dot(spherePos - planePos, planeCol.lock()->_normal);
+  glm::vec3 pNorm = planeCol.lock()->transform.lock()->GetRotationMat()*planeCol.lock()->_normal;
+
+  float d = glm::dot(spherePos - planePos, pNorm);
   
   //printf("D: %f\n", d);
   if (d < sphereCol.lock()->size)
   {
     std::shared_ptr<Contact> c = std::make_shared<Contact>();
 
-    c->contactNorm = planeCol.lock()->_normal;
+    c->contactNorm = pNorm;
     c->penetrationDepth = sphereCol.lock()->size - d;
-    c->contactPoint = -planeCol.lock()->_normal * (d+sphereCol.lock()->size);
+    c->contactPoint = -pNorm * (d+sphereCol.lock()->size);
 
     c->otherRB = _against.lock()->parent;
 

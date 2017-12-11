@@ -4,7 +4,7 @@
 
 #include "AABB.h"
 
-#include <glm/gtx/transform.hpp>
+#include <glm/mat4x4.hpp>
 #include <vector>
 
 using namespace Indigo;
@@ -32,16 +32,5 @@ GLsizei Mesh::GetVertCount()
 
 void Mesh::_updateAABB(glm::mat4 _modelMat)
 {
-  /*
-  std::vector<glm::vec3> modelVerts = *(meshResource->GetVerts());
-
-  //Parallelising this using opm actually slowed it down, possibly
-  //from caches misses or something
-  for (int i = 0; i < modelVerts.size(); i++)
-  {
-    modelVerts.at(i) = _modelMat * glm::vec4(modelVerts.at(i), 1.0f);
-  }
-  */
-
   aabb->Update(_modelMat);
 }

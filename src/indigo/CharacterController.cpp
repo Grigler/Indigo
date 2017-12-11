@@ -62,11 +62,11 @@ void CharacterController::UpdatePosFromKeys()
     moveVec += t.lock()->GetForward() * -moveSpeed;
   }
 
-  if (Input::GetKey('e') || Input::GetKey('E'))
+  if (Input::GetKey('d') || Input::GetKey('D'))
   {
     moveVec += t.lock()->GetRight() * moveSpeed;
   }
-  if (Input::GetKey('q') || Input::GetKey('Q'))
+  if (Input::GetKey('a') || Input::GetKey('A'))
   {
     moveVec += t.lock()->GetLeft() * moveSpeed;
   }

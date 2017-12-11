@@ -11,6 +11,7 @@
 namespace Indigo
 {
   class MeshResource;
+  class Texture;
 
   class Mesh
   {

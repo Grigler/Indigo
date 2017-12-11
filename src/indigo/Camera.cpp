@@ -31,12 +31,12 @@ void Camera::onCreation()
 {
   
   fov = glm::radians(90.0f);
-  near = 0.01f;
-  far = 1000.0f;
+  near = 0.25f;
+  far = 250.0f;
 
   //Partitions the frustum into 32 AABB segments
   //used for frustum culling
-  CalcFrustumBVPartitions(32);
+  CalcFrustumBVPartitions(1);
 
   if (rb.get() == NULL)
   {
@@ -57,14 +57,20 @@ void Camera::onLateUpdate()
 {
   if (parent->transform->_CheckForAABBRecalc())
   {
-    //frustumBV.Update(parent.lock()->transform->GetModelMat());
-    
+    int it = 0;
     for (auto i = frustumBVs.begin(); i != frustumBVs.end(); i++)
     {
-      i->Update(transform->GetModelMat());
+      it++;
+      //i->Update(transform->GetModelMat());
+      if (Input::GetKeyDown('p'))
+      {
+        printf("%i:\n\tMin: %f, %f, %f\n\tMax: %f, %f, %f\n\n", it,
+          i->min.x, i->min.y, i->min.z,
+          i->max.x, i->max.y, i->max.z);
+      }
     }
     
-    //CalcFrustumBVPartitions(32);
+    CalcFrustumBVPartitions(1);
     parent->transform->_aabbNeedRecalc = false;
   }
 }
@@ -92,10 +98,34 @@ void Camera::CalcFrustumBVPartitions(int _bvNum)
     glm::vec3 farCent = posForward + distFar;
     glm::vec3 nearCent = posForward + distNear;
 
-    //Top-Right of far plane
-    glm::vec3 max = farCent + (t->GetRight()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
-    //Bottom-left of far plane with width and height of far plane
-    glm::vec3 min = nearCent - (t->GetRight()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+    glm::vec3 corners[8];
+    //Far top-right
+    corners[0] = farCent + (t->GetLeft()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
+    //Far top-left
+    corners[1] = farCent - (t->GetLeft()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
+    //Far bottom-right
+    corners[2] = farCent + (t->GetLeft()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+    //Far bottom-left
+    corners[3] = farCent - (t->GetLeft()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+
+    //All near plane corners have width and heigh of far-plane
+    //Near top-right
+    corners[4] = nearCent + (t->GetLeft()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
+    //Near top-left
+    corners[5] = nearCent - (t->GetLeft()*wFar*0.5f) + (t->GetUp()*hFar*0.5f);
+    //Near bottom-right
+    corners[6] = nearCent + (t->GetLeft()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+    //Near bottom-left
+    corners[7] = nearCent - (t->GetLeft()*wFar*0.5f) - (t->GetUp()*hFar*0.5f);
+
+    glm::vec3 min = corners[0];
+    glm::vec3 max = corners[1];
+    for (size_t i = 1; i < 8; i++)
+    {
+      min = glm::min(min, corners[i]);
+      max = glm::max(max, corners[i]);
+    }
+    
 
     AABB bv;
     bv.min = min;

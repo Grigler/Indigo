@@ -68,7 +68,10 @@ void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
 
   glm::vec3 norm = _contact->contactNorm;
 
-  float restitution = 0.75f; //Todo - pull from physics material
+  //This could be defined by a 'physics material' to give different behaviours
+  //simulating the bounciness of different objects - however I have plugged in the value
+  //for a tennis ball against concrete (according to Wikipedia)
+  float restitution = 0.92f;
 
   //Used in both linear and angular calculations - so cache it
   float relVelProj = -(1.0f + restitution)*glm::dot(lVel - rVel, norm);
@@ -91,11 +94,16 @@ void ContactResolver::AdjVelocity(std::shared_ptr<Contact> _contact)
 
   float magnitude = linear + angular;
 
+  //There is something extremely unstable with the angular component in this
+  //when there is a sphere-plane collision that results in the sphere spinning uncontrollably in
+  //spot it rests on the plane, it is definitely routed in the angular impulse calculations here,
+  //however I can not find a the cause at all
+
   _contact->thisRB.lock()->linearVel += (magnitude*norm) / lMass;
-  _contact->thisRB.lock()->angularVel += glm::cross(torqueArmL, magnitude*norm)*inverseInertiaL;
+  //_contact->thisRB.lock()->angularVel += glm::cross(torqueArmL, magnitude*norm)*inverseInertiaL;
 
   _contact->otherRB.lock()->linearVel += (-magnitude*norm) / rMass;
-  _contact->otherRB.lock()->angularVel += glm::cross(torqueArmR, -magnitude*norm)*inverseInertiaR;
+  //_contact->otherRB.lock()->angularVel += glm::cross(torqueArmR, -magnitude*norm)*inverseInertiaR;
 }
 
 void ContactResolver::ResolveContactsLCP(std::vector< std::shared_ptr<Contact> > &_contacts)

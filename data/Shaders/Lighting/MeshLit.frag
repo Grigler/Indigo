@@ -44,7 +44,7 @@ vec3 CalcPointLight(PointLight _l)
   
   float dist = length(toLight);
   //Linear attenuation
-  float att = (1.0f/dist) * _l.attenuation;
+  float att = (1.0f / dist) * _l.attenuation;
   
   return (specCol + diffCol) * att;
   
@@ -52,8 +52,8 @@ vec3 CalcPointLight(PointLight _l)
 
 void main()
 {
-  //vec4 texColour = texture(mainTexture, uv);
-  vec4 texColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+  vec4 texColour = texture(mainTexture, uv);
+  //vec4 texColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
   
   vec3 accumLight = vec3(0.0f, 0.0f, 0.0f);
   vec3 ambient = vec3(0.1f, 0.1f, 0.1f);

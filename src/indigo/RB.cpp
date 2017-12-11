@@ -38,8 +38,8 @@ void RB::onCreation()
   angularVel = glm::vec3(0);
   force = glm::vec3(0);
   torque = glm::vec3(0);
-  mass = 5.0f;
-  drag = 0.5f;
+  mass = 15.0f;
+  drag = 1.5f;
   isGravityOn = true;
   inertiaTensor = glm::mat3(1);
   //TODO - CURRENTLY HARD CODED FOR SPHERE
@@ -101,9 +101,21 @@ void RB::SetMass(float _to)
 {
   mass = _to;
 
-  inertiaTensor[0][0] = (mass * 0.4f)*(collider->size*collider->size);
-  inertiaTensor[1][1] = (mass * 0.4f)*(collider->size*collider->size);
-  inertiaTensor[2][2] = (mass * 0.4f)*(collider->size*collider->size);
+  if (collider->type == ColliderType::Sphere)
+  {
+    inertiaTensor[0][0] = (mass * 0.4f)*(collider->size*collider->size);
+    inertiaTensor[1][1] = (mass * 0.4f)*(collider->size*collider->size);
+    inertiaTensor[2][2] = (mass * 0.4f)*(collider->size*collider->size);
+  }
+  else if (collider->type == ColliderType::Plane)
+  {
+    glm::vec3 s = transform->GetScale();
+    inertiaTensor[0][0] = (mass * 0.083f)*(1 + s.z*s.z);
+    inertiaTensor[1][1] = (mass * 0.083f)*(s.x*s.x + s.z*s.z);
+    inertiaTensor[2][2] = (mass * 0.083f)*(s.x*s.x + 1);
+  }
+
+  
 }
 
 void RB::onUpdate()
@@ -116,11 +128,11 @@ void RB::Integrate()
   //bodies.at(0) and bodies.at(bodies.size())
 
   //Storing dt at start of integration step
-  float dt = glm::clamp(Application::GetDT(), 0.0001f, 0.016f);
+  float dt = Application::GetFixedDT();
 
   //Using forces to calculate a to get v
   glm::vec3 linearAccel = (force / mass);
-  if (isGravityOn) linearAccel += glm::vec3(0.0f, -9.81f, 0.0f);
+  if (isGravityOn) linearAccel += glm::vec3(0.0f, -9.81f*mass, 0.0f);
   linearVel += linearAccel * dt;
   lastLinearAccel = linearAccel;
 
@@ -136,11 +148,12 @@ void RB::Integrate()
   transform->MoveDir(linearVel, dt);
 
   glm::vec3 r = glm::radians(angularVel);
-  glm::quat q = r;
-  q = glm::normalize(q);
+
+  //glm::quat q = r;
+  //q = glm::normalize(q);
 
   //transform.lock()->SetRotation(transform.lock()->GetRotation()+(angularVel*dt));
-  transform->SetRotation(transform->GetRotation() * q);
+  transform->SetRotation(transform->GetRotation()+r);
 
   //Resetting force and torque as these are impulses
   force = glm::vec3(0.0f);

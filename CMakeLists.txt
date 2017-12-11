@@ -52,7 +52,6 @@ add_library(Indigo
   src/Indigo/AABB.cpp
   src/Indigo/PhysicsHandler.cpp
   src/Indigo/ContactResolver.cpp
- # src/Indigo/PhysicsSpace.cpp
   
   src/Indigo/Collider.cpp
   src/Indigo/RB.cpp
@@ -61,6 +60,10 @@ add_library(Indigo
   src/Indigo/MeshResource.cpp
   src/Indigo/Mesh.cpp
   src/indigo/tiny_obj_loader.cc
+  
+  src/indigo/TextureResource.cpp
+  src/indigo/Texture.cpp
+  src/indigo/lodepng.cpp
 
   src/Indigo/Shader.cpp
   src/Indigo/RenderBuffer.cpp
@@ -72,6 +75,8 @@ add_library(Indigo
 target_link_libraries(Indigo glew32s freeglut AL_AUDIO)
 
 #Hacky way of using the ${HEADERS} glob and writing it into an API header
+# I'm proud of this in a way, but mostly ashamed
+
 #set(INCLUDE_OUT ${PROJECT_SOURCE_DIR}/include/indigo/indigo.h)
 #file(REMOVE ${INCLUDE_OUT})
 #file(APPEND ${INCLUDE_OUT} "#ifndef __INDIGO__\n#define __INDIGO__\n")

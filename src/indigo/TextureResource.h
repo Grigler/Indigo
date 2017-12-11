@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <GL/glew.h>
+
 #include "resource.h"
 
 namespace Indigo
@@ -10,11 +12,18 @@ namespace Indigo
   class TextureResource : public Resource
   {
     friend class Resources;
+    friend class Texture;
   public:
     
+    void Bind();
+
   private:
     std::string path;
-    void ReadFromFile(std::string _path) {}
+    void ReadFromFile(std::string _path);
+
+    void _loadPNG(std::string _path);
+
+    GLuint id;
   };
 }
 

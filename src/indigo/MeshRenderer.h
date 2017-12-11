@@ -10,6 +10,7 @@ namespace Indigo
 {
   class Mesh;
   class Shader;
+  class Texture;
 
   class MeshRenderer : public RenderComponent
   {
@@ -20,6 +21,7 @@ namespace Indigo
     void onUpdate();
 
     void LoadMesh(std::string _path);
+    void LoadTexture(std::string _path);
 
     //Called by GO
     void Draw();
@@ -30,6 +32,7 @@ namespace Indigo
   private:
     //Uses MeshShader from meshShader.h by default
     std::weak_ptr<Shader> shader;
+    std::shared_ptr<Texture> texture;
   };
 }
 #endif
