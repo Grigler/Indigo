@@ -23,8 +23,8 @@ endif()
 
 
 add_library(AL_AUDIO SHARED
-  src/Indigo/AL_AUDIO/AudioManager.h
-  src/Indigo/AL_AUDIO/AudioManager.cpp
+  src/indigo/AL_AUDIO/AudioManager.h
+  src/indigo/AL_AUDIO/AudioManager.cpp
 )
 target_link_libraries(AL_AUDIO openal libogg libvorbis libvorbisfile) 
 
@@ -37,40 +37,40 @@ add_definitions(-DGLEW_STATIC)
 add_library(Indigo
   ${HEADERS}
 
-  src/Indigo/plank.cpp
+  src/indigo/plank.cpp
 
-  src/Indigo/Application.cpp
-  src/Indigo/Engine.cpp
-  src/Indigo/Input.cpp
-  src/Indigo/MemObj.cpp
-  src/Indigo/GameObject.cpp
-  src/Indigo/Component.cpp
-  src/Indigo/Transform.cpp
-  src/Indigo/Camera.cpp
-  src/Indigo/Resources.cpp
+  src/indigo/Application.cpp
+  src/indigo/Engine.cpp
+  src/indigo/Input.cpp
+  src/indigo/MemObj.cpp
+  src/indigo/GameObject.cpp
+  src/indigo/Component.cpp
+  src/indigo/Transform.cpp
+  src/indigo/Camera.cpp
+  src/indigo/Resources.cpp
 
-  src/Indigo/AABB.cpp
-  src/Indigo/PhysicsHandler.cpp
-  src/Indigo/ContactResolver.cpp
+  src/indigo/AABB.cpp
+  src/indigo/PhysicsHandler.cpp
+  src/indigo/ContactResolver.cpp
   
-  src/Indigo/Collider.cpp
-  src/Indigo/RB.cpp
+  src/indigo/Collider.cpp
+  src/indigo/RB.cpp
   
-  src/Indigo/MeshRenderer.cpp
-  src/Indigo/MeshResource.cpp
-  src/Indigo/Mesh.cpp
+  src/indigo/MeshRenderer.cpp
+  src/indigo/MeshResource.cpp
+  src/indigo/Mesh.cpp
   src/indigo/tiny_obj_loader.cc
   
   src/indigo/TextureResource.cpp
   src/indigo/Texture.cpp
   src/indigo/lodepng.cpp
 
-  src/Indigo/Shader.cpp
-  src/Indigo/RenderBuffer.cpp
-  src/Indigo/Light.cpp
-  src/Indigo/LightSources.cpp
+  src/indigo/Shader.cpp
+  src/indigo/RenderBuffer.cpp
+  src/indigo/Light.cpp
+  src/indigo/LightSources.cpp
 
-  src/Indigo/CharacterController.cpp
+  src/indigo/CharacterController.cpp
 )
 target_link_libraries(Indigo glew32s freeglut AL_AUDIO)
 
