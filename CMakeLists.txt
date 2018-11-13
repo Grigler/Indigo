@@ -12,10 +12,11 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/src
 )
 
-if(WIN32)
   include_directories(
     ${PROJECT_SOURCE_DIR}/contrib/msvc/include
   )
+
+if(WIN32)
   link_directories(
     ${PROJECT_SOURCE_DIR}/contrib/msvc/lib
   )
